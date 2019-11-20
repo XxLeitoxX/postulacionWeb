@@ -1,0 +1,56 @@
+.ingreso {
+  &__container {
+    min-height: 89vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__img-container {
+    width: 200px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__text {
+    margin: 0;
+    font-weight: 700;
+    color: $gray;
+  }
+
+  &__form {
+    padding: 1em 0;
+  }
+
+  &__form-input {
+    @extend .form-control;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .ingreso {
+      &__form-input {
+        max-width: 80%;
+      }
+    }
+  }
+}
+
+.col-md-6.ingreso__left,
+.col-md-6.ingreso__right,
+.col-md-12.ingreso__center {
+  min-height: 160px;
+}
+
+@media (min-width: 992px) {
+  .ingreso {
+    &__border {
+      border-right: solid 1px $primary;
+    }
+  }
+}

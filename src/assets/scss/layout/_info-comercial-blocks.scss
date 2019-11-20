@@ -1,0 +1,60 @@
+/*
+=========================
+INFORMACION COMERCIAL
+=========================
+*/
+.info-comercial-top {
+  &__form {
+    @include grid-default;
+  }
+}
+
+.info-comercial-bottom {
+  &__form {
+    @include grid-default;
+  }
+}
+
+.info-comercial-attachment__form {
+  label {
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 576px) {
+  .info-comercial-top {
+    &__form {
+      grid-template-columns: 183px 1fr;
+      justify-items: end;
+    }
+  }
+  .info-comercial-bottom {
+    &__form {
+      grid-template-columns: 183px 1fr;
+      justify-items: end;
+    }
+    &__label {
+      text-align: right;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .info-comercial-top {
+    &__form {
+      grid-template-columns: 70px 1.5fr 50px 1.5fr 1fr 1fr;
+      &--pjuridica {
+        grid-template-columns: 183px 1fr 96px 1fr;
+      }
+    }
+  }
+  .info-comercial-bottom {
+    &__form {
+      grid-template-columns: 183px 1fr 183px 1fr;
+      justify-items: end;
+      &--pjuridica {
+        grid-template-columns: 183px 133.5px;
+      }
+    }
+  }
+}

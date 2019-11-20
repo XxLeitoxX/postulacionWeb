@@ -1,0 +1,33 @@
+/*
+====================
+COMPROMISOS BLOCK
+====================
+*/
+
+.compromisos {
+  &__body {
+    border: solid 1px $primary;
+    height: 500px;
+    overflow-y: scroll;
+  }
+  &__text {
+    line-height: 2.5em;
+  }
+}
+
+@media (min-width: 768px) {
+  .formulario-5 {
+    &__left-column-title {
+      padding-bottom: 0;
+    }
+  }
+  .compromisos {
+    padding-top: 3.4em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .compromisos {
+    padding-top: 2.3em;
+  }
+}

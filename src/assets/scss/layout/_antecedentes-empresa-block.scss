@@ -1,0 +1,61 @@
+/*
+====================
+ANTECEDENTES BLOCK
+====================
+*/
+
+.antecedentes {
+  &__left-date {
+    @include grid-default;
+  }
+  &__right {
+    padding-top: 0.5em;
+    label {
+      cursor: pointer;
+      grid-template-columns: 33px 1fr;
+      grid-gap: 0.5em;
+      align-items: center;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .antecedentes {
+    &__left-date {
+      grid-template-columns: 126px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .antecedentes {
+    &__left-date {
+      grid-template-columns: 1fr;
+      label {
+        text-align: left;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .antecedentes {
+    &__left-date {
+      grid-template-columns: 126px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .antecedentes {
+    &__right {
+      padding-top: 0;
+    }
+  }
+}

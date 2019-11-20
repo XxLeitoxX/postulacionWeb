@@ -1,0 +1,49 @@
+.acompanante {
+  &__form {
+    @include grid-default;
+  }
+}
+
+@media (min-width: 576px) {
+  .acompanante {
+    &__form {
+      grid-template-columns: 126px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .acompanante {
+    &__form {
+      grid-template-columns: 1fr;
+      label {
+        text-align: left;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .acompanante {
+    &__form {
+      grid-template-columns: 53px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .acompanante {
+    &__form {
+      grid-template-columns: 53px 1fr 53px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}

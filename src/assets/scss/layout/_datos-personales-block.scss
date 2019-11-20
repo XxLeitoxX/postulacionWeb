@@ -1,0 +1,81 @@
+/*
+====================
+DATOS PERSONALES
+====================
+*/
+
+.datos-personales {
+  display: grid;
+  @include grid-default;
+  &__label {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  &__input {
+    @extend .form-control;
+  }
+
+  &__icon-container {
+    align-self: flex-end;
+    flex-basis: 33px;
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .datos-personales {
+    grid-template-columns: 126px 1fr;
+    &__label {
+      text-align: right;
+    }
+    &--cv {
+      grid-column: 2 / 3;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .datos-personales {
+    grid-template-columns: 1fr;
+    &__label {
+      text-align: left;
+    }
+    &--cv {
+      grid-column: 1 / 2;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .datos-personales {
+    grid-template-columns: 126px 1fr;
+    &__label {
+      text-align: right;
+    }
+    &--cv {
+      grid-column: 2 / 3;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .datos-personales {
+    grid-template-columns: 126px 1fr 119px 1fr;
+    &__label {
+      text-align: right;
+    }
+    &__input {
+      overflow: hidden;
+    }
+    &--cv {
+      grid-column: 3 / 5;
+    }
+    &--cv-pnatural {
+      grid-column: 2 / 3;
+    }
+  }
+}

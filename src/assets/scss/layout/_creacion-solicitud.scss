@@ -1,0 +1,117 @@
+/*
+==============
+CRECION Y SOLICITUD
+==============
+*/
+.creacion-solicitud {
+    &__form {
+      &-left,
+      &-right {
+        @extend .form-inline;
+      }
+      &-label {
+        flex-basis: 122px;
+      }
+      &-input {
+        @extend .form-control;
+        margin-bottom: 0.5em;
+        flex-grow: 1;
+      }
+    }
+    &__radios {
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      flex-direction: column;
+      padding-left: 1.5em;
+    }
+    &__select-container {
+      flex-wrap: wrap;
+    }
+    &__select {
+      @extend .form-control;
+      flex-basis: 367px;
+      flex-grow: 1;
+      margin-left: 5px;
+    }
+  }
+  
+  @media (min-width: 576px) {
+    .creacion-solicitud {
+      &__form {
+        &-left,
+        &-right {
+          justify-content: center;
+        }
+        &-label {
+          text-align: center;
+        }
+        &-input {
+          margin: 0.5em 30px;
+        }
+      }
+      &__select {
+        @extend .form-control;
+        flex-basis: 331px;
+        margin-left: 5px;
+      }
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .creacion-solicitud {
+      &__form {
+        &-left,
+        &-right {
+          @extend .form-inline;
+          flex-wrap: nowrap;
+        }
+        &-input {
+          flex-basis: 306px;
+        }
+      }
+      &__opt-container {
+        align-items: flex-start;
+        justify-content: center;
+        flex-grow: 1;
+        flex-basis: 200px;
+      }
+      &__radios {
+        flex-direction: row;
+      }
+      &__select {
+        margin-left: 0;
+        margin-top: 1em;
+      }
+      .form-check-input {
+        margin-top: 5px;
+      }
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .creacion-solicitud {
+      &__form {
+        &-input {
+          margin: 0.5em 30px;
+          flex-basis: 225px;
+        }
+      }
+      &__opt-container {
+        flex-basis: 250px;
+      }
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .creacion-solicitud {
+      &__form {
+        &-input {
+          flex-grow: 0;
+        }
+      }
+      &__opt-container {
+        flex-basis: 300px;
+      }
+    }
+  }

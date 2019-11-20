@@ -1,0 +1,50 @@
+/*
+=======================
+REDES DIGITALES BLOCK
+=======================
+*/
+
+.redes-digitales {
+  &__title {
+    margin-top: 1em;
+  }
+  &__form {
+    @include grid-default;
+  }
+}
+
+@media (min-width: 576px) {
+  .redes-digitales {
+    &__form {
+      grid-template-columns: 126px 1fr;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .redes-digitales {
+    &__title {
+      margin-top: 0;
+    }
+    &__form {
+      grid-template-columns: 1fr;
+      label {
+        text-align: left;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .redes-digitales {
+    &__form {
+      grid-template-columns: 53px 280px;
+      label {
+        text-align: right;
+      }
+    }
+  }
+}

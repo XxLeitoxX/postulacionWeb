@@ -1,0 +1,7 @@
+.table--blue-border {
+  border: solid 1px $primary;
+  color: $gray;
+  td {
+    border-bottom: solid 1px $primary;
+  }
+}

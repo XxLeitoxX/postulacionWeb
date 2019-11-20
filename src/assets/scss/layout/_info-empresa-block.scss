@@ -1,0 +1,53 @@
+/*
+=====================
+INFORMACION EMPRESA
+=====================
+*/
+
+.info-empresa-form {
+  @include grid-default;
+}
+
+.info-empresa {
+  &__img-icon {
+    @include grid-default;
+    grid-template-columns: 100px 33px;
+    align-self: center;
+  }
+  &__icon-container {
+    align-self: end;
+  }
+  &-attachment {
+    &__form-label {
+      @include grid-default;
+      grid-template-columns: 33px 1fr;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .info-empresa-form {
+    grid-template-columns: 135px 1fr;
+    &__label {
+      text-align: right;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .info-empresa-form {
+    grid-template-columns:1fr;
+    &__label {
+      text-align: left;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .info-empresa-form {
+    grid-template-columns: 135px 1fr;
+    &__label {
+      text-align: right;
+    }
+  }
+}

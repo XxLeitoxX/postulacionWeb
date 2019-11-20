@@ -1,0 +1,43 @@
+/*
+====================
+PATROCINANTE BLOCK
+====================
+*/
+
+.patrocinante {
+  &__form {
+    @include grid-default;
+  }
+  &__attachment {
+    &-icon-container {
+      flex-basis: 33px;
+    }
+    &-label {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .patrocinante {
+    &__form {
+      grid-template-columns: 90px 1fr;
+      justify-items: end;
+    }
+    &__attachment {
+      grid-column: span 2;
+      justify-self: start;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .patrocinante {
+    &__form {
+      grid-template-columns: 90px 1fr 30px 1fr 90px 1fr;
+    }
+    &__attachment {
+      grid-column: span 6;
+    }
+  }
+}

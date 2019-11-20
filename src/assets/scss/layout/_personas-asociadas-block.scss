@@ -1,0 +1,62 @@
+/*
+====================
+PERSONAS ASOCIADAS
+====================
+*/
+
+.personas-asociadas-form {
+  @include grid-default;
+}
+
+@media (min-width: 576px) {
+  .personas-asociadas-form {
+    grid-template-columns: 119px 1fr;
+    &__label {
+      text-align: right;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .personas-asociadas-form {
+    grid-template-columns: 1fr;
+    &__label {
+      text-align: left;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .personas-asociadas-form {
+    grid-template-columns: 119px 1fr;
+    &__label {
+      text-align: right;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .personas-asociadas-form {
+    grid-template-columns: 102px 134px 20px 119px 1fr 20px;
+    &__label {
+      &--left {
+        grid-column: 1 / 2;
+      }
+      &--right {
+        grid-column: 4 / 5;
+      }
+    }
+    &__input {
+      &--left {
+        grid-column: 2 / 3;
+      }
+      &--left-big {
+        grid-column: 2 / 4;
+      }
+      &--right {
+        grid-column: 5 / 6;
+      }
+    }
+  }
+
+}

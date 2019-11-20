@@ -1,0 +1,92 @@
+.btn {
+  @extend .btn;
+  border-radius: 0;
+  padding: 1em;
+
+  &--big {
+    min-width: 180px;
+  }
+
+  &--hover-up {
+    position: relative;
+    top: 0;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      top: -3px;
+    }
+  }
+
+  &--hover-right {
+    position: relative;
+    left: 0;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      left: 3px;
+    }
+  }
+
+  &--sibling-hover-right:hover + .btn--hover-right {
+    left: 3px;
+  }
+
+  &--submit {
+    background-color: $light-gray;
+    &:hover {
+      background-color: $gray;
+    }
+  }
+
+  &--direccion3-tel,
+  &--direccion3-mail,
+  &--accionarios-participacion {
+    border: none;
+    width: 33px;
+    padding: 0;
+    justify-self: end;
+    background: none;
+  }
+}
+
+.icon-edit {
+  color: $primary;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    color: $dark-blue;
+  }
+}
+
+.icon-delete {
+  color: $danger;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    color: $dark-red;
+  }
+}
+
+@media (min-width: 576px) {
+  .btn {
+    &--direccion3-tel,
+    &--direccion3-mail {
+      grid-column: 3 / 4;
+    }
+    &--accionarios-participacion {
+      grid-column: span 2;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .btn {
+    &--direccion3-tel {
+      grid-column: 3 / 4;
+    }
+    &--direccion3-mail {
+      grid-column: 6 / 7;
+    }
+    &--accionarios-participacion {
+      grid-column: 7 / 8;
+    }
+  }
+}

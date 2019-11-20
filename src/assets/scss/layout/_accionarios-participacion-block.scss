@@ -1,0 +1,33 @@
+.accionarios-participacion {
+  &__form {
+    @include grid-default;
+  }
+}
+
+@media (min-width:576px) {
+  .accionarios-participacion {
+    &__form {
+      grid-template-columns: 62px 1fr;
+      &--pnatural {
+        grid-template-columns: 74px 1fr;
+      }
+    }
+    &__label {
+      text-align: right;
+    }
+  }
+}
+
+@media (min-width:1200px) {
+  .accionarios-participacion {
+    &__form {
+      grid-template-columns: 46px 1fr 26px 1fr 62px 1fr 33px;
+      &--pnatural {
+        grid-template-columns: 74px 1fr 26px 1fr 62px 1fr 33px;
+      }
+    }
+    &__label {
+      text-align: right;
+    }
+  }
+}
