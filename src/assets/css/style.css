@@ -9943,10 +9943,11 @@ DATOS PERSONALES
     overflow: hidden;
   }
   .datos-personales--cv {
-    grid-column: 3/5;
+    grid-column: 1/3;
   }
   .datos-personales--cv-pnatural {
-    grid-column: 2/3;
+    grid-column: 2/5;
+    text-align: left;
   }
 }
 /*
@@ -10429,10 +10430,32 @@ INFORMACION COMERCIAL
   .info-comercial-bottom__label {
     text-align: right;
   }
+
+  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
+    grid-column: 2/3;
+    justify-self: start;
+  }
+  .info-comercial-attachment--pj {
+    grid-column: 2/3;
+    justify-self: start;
+  }
+}
+@media (min-width: 768px) {
+  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
+    grid-column: 1/3;
+    justify-self: start;
+    margin-left: 4em;
+  }
+}
+@media (min-width: 992px) {
+  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
+    grid-column: 2/3;
+    margin-left: 0;
+  }
 }
 @media (min-width: 1200px) {
   .info-comercial-top__form {
-    grid-template-columns: 70px 1.5fr 50px 1.5fr 1fr 1fr;
+    grid-template-columns: 183px 1fr 50px 1fr 1fr;
   }
   .info-comercial-top__form--pjuridica {
     grid-template-columns: 183px 1fr 96px 1fr;
@@ -10444,6 +10467,16 @@ INFORMACION COMERCIAL
   }
   .info-comercial-bottom__form--pjuridica {
     grid-template-columns: 183px 133.5px;
+  }
+
+  .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
+    grid-column: 2/7;
+  }
+  .info-comercial-attachment--ei-capital-propio {
+    grid-column: 2/5;
+  }
+  .info-comercial-attachment--pj {
+    grid-column: 2/5;
   }
 }
 /*
