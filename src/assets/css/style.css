@@ -569,6 +569,13 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+
+/**** Top para formularios ****/
+.pn-formulario-1, .pn-formulario-2, .pn-formulario-3, 
+.pn-formulario-4, .pn-formulario-5, .pn-formulario-6{
+  margin-top: 1%;
+}
+/** fin de top para formularios **/
 @media (min-width: 576px) {
   .container, .header__container-bottom, .header__container-top {
     max-width: 540px;
@@ -9898,6 +9905,9 @@ DATOS PERSONALES
 .datos-personales__icon-container label {
   cursor: pointer;
 }
+.datos-personales--cv label {
+  cursor: pointer;
+}
 
 @media (min-width: 576px) {
   .datos-personales {
@@ -9943,11 +9953,8 @@ DATOS PERSONALES
     overflow: hidden;
   }
   .datos-personales--cv {
-    grid-column: 1/3;
-  }
-  .datos-personales--cv-pnatural {
-    grid-column: 2/5;
-    text-align: left;
+    grid-column: 3/5;
+    padding-left: 3em;
   }
 }
 /*
@@ -9960,6 +9967,55 @@ INFORMACION EMPRESA
   grid-template-columns: 1fr;
   grid-gap: 0.5em;
   align-items: center;
+  grid-template-columns: 1fr 25px;
+}
+.info-empresa-form__label, .info-empresa-form__input {
+  grid-column: span 2;
+}
+.info-empresa-form__label--razon-name, .info-empresa-form__input--razon-name {
+  grid-column: 1/2;
+}
+.info-empresa-form__question {
+  text-align: center;
+}
+.info-empresa-form__check-container {
+  position: relative;
+}
+.info-empresa-form__check {
+  position: relative;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.info-empresa-form__check:checked ~ .info-empresa-form__check-style {
+  background-color: #2072be;
+}
+.info-empresa-form__check:checked ~ .info-empresa-form__check-style:after {
+  display: block;
+}
+.info-empresa-form__check-style {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border: solid 1px #d3d3d3;
+  border-radius: 5px;
+}
+.info-empresa-form__check-style:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .info-empresa__img-icon {
@@ -9973,25 +10029,45 @@ INFORMACION EMPRESA
 .info-empresa__icon-container {
   align-self: end;
 }
+.info-empresa__icon-container-label {
+  cursor: pointer;
+}
 .info-empresa-attachment__form-label {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 0.5em;
   align-items: center;
   grid-template-columns: 33px 1fr;
+  cursor: pointer;
 }
 
 @media (min-width: 576px) {
   .info-empresa-form {
-    grid-template-columns: 135px 1fr;
+    grid-template-columns: 135px 1fr 25px;
   }
   .info-empresa-form__label {
     text-align: right;
+    grid-column: 1/2;
+  }
+  .info-empresa-form__input {
+    grid-column: 2/4;
+  }
+  .info-empresa-form__input--razon-name {
+    grid-column: 2/3;
+  }
+  .info-empresa-form__question {
+    grid-column: span 2;
   }
 }
 @media (min-width: 768px) {
   .info-empresa-form {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 25px;
+  }
+  .info-empresa-form__label, .info-empresa-form__input {
+    grid-column: span 2;
+  }
+  .info-empresa-form__label--razon-name, .info-empresa-form__input--razon-name {
+    grid-column: 1/2;
   }
   .info-empresa-form__label {
     text-align: left;
@@ -9999,10 +10075,20 @@ INFORMACION EMPRESA
 }
 @media (min-width: 1200px) {
   .info-empresa-form {
-    grid-template-columns: 135px 1fr;
+    grid-template-columns: 135px 1fr 25px;
   }
   .info-empresa-form__label {
     text-align: right;
+    grid-column: 1/2;
+  }
+  .info-empresa-form__input {
+    grid-column: 2/4;
+  }
+  .info-empresa-form__input--razon-name {
+    grid-column: 2/3;
+  }
+  .info-empresa-form__question {
+    grid-column: span 3;
   }
 }
 /*
@@ -10010,49 +10096,51 @@ INFORMACION EMPRESA
 ANTECEDENTES BLOCK
 ====================
 */
-.antecedentes__left-date {
+.antecedentes__form {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 0.5em;
   align-items: center;
 }
-.antecedentes__right {
-  padding-top: 0.5em;
-}
-.antecedentes__right label {
-  cursor: pointer;
-  grid-template-columns: 33px 1fr;
-  grid-gap: 0.5em;
-  align-items: center;
-}
 
 @media (min-width: 576px) {
-  .antecedentes__left-date {
+  .antecedentes__form {
     grid-template-columns: 126px 1fr;
-  }
-  .antecedentes__left-date label {
     text-align: right;
+  }
+  .antecedentes__cv-empresa {
+    grid-column: 2/3;
+    justify-self: start;
+  }
+  .antecedentes__cv-empresa label {
+    cursor: pointer;
   }
 }
 @media (min-width: 768px) {
-  .antecedentes__left-date {
+  .antecedentes__form {
     grid-template-columns: 1fr;
-  }
-  .antecedentes__left-date label {
     text-align: left;
+  }
+  .antecedentes__cv-empresa {
+    grid-column: 1/2;
   }
 }
 @media (min-width: 992px) {
-  .antecedentes__left-date {
-    grid-template-columns: 126px 1fr;
-  }
-  .antecedentes__left-date label {
+  .antecedentes__form {
+    grid-template-columns: 116px 1fr;
     text-align: right;
+  }
+  .antecedentes__cv-empresa {
+    grid-column: 2/3;
   }
 }
 @media (min-width: 1200px) {
-  .antecedentes__right {
-    padding-top: 0;
+  .antecedentes__form {
+    grid-template-columns: 116px 1fr 116px 1fr;
+    text-align: right;
+  }
+  .antecedentes__cv-empresa {
+    grid-column: 2/5;
   }
 }
 /*
@@ -10091,10 +10179,15 @@ REDES DIGITALES BLOCK
 }
 @media (min-width: 992px) {
   .redes-digitales__form {
-    grid-template-columns: 53px 280px;
+    grid-template-columns: 106px 280px;
   }
   .redes-digitales__form label {
     text-align: right;
+  }
+}
+@media (min-width: 1200px) {
+  .redes-digitales__form {
+    grid-template-columns: 96px 280px;
   }
 }
 .acompanante__form {
@@ -10122,7 +10215,7 @@ REDES DIGITALES BLOCK
 }
 @media (min-width: 992px) {
   .acompanante__form {
-    grid-template-columns: 53px 1fr;
+    grid-template-columns: 106px 1fr;
   }
   .acompanante__form label {
     text-align: right;
@@ -10130,7 +10223,7 @@ REDES DIGITALES BLOCK
 }
 @media (min-width: 1200px) {
   .acompanante__form {
-    grid-template-columns: 53px 1fr 53px 1fr;
+    grid-template-columns: 102px 1fr 106px 1fr;
   }
   .acompanante__form label {
     text-align: right;
@@ -10146,9 +10239,26 @@ DIRECCION
   grid-template-columns: 1fr;
   grid-gap: 0.5em;
   align-items: center;
+  grid-template-columns: 1fr 33px;
+}
+.direccion1__input, .direccion1__label {
+  grid-column: span 2;
+}
+.direccion1__input--mail, .direccion1__input--tel {
+  grid-column: 1/2;
 }
 
-.direccion2,
+.direccion1-check--left, .direccion1-check--right {
+  grid-column: span 2;
+}
+
+.direccion2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
+  align-items: center;
+}
+
 .direccion3 {
   display: grid;
   grid-template-columns: 1fr;
@@ -10156,20 +10266,25 @@ DIRECCION
   align-items: center;
   grid-template-columns: 1fr 33px;
 }
-.direccion2__label, .direccion2__input,
-.direccion3__label,
-.direccion3__input {
+.direccion3__label, .direccion3__input {
   grid-column: 1/3;
 }
-.direccion2__input--mail, .direccion2__input--tel,
-.direccion3__input--mail,
-.direccion3__input--tel {
+.direccion3__input--mail, .direccion3__input--tel {
   grid-column: 1/2;
 }
 
 @media (min-width: 576px) {
   .direccion1__form {
-    grid-template-columns: 95px 1fr;
+    grid-template-columns: 95px 1fr 33px;
+  }
+  .direccion1__label {
+    grid-column: 1/2;
+  }
+  .direccion1__input {
+    grid-column: 2/4;
+  }
+  .direccion1__input--mail, .direccion1__input--tel {
+    grid-column: 2/3;
   }
 
   .direccion2 {
@@ -10203,7 +10318,7 @@ DIRECCION
 }
 @media (min-width: 768px) {
   .direccion1__form {
-    grid-template-columns: 76px 1.5fr 0.5fr 54px 0.6fr 50px 0.6fr;
+    grid-template-columns: 76px 1.5fr 33px 54px 0.6fr 45px 0.6fr 33px;
   }
   .direccion1__label {
     text-align: right;
@@ -10211,8 +10326,11 @@ DIRECCION
   .direccion1__label--left {
     grid-column: 1/2;
   }
-  .direccion1__label--right {
+  .direccion1__label--right, .direccion1__label--right-small1 {
     grid-column: 4/5;
+  }
+  .direccion1__label--right-small2 {
+    grid-column: 6/7;
   }
   .direccion1__input--left {
     grid-column: 2/3;
@@ -10222,6 +10340,12 @@ DIRECCION
   }
   .direccion1__input--right {
     grid-column: 5/8;
+  }
+  .direccion1__input--right-small1 {
+    grid-column: 5/6;
+  }
+  .direccion1__input--right-small2 {
+    grid-column: 7/8;
   }
 
   .direccion2 {
@@ -10274,7 +10398,7 @@ DIRECCION
 }
 @media (min-width: 1200px) {
   .direccion2 {
-    grid-template-columns: 102px 1.7fr 0.5fr 54px 0.57fr 35px 0.57fr;
+    grid-template-columns: 115px 1.7fr 0.5fr 54px 0.57fr 35px 0.57fr;
   }
   .direccion2__label--left {
     grid-column: 1/2;
@@ -10319,11 +10443,14 @@ DIRECCION
   .direccion3__input--left-big {
     grid-column: 2/7;
   }
+  .direccion3__input--tel {
+    grid-column: 2/3;
+  }
   .direccion3__input--right {
     grid-column: 5/7;
   }
   .direccion3__input--mail {
-    grid-row: 6/7;
+    grid-column: 5/6;
   }
 
   .direccion1-check--left {
@@ -10376,7 +10503,7 @@ PERSONAS ASOCIADAS
 }
 @media (min-width: 1200px) {
   .personas-asociadas-form {
-    grid-template-columns: 102px 134px 20px 119px 1fr 20px;
+    grid-template-columns: 115px 134px 20px 119px 150px;
   }
   .personas-asociadas-form__label--left {
     grid-column: 1/2;
@@ -10411,10 +10538,27 @@ INFORMACION COMERCIAL
   grid-template-columns: 1fr;
   grid-gap: 0.5em;
   align-items: center;
+  grid-template-columns: 1fr 10px;
+}
+.info-comercial-bottom__label, .info-comercial-bottom__input {
+  grid-column: span 2;
+}
+.info-comercial-bottom__input--vol-fact {
+  grid-column: 1/2;
 }
 
-.info-comercial-attachment__form label {
+.info-comercial-attachment label {
   cursor: pointer;
+}
+.info-comercial-attachment__bottom {
+  grid-column: span 2;
+}
+.info-comercial-attachment__label {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 0.5em;
+  align-items: center;
+  grid-template-columns: 33px 1fr;
 }
 
 @media (min-width: 576px) {
@@ -10422,60 +10566,50 @@ INFORMACION COMERCIAL
     grid-template-columns: 183px 1fr;
     justify-items: end;
   }
+  .info-comercial-top__label {
+    text-align: right;
+  }
 
   .info-comercial-bottom__form {
-    grid-template-columns: 183px 1fr;
+    grid-template-columns: 183px 1fr 10px;
     justify-items: end;
   }
   .info-comercial-bottom__label {
     text-align: right;
+    grid-column: 1/2;
+  }
+  .info-comercial-bottom__input--vol-fact {
+    grid-column: 2/3;
   }
 
-  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
+  .info-comercial-attachment__top, .info-comercial-attachment__bottom {
     grid-column: 2/3;
-    justify-self: start;
-  }
-  .info-comercial-attachment--pj {
-    grid-column: 2/3;
-    justify-self: start;
-  }
-}
-@media (min-width: 768px) {
-  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
-    grid-column: 1/3;
-    justify-self: start;
-    margin-left: 4em;
-  }
-}
-@media (min-width: 992px) {
-  .info-comercial-attachment--ei-capital-propio, .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
-    grid-column: 2/3;
-    margin-left: 0;
+    justify-self: left;
   }
 }
 @media (min-width: 1200px) {
   .info-comercial-top__form {
-    grid-template-columns: 183px 1fr 50px 1fr 1fr;
-  }
-  .info-comercial-top__form--pjuridica {
-    grid-template-columns: 183px 1fr 96px 1fr;
+    grid-template-columns: 183px 1fr;
   }
 
   .info-comercial-bottom__form {
     grid-template-columns: 183px 1fr 183px 1fr;
     justify-items: end;
   }
-  .info-comercial-bottom__form--pjuridica {
-    grid-template-columns: 183px 133.5px;
+  .info-comercial-bottom__label--right {
+    grid-column: 3/4;
+  }
+  .info-comercial-bottom__input {
+    grid-column: 2/3;
+  }
+  .info-comercial-bottom__input--right {
+    grid-column: 4/5;
+  }
+  .info-comercial-bottom__input--vol-fact + span {
+    justify-self: start;
   }
 
-  .info-comercial-attachment--ei-edo-financiero, .info-comercial-attachment--ei-imp-renta {
-    grid-column: 2/7;
-  }
-  .info-comercial-attachment--ei-capital-propio {
-    grid-column: 2/5;
-  }
-  .info-comercial-attachment--pj {
+  .info-comercial-attachment__bottom {
     grid-column: 2/5;
   }
 }
@@ -10516,8 +10650,8 @@ INFORMACIÓN TRABAJADORES
 
 @media (min-width: 576px) {
   .info-trabajadores__form {
-    grid-template-columns: 1.6fr 79px 1.2fr 79px;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 142px 0.4fr 145px 0.4fr;
+    grid-template-rows: repeat(2, 1fr);
     justify-items: end;
     text-align: right;
   }
@@ -10543,9 +10677,14 @@ INFORMACIÓN TRABAJADORES
     grid-column: 4/5;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .info-trabajadores__form {
-    grid-template-columns: 1.2fr 74px 1.2fr 74px;
+    grid-template-columns: 130px 60px 145px 60px;
+  }
+}
+@media (min-width: 1200px) {
+  .info-trabajadores__form {
+    grid-template-columns: 142px 0.3fr 145px 0.3fr;
   }
 }
 .accionarios-participacion__form {
@@ -10568,10 +10707,10 @@ INFORMACIÓN TRABAJADORES
 }
 @media (min-width: 1200px) {
   .accionarios-participacion__form {
-    grid-template-columns: 46px 1fr 26px 1fr 62px 1fr 33px;
+    grid-template-columns: 26px 1fr 46px 1fr 62px 1fr 33px;
   }
   .accionarios-participacion__form--pnatural {
-    grid-template-columns: 74px 1fr 26px 1fr 62px 1fr 33px;
+    grid-template-columns: 26px 1fr 74px 1fr 62px 1fr 33px;
   }
   .accionarios-participacion__label {
     text-align: right;
@@ -10588,6 +10727,13 @@ PATROCINANTE BLOCK
   grid-gap: 0.5em;
   align-items: center;
 }
+.patrocinante__download {
+  font-family: "Roboto", sans-serif;
+  color: #000;
+}
+.patrocinante__download:hover {
+  text-decoration: none;
+}
 .patrocinante__attachment-icon-container {
   flex-basis: 33px;
 }
@@ -10600,14 +10746,14 @@ PATROCINANTE BLOCK
     grid-template-columns: 90px 1fr;
     justify-items: end;
   }
-  .patrocinante__attachment {
+  .patrocinante__download, .patrocinante__attachment {
     grid-column: span 2;
     justify-self: start;
   }
 }
 @media (min-width: 1200px) {
   .patrocinante__form {
-    grid-template-columns: 90px 1fr 30px 1fr 90px 1fr;
+    grid-template-columns: 30px 1fr 90px 1fr 90px 1fr;
   }
   .patrocinante__attachment {
     grid-column: span 6;
@@ -10626,14 +10772,16 @@ COMPROMISOS BLOCK
 .compromisos__text {
   line-height: 2.5em;
 }
+.compromisos__confirmacion-title {
+  margin-top: 1em;
+}
 
 @media (min-width: 768px) {
-  .formulario-5__left-column-title {
-    padding-bottom: 0;
-  }
-
   .compromisos {
     padding-top: 3.4em;
+  }
+  .compromisos__confirmacion-title {
+    margin-top: 0;
   }
 }
 @media (min-width: 1200px) {
@@ -10806,7 +10954,7 @@ COMPROMISOS BLOCK
 .btn--submit:hover {
   background-color: #616161;
 }
-.btn--direccion3-tel, .btn--direccion3-mail, .btn--accionarios-participacion {
+.btn--direccion1-tel, .btn--direccion1-mail, .btn--direccion3-tel, .btn--direccion3-mail, .btn--accionarios-participacion {
   border: none;
   width: 33px;
   padding: 0;
@@ -10849,6 +10997,9 @@ COMPROMISOS BLOCK
   }
   .btn--accionarios-participacion {
     grid-column: 7/8;
+  }
+  .btn--accionarios-participacion-repcchc {
+    grid-column: 5/6;
   }
 }
 .table--blue-border {

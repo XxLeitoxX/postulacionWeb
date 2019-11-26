@@ -1,5 +1,5 @@
 <template>
-     <main class="creacion-solicitud">
+     <main class="creacion-solicitud" v-if="mostrarCreacionSolicitud == true">
      <header class="header my-5 pb-2">
     <div class="header__container-top">
       <div class="header__logo-container">
@@ -46,10 +46,16 @@
 
       <h3 class="text-center text-uppercase text-primary">Para comenzar el proceso, por favor ingrese RUT del
         postulante, y cámara regional para crear un número de solicitud</h3>
+
+      <div v-if="!rutNoValido" class="alert alert-danger" role="alert">
+  <strong>Error!</strong> RUT no válido.
+</div>
+
       <form class="creacion-solicitud__form pt-3" id="datosPersonales">
         <div class="creacion-solicitud__form-left">
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="rut">RUT*</label>
-          <input type="text" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
+          {{ rut }}
+          <input type="text" v-on:keyup.enter="updateRutNum()" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="mail">Correo Electrónico*</label>
           <input type="email" v-model="correo" id="mail" class="creacion-solicitud__form-input" required>
         </div>
@@ -62,15 +68,13 @@
             <option v-for="(camara, key) in camaras" :value="camara.camRegId" :key="key">{{ camara.camRegGls }}</option>
           </select>
         </div>
-        <p>Correo:{{ correo }}</p>
-        <p>RUT:{{ rut }}</p>
-        <p>Tel:{{ telefono }}</p>
+       
          <!--<span>Selected: {{ camaraSeleccionada }}</span>-->
      
         <h3 class="text-primary text-uppercase py-4">Seleccione que tipo de postulación realiza</h3>
         <div class="creacion-solicitud__radios">
           <div class="fcustom-control custom-radio form-check-inline creacion-solicitud__opt-container py-1">
-            <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="natural" value="#/persona-natural-formulario-1">
+            <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="natural" value="#/persona-natural">
             <label class="custom-control-label text-uppercase font-weight-bold text-small pt-1" for="natural">Persona Natural</label>
           </div>
           <div
@@ -91,8 +95,12 @@
       <div class="creacion-solicitud__buttons py-5">
         <router-link to="/" class="btn btn-danger text-uppercase btn--big m-2">Cancelar</router-link>
         <a :href="valorCheck" class="btn btn-primary text-uppercase btn--big m-2" id="crear">Crear</a>
+        <!-- <button class="btn btn-primary" @click="agregarSolicitud()">Guardar</button> -->
       </div>
     </div>
+
+    <personaNaturalFormulario1 v-if="mostrarForm1 == true"></personaNaturalFormulario1>
+    <personaNaturalFormulario2 v-if="mostrarForm2 == true"></personaNaturalFormulario2>
   </main>
 </template>
 
@@ -100,11 +108,19 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import { mapState, mapMutations } from 'vuex'
+import personaNaturalFormulario1 from '@/components/formulario-persona-natural/Persona-Natural-Formulario-1';
+import personaNaturalFormulario2 from '@/components/formulario-persona-natural/Persona-Natural-Formulario-2';
  
 Vue.use(VueAxios, axios);
 
+
   export default {
   name: 'creacionSolicitud',
+  components:{
+    personaNaturalFormulario1,
+    personaNaturalFormulario2
+  },
   data () {
     return {
       valorCheck:'',
@@ -112,21 +128,66 @@ Vue.use(VueAxios, axios);
       camaraSeleccionada:'',
       rut:'',
       telefono:'',
-      correo:''
+      correo:'',
+      rutNoValido:true,
+      nuevaSolicitud: [],
+      mostrarForm1:false,
+      mostrarForm2:false,
+      mostrarCreacionSolicitud:true
+  
     }
   },
   methods:{
-    
+
+    agregarSolicitud: function(){
+
+      this.nuevaSolicitud.push({
+        rut: this.rut,
+        telefono: this.telefono,
+        correo: this.correo,
+        camara: this.camaraSeleccionada
+      });
+      console.log(this.nuevaSolicitud);
+    },
+
+    // Valida el rut con su cadena completa "XXXXXXXX-X"
+    validaRut: function(rutCompleto) {
+    rutCompleto = rutCompleto.replace("‐","-");
+    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto ))
+        return false;
+    var tmp     = rutCompleto.split('-');
+    var digv    = tmp[1];
+    var rut     = tmp[0];
+    if ( digv == 'K' ) digv = 'k' ;
+
+    return (this.dv(rut) == digv );
+},
+
+dv : function(T){
+    var M=0,S=1;
+    for(;T;T=Math.floor(T/10))
+        S=(S+T%10*(9-M++%6))%11;
+    return S?S-1:'k';
+},
+updateRutNum: function(){
+  
+  let estadoRut = this.validaRut(this.rut);
+  this.rutNoValido = estadoRut;
+
+
+
+}
+
+
   },
   created: function(){
     Vue.axios.get('http://postulacion.isc.cl/listarCamaras').then((response) => {
         this.camaras = response.data;
-        /*for(var i=0; arreglo.length > i; i++ ){
-          //console.log(response.data[i].camRegId);
-          this.camaras[i]= response.data[i].camRegGls;
-        }*/
-        //console.log(this.camaras);
+        
     })
+  },
+  computed:{
+    ...mapState(['rutGlobal'])
   }
 }
 </script>

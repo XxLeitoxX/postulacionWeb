@@ -1,35 +1,36 @@
 
 <template>
   <main class="pn-formulario-1">
-     <cabecera></cabecera>
     <div class="container">
       <div class="row">
-
         <!-- LEFT COLUMN -->
         <div class="col-md-6">
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
+         
           <form class="datos-personales">
-            <label class="datos-personales__label" for="vocativo">Vocativo*</label>
-            <input type="text" id="vocativo" class="datos-personales__input" required>
             <label class="datos-personales__label" for="RUT">RUT*</label>
-            <input type="number" id="rut" class="datos-personales__input" required>
-            <label class="datos-personales__label" for="nombres">Nombres</label>
+            <input type="number" id="rut" class="datos-personales__input" :value="rut" required>
+            <label class="datos-personales__label" for="vocativo">Vocativo*</label>
+            <select type="text" id="vocativo" class="datos-personales__input" required></select>
+            <label class="datos-personales__label" for="nombres">Nombres*</label>
             <input type="text" id="nombres" class="datos-personales__input" required>
-            <label class="datos-personales__label" for="email">Email</label>
-            <input type="email" id="email" class="datos-personales__input" required>
-            <label class="datos-personales__label" for="apellidos">Apellidos</label>
-            <input type="text" id="apellidos" class="datos-personales__input" required>
-            <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
-            <input type="text" id="nacionalidad" class="datos-personales__input">
+            <label class="datos-personales__label" for="apellido-pat">Apellido Paterno*</label>
+            <input type="text" id="apellido-pat" class="datos-personales__input" required>
+            <label class="datos-personales__label" for="apellido-mat">Apellido Materno*</label>
+            <input type="text" id="apellido-mat" class="datos-personales__input" required>
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
             <input type="date" id="fecha-nac" class="datos-personales__input datos-personales__input--date" required>
+            <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
+            <input type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
+            <label class="datos-personales__label datos-personales__pasaporte-label invisible"
+              for="pasaporte">Pasaporte*</label>
+            <input type="text" id="pasaporte"
+              class="datos-personales__input datos-personales__pasaporte-input invisible" required>
             <label class="datos-personales__label" for="sexo">Sexo*</label>
             <select id="sexo" class="datos-personales__input" required>
               <option value="1">Femenino</option>
               <option value="2">Masculino</option>
             </select>
-            <label class="datos-personales__label" for="profesion">Profesión*</label>
-            <input type="text" id="profesion" class="datos-personales__input" required>
             <label class="datos-personales__label" for="edoCivil">Estado civil*</label>
             <select id="edoCivil" class="datos-personales__input" required>
               <option value="1">Soltero/a</option>
@@ -38,7 +39,15 @@
               <option value="4">Divorciado/a</option>
               <option value="4">Separado/a</option>
             </select>
-            <div class="pt-2 w-100 datos-personales--cv datos-personales--cv-pnatural">
+            <label class="datos-personales__label" for="nivelDeEstudios">Nivel de
+              estudios</label>
+            <input type="text" id="nivelDeEstudios" class="datos-personales__input">
+            <label class="datos-personales__label" for="centroDeEstudios">Centro de
+              estudios*</label>
+            <input type="text" id="centroDeEstudios" class="datos-personales__input" required>
+            <label class="datos-personales__label" for="profesion">Profesión*</label>
+            <input type="text" id="profesion" class="datos-personales__input" required>
+            <div class="pt-2 w-100 datos-personales--cv">
               <input type="file" class="d-none" id="cv"
                 accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 required>
@@ -51,24 +60,15 @@
                 </div>
               </label>
             </div>
-            <label class="datos-personales__label" for="nivelDeEstudios">Nivel de
-              estudios</label>
-            <input type="text" id="nivelDeEstudios" class="datos-personales__input">
-            <label class="datos-personales__label" for="centroDeEstudios">Centro de
-              estudios*</label>
-            <input type="text" id="centroDeEstudios" class="datos-personales__input" required>
-            <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
-            <input type="text" id="cargoEmpresa" class="datos-personales__input">
             <label class="datos-personales__label" for="especialidad">Especialidad</label>
             <input type="text" id="especialidad" class="datos-personales__input">
             <label class="datos-personales__label" for="hobbies">Interés/Hobbies</label>
             <input type="text" id="hobbies" class="datos-personales__input">
             <label class="datos-personales__label" for="empresa">Empresa</label>
             <input type="text" id="empresa" class="datos-personales__input">
+            <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
+            <input type="text" id="cargoEmpresa" class="datos-personales__input">
           </form>
-          <div class="d-flex w-100 justify-content-center">
-            <button class="btn btn-primary btn--big mt-4">Guardar</button>
-          </div>
         </div> <!-- col-md-6 -->
 
         <!-- RIGHT COLUMN -->
@@ -81,14 +81,16 @@
 
           <h3 class="text-uppercase text-primary font-weight-bold pt-5">Acompañante</h3>
           <form class="acompanante__form">
-            <label for="acompanante-name1" class="text-small font-weight-bold">Nombres</label>
-            <input type="text" id="acompanante-name1" class="form-control">
-            <label for="acompanante-apellido1" class="text-small font-weight-bold">Apellidos</label>
-            <input type="text" id="acompanante-apellido1" class="form-control">
-            <label for="rut1" class="text-small font-weight-bold">RUT</label>
-            <input type="number" id="rut1" class="form-control">
-            <label for="email1" class="text-small font-weight-bold">Email</label>
-            <input type="email" id="email1" class="form-control">
+            <label for="rut1" class="text-small font-weight-bold">RUT*</label>
+            <input type="number" id="rut1" class="form-control" required>
+            <label for="acompanante-name1" class="text-small font-weight-bold">Nombres*</label>
+            <input type="text" id="acompanante-name1" class="form-control" required>
+            <label for="acompanante-apellido-pat1" class="text-small font-weight-bold">Apellido Paterno*</label>
+            <input type="text" id="acompanante-apellido-pat1" class="form-control" required>
+            <label for="acompanante-apellido-mat1" class="text-small font-weight-bold">Apellido Materno*</label>
+            <input type="text" id="acompanante-apellido-mat1" class="form-control" required>
+            <label for="email1" class="text-small font-weight-bold">Email*</label>
+            <input type="email" id="email1" class="form-control" required>
           </form>
 
         </div> <!-- col-md-6 -->
@@ -109,17 +111,21 @@
 
 <script>
 
-  import cabecera from '@/components/formulario-persona-natural/Cabecera';
+  
+  import { mapState } from 'vuex'  
 
   export default{
   name: 'personaNaturalFormulario1',
   components: {
-        cabecera
+        
     },
   data () {
     return {
-     
+     rut:''
     }
+  },
+  computed:{
+    ...mapState(['rutGlobal'])
   }
 }
 </script>

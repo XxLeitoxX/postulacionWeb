@@ -19,44 +19,59 @@
       <div class="header__bottom-right">
         <span class="header__progress-line header__progress-line--pnatural"></span>
         <div class="header__progress-number-container">
-          <span class="header__progress-number header__progress-number-active">1</span>
+          <span class="header__progress-number" :class="done1">1</span>
           <p class="header__progress-text px-1">Datos principales</p>
         </div>
         <div class="header__progress-number-container">
-          <span class="header__progress-number">2</span>
+          <span class="header__progress-number" :class="done2">2</span>
           <p class="header__progress-text px-1">Direcciones</p>
         </div>
         <div class="header__progress-number-container">
-          <span class="header__progress-number">3</span>
+          <span class="header__progress-number" :class="done3">3</span>
           <p class="header__progress-text px-1">Información comercial</p>
         </div>
         <div class="header__progress-number-container">
-          <span class="header__progress-number">4</span>
+          <span class="header__progress-number" :class="done4">4</span>
           <p class="header__progress-text px-1">Participación CCHC</p>
         </div>
         <div class="header__progress-number-container">
-          <span class="header__progress-number">5</span>
+          <span class="header__progress-number" :class="done5">5</span>
           <p class="header__progress-text px-1">Patrocinantes</p>
         </div>
         <div class="header__progress-number-container">
-          <span class="header__progress-number">6</span>
+          <span class="header__progress-number" :class="done6">6</span>
           <p class="header__progress-text px-1">Compromisos</p>
         </div>
       </div>
     </div>
+
+<formularioPersonaNatural></formularioPersonaNatural>
+
+    
   </header>
 
+  
 
   
 </template>
 
 <script>
+import formularioPersonaNatural from '@/components/formulario-persona-natural/formulario-persona-natural'
+import { mapState, mapMutations } from 'vuex'
+
   export default{
   name: 'cabecera',
+  components:{
+    formularioPersonaNatural
+  },
   data () {
     return {
      
     }
+  },
+
+  computed:{
+    ...mapState(['done1', 'done2', 'done3', 'done4', 'done5', 'done6'])
   }
 }
 </script>
