@@ -1,10 +1,11 @@
 <template>
   <main class="pn-formulario-1">
-    <div class="container" v-if="pnformulario1">
+    <div class="container" v-if="formulario1">
       <div class="row">
         <!-- LEFT COLUMN -->
         <div class="col-md-6">
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
+           
           <form class="datos-personales">
             <label class="datos-personales__label" for="RUT">RUT*</label>
             <input type="number" id="rut" class="datos-personales__input" :value="rutGlobal" required>
@@ -14,28 +15,27 @@
               <option value="algo">1</option>
               <option value="algo">2</option>
             </select>
-            
             <label class="datos-personales__label" for="nombres">Nombres*</label>
-            <input v-model="nombre" type="text" id="nombres" class="datos-personales__input" required>
+            <input v-model="nombre" name="nombres" v-validate="'required'" type="text" id="nombres" class="datos-personales__input">
             <label class="datos-personales__label" for="apellido-pat">Apellido Paterno*</label>
-            <input v-model="apellidoPat" type="text" id="apellido-pat" class="datos-personales__input" required>
+            <input v-model="apellidoPat" type="text" name="apellidoPat" v-validate="'required'" id="apellido-pat" class="datos-personales__input">
             <label class="datos-personales__label" for="apellido-mat">Apellido Materno*</label>
-            <input v-model="apellidoMat" type="text" id="apellido-mat" class="datos-personales__input" required>
+            <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
-            <input v-model="fechaNacimiento" type="date" id="fecha-nac" class="datos-personales__input datos-personales__input--date" required>
+            <input v-model="fechaNacimiento" type="date" name="fechaNacimiento" v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date" required>
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
             <input v-model="nacionalidad" type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
             <label class="datos-personales__label datos-personales__pasaporte-label invisible"
               for="pasaporte">Pasaporte*</label>
             <input type="text" id="pasaporte"
-              class="datos-personales__input datos-personales__pasaporte-input invisible" required>
+              class="datos-personales__input  datos-personales__pasaporte-input invisible">
             <label class="datos-personales__label" for="sexo">Sexo*</label>
-            <select v-model="sexo" id="sexo" class="datos-personales__input" required>
+            <select v-model="sexo" id="sexo" class="datos-personales__input" v-validate="'required'" name="sexo">
               <option value="1">Femenino</option>
               <option value="2">Masculino</option>
             </select>
             <label class="datos-personales__label" for="edoCivil">Estado civil*</label>
-            <select v-model="edoCivil" id="edoCivil" class="datos-personales__input" required>
+            <select v-model="edoCivil" id="edoCivil" class="datos-personales__input" v-validate="'required'" name="edoCivil">
               <option value="1">Soltero/a</option>
               <option value="2">Casado/a</option>
               <option value="3">Viudo/a</option>
@@ -47,13 +47,13 @@
             <input v-model="nivelEstudios" type="text" id="nivelDeEstudios" class="datos-personales__input">
             <label class="datos-personales__label" for="centroDeEstudios">Centro de
               estudios*</label>
-            <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" required>
+            <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" v-validate="'required'" name="centroEstudio">
             <label class="datos-personales__label" for="profesion">Profesión*</label>
-            <input v-model="profesion" type="text" id="profesion" class="datos-personales__input" required>
+            <input v-model="profesion" type="text" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">
             <div class="pt-2 w-100 datos-personales--cv">
               <input type="file"  class="d-none" id="cv"
                 accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                required>
+                v-validate="'required'" name="CV">
               <label for="cv" class="d-flex additional-docs__label">
                 <div class="datos-personales__icon-container btn--sibling-hover-right mr-2">
                   <img src="@/assets/images/mas.png" alt="Añadir curriculum empresa" class="img-fluid">
@@ -85,25 +85,38 @@
           <h3 class="text-uppercase text-primary font-weight-bold pt-5">Acompañante</h3>
           <form class="acompanante__form">
             <label for="rut1" class="text-small font-weight-bold">RUT*</label>
-            <input v-model="rutAcom" type="number" id="rut1" class="form-control" required>
+            <input v-model="rutAcom" type="number" id="rut1" class="form-control" v-validate="'required'" name="rut2">
             <label for="acompanante-name1" class="text-small font-weight-bold">Nombres*</label>
-            <input v-model="nombreAcom" type="text" id="acompanante-name1" class="form-control" required>
+            <input v-model="nombreAcom" type="text" id="acompanante-name1" class="form-control" v-validate="'required'" name="nombre2">
             <label for="acompanante-apellido-pat1" class="text-small font-weight-bold">Apellido Paterno*</label>
-            <input v-model="apellidoPatAcom" type="text" id="acompanante-apellido-pat1" class="form-control" required>
+            <input v-model="apellidoPatAcom" type="text" id="acompanante-apellido-pat1" class="form-control" v-validate="'required'" name="apellidoPat2">
             <label for="acompanante-apellido-mat1" class="text-small font-weight-bold">Apellido Materno*</label>
-            <input v-model="apellidoMatAcom" type="text" id="acompanante-apellido-mat1" class="form-control" required>
+            <input v-model="apellidoMatAcom" type="text" id="acompanante-apellido-mat1" class="form-control" v-validate="'required'" name="apellidoMat2">
             <label for="email1" class="text-small font-weight-bold">Email*</label>
-            <input v-model="emailAcom" type="email" id="email1" class="form-control" required>
+            <input v-model="emailAcom" type="email" id="email1" class="form-control" v-validate="'required'" name="email2">
           </form>
+          <div v-show="errors.all().length" class="alert alert-danger posicion-mensaje">
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <ul class="ul-decorater">
+                <li v-for="(error, i) in errors.all()">{{error}}</li>
+            </ul>
+
+          </div>
 
         </div> <!-- col-md-6 -->
+
+
       </div> <!-- row -->
 
        <div class="creacion-solicitud__buttons py-5">
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <router-link to="/creacion-de-solicitud" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</router-link>
-             <button @click="frmDireccionComercial" class="btn btn-primary btn--big m-2">Siguiente<i
+             <button @click="frm2" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
        
       </div>  <!-- creacion-solicitud__buttons -->
@@ -111,7 +124,7 @@
     </div> <!-- container -->
 
 
-    <div class="pn-formulario-2" v-if="pnformulario2 == true">
+    <div class="pn-formulario-2" v-if="formulario2 == true">
     <div class="container">
       <div class="row">
 
@@ -150,10 +163,19 @@
               required></select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="telefono1">Teléfono*</label>
-            <input type="tel" id="telefono1"
+            <div class="direccion1__input direccion1__input--left" v-for="(input,k) in inputs" :key="k">
+            <input type="tel" id="telefono1" 
               class="direccion1__input direccion1__input--left direccion1__input--tel form-control" required>
-            <button class="btn--direccion1-tel btn--hover-up"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
+              
+                <i class="fas fa-minus-circle eliminar-input" @click="remove(k)" v-show="k || ( !k && inputs.length > 1)"></i>
+            </div>
+           
+              <button class="btn--direccion1-tel btn--hover-up"  @click="add()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
                 height="33px"></button>
+            
+            
+           
+            
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="mail1">Email*</label>
             <input type="email" id="mail1"
@@ -236,10 +258,10 @@
 
       <div class="creacion-solicitud__buttons py-5">
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
-        <button @click="frmDatosPersonales()" class="btn btn-primary btn--big m-2"><i
+        <button @click="frm1" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frmComposicionAccionaria" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="frm3" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!--creacion-solicitud__buttons -->
 
@@ -247,7 +269,7 @@
   </div> <!-- formulario-2 -->
 
 
-    <div class="pn-formulario-3" v-show="pnformulario3 == true">
+    <div class="pn-formulario-3" v-show="formulario3 == true">
     <div class="container">
       <div class="row">
 
@@ -310,17 +332,17 @@
 
       <div class="creacion-solicitud__buttons py-5 mt-5">
         <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
-        <button @click="frmDireccionComercial" class="btn btn-primary btn--big m-2"><i
+        <button @click="frm2" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frmSeleccionComite" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="frm4" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
     </div>
 </div>    
 
 
- <div class="pn-formulario-4" v-show="pnformulario4 == true">
+ <div class="pn-formulario-4" v-show="formulario4 == true">
     <div class="container">
       <div class="row">
 
@@ -391,10 +413,10 @@
 
         <div class="creacion-solicitud__buttons py-5 mt-5">
         <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
-        <button @click="frmComposicionAccionaria" class="btn btn-primary btn--big m-2"><i
+        <button @click="frm3" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frmPatrocinantes" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="frm5" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
 
@@ -402,7 +424,7 @@
   </div> 
 
 
- <div class="pn-formulario-5" v-show="pnformulario5 == true">
+ <div class="pn-formulario-5" v-show="formulario5 == true">
     <div class="container">
       <div class="row">
 
@@ -471,10 +493,10 @@
 
        <div class="creacion-solicitud__buttons py-5 mt-5">
         <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
-        <button @click="frmSeleccionComite" class="btn btn-primary btn--big m-2"><i
+        <button @click="frm4" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frmConfirmacion" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="frm6" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
 
@@ -482,7 +504,7 @@
   </div>
 
 
-  <div class="pn-formulario-6" v-show="pnformulario6 == true">
+  <div class="pn-formulario-6" v-show="formulario6 == true">
        
     <div class="container">
       <form>
@@ -626,7 +648,7 @@
 
       <div class="creacion-solicitud__buttons py-5 mt-5">
         <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
-        <button @click="frmPatrocinantes" class="btn btn-primary btn--big m-2"><i
+        <button @click="frm5" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
         <router-link to="/" class="btn btn-primary btn--big m-2">Siguiente<i
@@ -642,7 +664,26 @@
 
 <script>
 
+
 import { mapState, mapMutations } from 'vuex'
+import Vue from 'vue'
+import VeeValidate from "vee-validate";
+import Validator from "vee-validate";
+import es from 'vee-validate/dist/locale/es';
+
+Vue.use(VeeValidate, {
+	classes: true,
+	classNames: {
+		valid: "is-valid",
+		invalid: "is-invalid",
+	},
+	
+  events: "change|blur|keyup",
+  
+  
+});
+
+VeeValidate.Validator.localize('es',es);
 
 export default{
   name: 'formularioPersonaNatural',
@@ -652,9 +693,16 @@ export default{
   data () {
     return {
 
+      inputs: [
+        {
+          telefono:''
+        }
+      ],
+      
+      
      personaNatural:[{
        datosPersonales:{
-
+         
        },
        direcciones:{
 
@@ -704,13 +752,26 @@ export default{
 
   methods:{
 
-    ...mapMutations(['frmDireccionComercial','frmDatosPersonales','frmComposicionAccionaria', 
-                     'frmSeleccionComite','frmPatrocinantes','frmConfirmacion']),
+    ...mapMutations(['frm1','frm2','frm3', 
+                     'frm4','frm5','frm6']),
 
-    
+
+     add(index) {
+            
+            this.inputs.push({ telefono: '' });
+            this.inputs.reverse();
+            
+        },
+        remove(index) {
+            this.inputs.splice(index, 1);
+        },
+
     guardar: function(){
 
-      this.personaNatural.push({
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+						this.personaNatural.push({
         datosPersonales:{
         vocativo: this.vocativo,
         nombre: this.nombre,
@@ -741,14 +802,61 @@ export default{
           
         }
       });
-
+      
       console.log(this.personaNatural);
+					} else {
+						alert("Pailax");
+					}
+        });
+        
+        
+        
+    
+        
     }
   },
 
   computed:{
-    ...mapState(['rutGlobal','pnformulario1', 'pnformulario2', 'pnformulario3',
-                 'pnformulario4','pnformulario5','pnformulario6'])
+    ...mapState(['rutGlobal','formulario1', 'formulario2', 'formulario3',
+                 'formulario4','formulario5','formulario6'])
   }
 }
 </script>
+
+<style lang="">
+
+.ul-decorater{
+    /*list-style: none;*/
+    margin: 0;
+    padding-left: 3%;
+}
+
+.posicion-mensaje{
+  position: absolute;
+    right: 0;
+    z-index: 99999;
+    bottom: 0;
+    opacity: 1;
+	  animation-name: fadeInOpacity;
+	  animation-iteration-count: 1;
+	  animation-timing-function: ease-in;
+	  animation-duration: 0.3s;
+}
+
+.close{
+  color: #bf371f;
+}
+
+.eliminar-input{
+  color: red;
+}
+
+  @keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+</style>
