@@ -412,6 +412,41 @@ h6, .h6 {
   font-size: 1rem;
 }
 
+.ul-decorater{
+  /*list-style: none;*/
+  margin: 0;
+  padding-left: 3%;
+}
+
+.posicion-mensaje{
+position: absolute;
+  right: 0;
+  z-index: 99999;
+  bottom: 0;
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.3s;
+}
+
+.close{
+color: #bf371f;
+}
+
+.eliminar-input{
+color: red;
+}
+
+@keyframes fadeInOpacity {
+0% {
+  opacity: 0;
+}
+100% {
+  opacity: 1;
+}
+}
+
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
@@ -10248,6 +10283,11 @@ DIRECCION
   grid-column: 1/2;
 }
 
+.direccion1__nuevo-tel, .direccion1__nuevo-mail {
+  grid-column: span 2;
+  text-align: left;
+}
+
 .direccion1-check--left, .direccion1-check--right {
   grid-column: span 2;
 }
@@ -10287,6 +10327,9 @@ DIRECCION
     grid-column: 2/3;
   }
 
+  .direccion1__nuevo-tel, .direccion1__nuevo-mail {
+    grid-column: 2/3;
+  }
   .direccion2 {
     grid-template-columns: 119px 1fr;
   }
@@ -10348,6 +10391,14 @@ DIRECCION
     grid-column: 7/8;
   }
 
+  .direccion1__nuevo-tel {
+    grid-column: 2/4;
+  }
+
+  .direccion1__nuevo-mail {
+    grid-column: 5/9;
+  }
+  
   .direccion2 {
     grid-template-columns: 1fr;
   }
@@ -11099,3 +11150,72 @@ COMPROMISOS BLOCK
 }
 
 /*# sourceMappingURL=style.css.map */
+
+.direccion__tel-mail-left {
+  padding: 0;
+}
+.direccion__tel-mail-center {
+  padding: 0;
+}
+.direccion__tel-mail-right {
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .direccion__tel-mail-left {
+    justify-content: flex-end;
+  }
+  .direccion__tel-mail-center {
+    padding-left: 15px;
+  }
+  .direccion__tel-mail-right {
+    padding: 0;
+  }
+  .direccion1__form {
+    grid-template-columns: 92px 1fr 33px;
+  }
+  .direccion3 {
+    grid-template-columns: 135px 1fr 33px;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .direccion__tel-mail-left {
+    padding-right: 0.5em;
+  }
+  .direccion__tel-mail-center {
+    padding-left: 0;
+    padding-right: 10px;
+  }
+  .direccion__tel-mail-right {
+    text-align: left;
+  }
+  .direccion1__form {
+    grid-template-columns: 78px 1.5fr 59px 70px 0.6fr 45px 0.6fr 34px;
+  }
+  .direccion3 {
+    grid-template-columns: 102px 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  .direccion1__form {
+    grid-template-columns: 78px 1.5fr 25px 70px 0.6fr 45px 0.6fr 30px;
+  }
+  .direccion3 {
+    grid-template-columns: 105px 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .direccion__tel-mail-center--pj {
+    padding-left: 0.4em;
+  }
+  .direccion1__form {
+    grid-template-columns: 75px 1.5fr 48px 77px 0.6fr 45px 0.6fr 34px;
+  }
+  .direccion3 {
+    grid-template-columns: 76px 1fr 33px 56px 1fr 33px;
+  }
+}

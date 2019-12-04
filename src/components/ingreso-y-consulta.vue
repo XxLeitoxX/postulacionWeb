@@ -41,14 +41,14 @@
     </main>
   </template>
 
-  <script>
+<script>
 
-    export default{
-      name: 'ingresoConsulta',
-      data () {
-        return {
+export default{
+  name: 'ingresoConsulta',
+  data () {
+    return {
         
-      }
     }
   }
-  </script>
+}
+</script>

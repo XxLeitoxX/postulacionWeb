@@ -14,7 +14,7 @@
     <div class="header__container-bottom">
       <div class="header__bottom-left">
         <h3 class="header__bottom-text text-uppercase text-primary">Persona natural</h3>
-        <h3 class="header__bottom-text text-primary">N° Solicitud:</h3>
+        <h3 class="header__bottom-text text-primary">N° Solicitud: {{ rutGlobal }}</h3>
       </div>
       <div class="header__bottom-right">
         <span class="header__progress-line header__progress-line--pnatural"></span>
@@ -46,20 +46,15 @@
     </div>
 
 <formularioPersonaNatural></formularioPersonaNatural>
-
-    
-  </header>
-
-  
-
-  
+ 
+  </header>  
 </template>
 
 <script>
 import formularioPersonaNatural from '@/components/formulario-persona-natural/formulario-persona-natural'
 import { mapState, mapMutations } from 'vuex'
 
-  export default{
+export default{
   name: 'cabecera',
   components:{
     formularioPersonaNatural
@@ -71,7 +66,7 @@ import { mapState, mapMutations } from 'vuex'
   },
 
   computed:{
-    ...mapState(['done1', 'done2', 'done3', 'done4', 'done5', 'done6'])
+    ...mapState(['done1', 'done2', 'done3', 'done4', 'done5', 'done6', 'rutGlobal'])
   }
 }
 </script>

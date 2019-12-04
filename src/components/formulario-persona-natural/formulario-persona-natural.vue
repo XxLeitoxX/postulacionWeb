@@ -8,12 +8,11 @@
            
           <form class="datos-personales">
             <label class="datos-personales__label" for="RUT">RUT*</label>
-            <input type="number" id="rut" class="datos-personales__input" :value="rutGlobal" required>
+            <input type="text" id="rut" name="RUT"  class="datos-personales__input" :value="rutGlobal"  v-validate="'required'">
             <label class="datos-personales__label" for="vocativo">Vocativo*</label>
-            <select v-model="vocativo" type="text" id="vocativo" class="datos-personales__input" required>
-              <option value="algo" disabled>Seleccione uno</option>
-              <option value="algo">1</option>
-              <option value="algo">2</option>
+            <select v-model="vocativoSeleccionado" name="vocativo" type="text" id="vocativo" class="datos-personales__input" v-validate="'required'">
+              <option value="" disabled>Seleccione uno</option>
+              <option v-for="(vocativo, key) in vocativos" :value="vocativo.vocativoId" :key="key">{{ vocativo.vocativo }}</option>
             </select>
             <label class="datos-personales__label" for="nombres">Nombres*</label>
             <input v-model="nombre" name="nombres" v-validate="'required'" type="text" id="nombres" class="datos-personales__input">
@@ -22,7 +21,19 @@
             <label class="datos-personales__label" for="apellido-mat">Apellido Materno*</label>
             <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
-            <input v-model="fechaNacimiento" type="date" name="fechaNacimiento" v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date" required>
+           <!-- <input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date"> -->
+           <datepicker 
+           v-model="fechaNacimiento" 
+           v-validate="'required'"
+           :disabled-dates="disabledDates" 
+           :language="languages[language]" 
+           :format="format"  
+           :value="fechaNacimiento" 
+            input-class="datos-personales__input datos-personales__input--date">
+            </datepicker>
+         
+            
+            
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
             <input v-model="nacionalidad" type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
             <label class="datos-personales__label datos-personales__pasaporte-label invisible"
@@ -33,14 +44,11 @@
             <select v-model="sexo" id="sexo" class="datos-personales__input" v-validate="'required'" name="sexo">
               <option value="1">Femenino</option>
               <option value="2">Masculino</option>
+              <option value="3">Sin especificar</option>
             </select>
             <label class="datos-personales__label" for="edoCivil">Estado civil*</label>
-            <select v-model="edoCivil" id="edoCivil" class="datos-personales__input" v-validate="'required'" name="edoCivil">
-              <option value="1">Soltero/a</option>
-              <option value="2">Casado/a</option>
-              <option value="3">Viudo/a</option>
-              <option value="4">Divorciado/a</option>
-              <option value="4">Separado/a</option>
+            <select v-model="edoCivilSeleccionado" id="edoCivil" class="datos-personales__input" v-validate="'required'" name="edoCivil">
+              <option v-for="(edoCivil, key) in edoCiviles" :value="edoCivil.idEdoCivil" :key="key">{{ edoCivil.edoCivil }}</option>
             </select>
             <label class="datos-personales__label" for="nivelDeEstudios">Nivel de
               estudios</label>
@@ -137,58 +145,107 @@
             <input v-model="calle" type="text" id="calle1" class="direccion1__input direccion1__input--left-big form-control" required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero1">Número*</label>
-            <input type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
+            <input v-model="numeroCalle" type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
               required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina1">Oficina</label>
-            <input type="text" id="oficina1" class="direccion1__input direccion1__input--right-small2 form-control">
+            <input v-model="oficina" type="text" id="oficina1" class="direccion1__input direccion1__input--right-small2 form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="continuacion1">Continuación</label>
-            <input type="text" id="continuacion1" class="direccion1__input direccion1__input--left form-control">
+            <input v-model="continuacion" type="text" id="continuacion1" class="direccion1__input direccion1__input--left form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="pais1">País*</label>
-            <input type="text" id="pais1" class="direccion1__input direccion1__input--left form-control"
+            <input v-model="pais" type="text" id="pais1" class="direccion1__input direccion1__input--left form-control"
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia1">Provincia*</label>
-            <select type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control"
-              required></select>
+            <select v-model="provinciaSeleccionada" @change="getListadoComuna" type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control"
+              required>
+            <option v-for="(provincia, key) in provincias" :value="provincia.provinciaId" :key="key">{{ provincia.provincia }}</option>
+            </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region1">Región*</label>
-            <select type="text" id="region1" class="direccion1__input direccion1__input--left form-control"
-              required></select>
+            <select v-model="regionSeleccionada"  @change="getListadoProvincia" type="text" id="region1" class="direccion1__input direccion1__input--left form-control"
+              required>
+              <option v-for="(region, key) in regiones" :value="region.regionId" :key="key">{{ region.region }}</option>
+            </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna1">Comuna*</label>
-            <select type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
-              required></select>
-            <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
-              for="telefono1">Teléfono*</label>
-            <div class="direccion1__input direccion1__input--left" v-for="(input,k) in inputs" :key="k">
-            <input type="tel" id="telefono1" 
-              class="direccion1__input direccion1__input--left direccion1__input--tel form-control" required>
-              
-                <i class="fas fa-minus-circle eliminar-input" @click="remove(k)" v-show="k || ( !k && inputs.length > 1)"></i>
+            <select v-model="comunaSeleccionada" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
+              required>
+              <option v-for="(comuna, key) in comunas" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
+            </select>
+          </form>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 pt-2">
+                <div class="row"  v-for="(inputTel,k) in inputsTel" :key="k">
+                  <div
+                    class="col-12 col-sm-2 col-md-3 col-lg-4 col-xl-3 d-flex align-items-center direccion__tel-mail-left">
+                    <label class="text-small font-weight-bold" for="telefono1">Teléfono*</label>
+                  </div>
+                  <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
+                    <input type="tel" id="telefono1" class="form-control"  v-model="telefonosArray[k]" required>
+                      <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
+                  </div>
+                  <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
+                    <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png"
+                        alt="Añadir teléfono" class="img-fluid"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 pt-2">
+                <div class="row" v-for="(inputEmail,j) in inputsEmail" :key="j+10">
+                  <div class="col-12 col-sm-2 col-md-3 d-flex align-items-center direccion__tel-mail-left">
+                    <label class="text-small font-weight-bold" for="mail1">Email*</label>
+                  </div>
+                  <div class="col-10 col-sm-9 col-md-6 direccion__tel-mail-center">
+                    <input type="email" id="mail1" class="form-control" v-model="emailsArray[j]" required>
+                    <i class="fas fa-minus-circle eliminar-input" @click="removeEmail(j)" v-show="j || ( !j && inputsEmail.length > 1)"></i>
+                  </div>
+                  <div class="col-2 col-sm-1 col-md-3 direccion__tel-mail-right">
+                    <button class="btn--direccion1-mail btn--hover-up" @click="addEmail()"><img src="@/assets/images/mas.png"
+                        alt="Añadir teléfono" height="33px"></button>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+           <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
+              for="telefono1">Teléfono*</label>
+            <div class="direccion1__input direccion1__input--left" v-for="(inputTel,k) in inputsTel" :key="k">-->
+              
+            <!--<input v-model="telefonosArray[k]" type="tel" id="telefono1" 
+              class="direccion1__input direccion1__input--left direccion1__input--tel form-control">
+               
+                <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
+            </div> 
            
-              <button class="btn--direccion1-tel btn--hover-up"  @click="add()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
-                height="33px"></button>
+              <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
+                height="33px"></button>-->
             
-            
+          
            
             
-            <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
+           <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="mail1">Email*</label>
-            <input type="email" id="mail1"
+           <div class="direccion1__input direccion1__input--right" v-for="(inputEmail,j) in inputsEmail" :key="j+10">-->
+             
+            <!--<input v-model="email" type="email" id="mail1"
               class="direccion1__input direccion1__input--right direccion1__input--mail form-control" required>
-            <button class="btn--direccion1-tel btn--hover-up"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
-                height="33px"></button>
+              <i class="fas fa-minus-circle eliminar-input" @click="removeEmail(j)" v-show="j || ( !j && inputsEmail.length > 1)"></i>
+            </div> 
+            <button class="btn--direccion1-tel btn--hover-up"  @click="addEmail()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
+                height="33px"></button>-->
+            <form class="direccion1__form">    
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--left">
-              <input type="checkbox" class="custom-control-input" id="dir-correspondencia2">
+              <input v-model="correspondencia" type="checkbox" class="custom-control-input" id="dir-correspondencia2">
               <label class="custom-control-label text-small pt-1" for="dir-correspondencia2">Usar dirección para
                 correspondencia</label>
             </div>
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--right">
-              <input type="checkbox" class="custom-control-input" id="dir-cobranza2">
+              <input v-model="cobranza" type="checkbox" class="custom-control-input" id="dir-cobranza2">
               <label class="custom-control-label text-small pt-1" for="dir-cobranza2">Usar dirección para
                 cobranzas</label>
             </div>
@@ -198,52 +255,96 @@
           <form class="direccion1__form">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="calle2">Calle*</label>
-            <input type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control" required>
+            <input v-model="callePar" type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control" required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero2">Número*</label>
-            <input type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
+            <input v-model="numeroCallePar" type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
               required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina2">Oficina</label>
-            <input type="text" id="oficina2" class="direccion1__input direccion1__input--right-small2 form-control">
+            <input v-model="oficinaPar" type="text" id="oficina2" class="direccion1__input direccion1__input--right-small2 form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="continuacion2">Continuación</label>
-            <input type="text" id="continuacion2" class="direccion1__input direccion1__input--left form-control">
+            <input v-model="continuacionPar" type="text" id="continuacion2" class="direccion1__input direccion1__input--left form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="pais2">País*</label>
-            <input type="text" id="pais2" class="direccion1__input direccion1__input--left form-control"
+            <input v-model="paisPar" type="text" id="pais2" class="direccion1__input direccion1__input--left form-control"
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia2">Provincia*</label>
-            <select type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="provinciaPar" type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
               required></select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region2">Región*</label>
-            <select type="text" id="region2" class="direccion1__input direccion1__input--left form-control"
+            <select v-model="regionPar" type="text" id="region2" class="direccion1__input direccion1__input--left form-control"
               required></select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna2">Comuna*</label>
-            <select type="text" id="comuna2" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="comunaPar" type="text" id="comuna2" class="direccion1__input direccion1__input--right form-control"
               required></select>
-            <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
+          </form>
+           <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="telefono2">Teléfono*</label>
-            <input type="tel" id="telefono2"
+            <div class="direccion1__input direccion1__input--left" v-for="(inputTelPar,z) in inputsTelPar" :key="z+10">  
+            <input v-model="telefonoPar" type="tel" id="telefono2"
               class="direccion1__input direccion1__input--left direccion1__input--tel form-control" required>
-            <button class="btn--direccion1-tel btn--hover-up"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
+               <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
+            </div>  
+            <button class="btn--direccion1-tel btn--hover-up"  @click="addTelefonoPar()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
                 height="33px"></button>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="mail2">Email*</label>
-            <input type="email" id="mail2"
+            <div class="direccion1__input direccion1__input--right" v-for="(inputEmailPar,p) in inputsEmailPar" :key="p">    
+            <input v-model="emailPar" type="email" id="mail2"
               class="direccion1__input direccion1__input--right direccion1__input--mail form-control" required>
-            <button class="btn--direccion1-tel btn--hover-up"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
-                height="33px"></button>
+              <i class="fas fa-minus-circle eliminar-input" @click="removeEmailPar(p)" v-show="p || ( !p && inputsEmailPar.length > 1)"></i>
+            </div> 
+            <button class="btn--direccion1-tel btn--hover-up" @click="addEmailPar()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
+                height="33px"></button>-->
+           <div class="container">
+            <div class="row">
+              <div class="col-md-6 pt-2">
+                <div class="row" v-for="(inputTelPar,z) in inputsTelPar" :key="z+10">
+                  <div
+                    class="col-12 col-sm-2 col-md-3 col-lg-4 col-xl-3 d-flex align-items-center direccion__tel-mail-left">
+                    <label class="text-small font-weight-bold" for="telefono2">Teléfono*</label>
+                  </div>
+                  <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
+                    <input v-model="telefonosParArray[z]" type="tel" id="telefono2" class="form-control" required>
+                     <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
+                  </div>
+                  <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
+                    <button class="btn--direccion1-tel btn--hover-up"  @click="addTelefonoPar()"><img src="@/assets/images/mas.png"
+                        alt="Añadir teléfono" class="img-fluid"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 pt-2">
+                <div class="row" v-for="(inputEmailPar,p) in inputsEmailPar" :key="p">
+                  <div class="col-12 col-sm-2 col-md-3 d-flex align-items-center direccion__tel-mail-left">
+                    <label class="text-small font-weight-bold" for="mail2">Email*</label>
+                  </div>
+                  <div class="col-10 col-sm-9 col-md-6 direccion__tel-mail-center">
+                    <input v-model="emailsParArray[p]" type="email" id="mail2" class="form-control" required>
+                     <i class="fas fa-minus-circle eliminar-input" @click="removeEmailPar(p)" v-show="p || ( !p && inputsEmailPar.length > 1)"></i>
+                  </div>
+                  <div class="col-2 col-sm-1 col-md-3 direccion__tel-mail-right">
+                    <button class="btn--direccion1-mail btn--hover-up" @click="addEmailPar()"><img src="@/assets/images/mas.png"
+                        alt="Añadir teléfono" height="33px"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>     
+           <form class="direccion1__form">
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--left">
-              <input type="checkbox" class="custom-control-input" id="dir-correspondencia2">
+              <input v-model="correspondenciaPar" type="checkbox" class="custom-control-input" id="dir-correspondencia2">
               <label class="custom-control-label text-small pt-1" for="dir-correspondencia2">Usar dirección para
                 correspondencia</label>
             </div>
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--right">
-              <input type="checkbox" class="custom-control-input" id="dir-cobranza2">
+              <input v-model="cobranzaPar" type="checkbox" class="custom-control-input" id="dir-cobranza2">
               <label class="custom-control-label text-small pt-1" for="dir-cobranza2">Usar dirección para
                 cobranzas</label>
             </div>
@@ -278,13 +379,13 @@
           <h3 class="text-primary text-uppercase font-weight-bold">Composición accionaria</h3>
           <form class="accionarios-participacion__form accionarios-participacion__form--pnatural">
             <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
-            <input id="rut" type="number" class="form-control accionarios-participacion__input">
+            <input v-model="rutComp" id="rut" type="text" class="form-control accionarios-participacion__input">
             <label for="name" class="accionarios-participacion__label text-small font-weight-bold">Razón social</label>
-            <input id="name" type="text" class="form-control accionarios-participacion__input">
+            <input v-model="razonSocial" id="name" type="text" class="form-control accionarios-participacion__input">
             <label for="porcentaje"
               class="accionarios-participacion__label text-small font-weight-bold">Porcentaje</label>
-            <input id="porcentaje" type="number" class="form-control accionarios-participacion__input">
-            <button class="btn--accionarios-participacion btn--hover-up"><img src="@/assets/images/mas.png"
+            <input v-model="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
+            <button class="btn--accionarios-participacion btn--hover-up" @click="agregarComposicion"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" height="33px"></button>
           </form>
 
@@ -298,14 +399,21 @@
                   <th scope="col"> </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-for="com in composicion">
                 <tr>
+                  <td> Cualquier verga </td>
+                  <td>{{ com.rutComp }}</td>
+                  <td>{{ com.porcentaje }}%</td>
+                  <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
+                  </td>
+                </tr>
+              <!--  <tr>
                   <td>Carlos Vandal</td>
                   <td>12.345.689-k</td>
                   <td>50%</td>
                   <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
                   </td>
-                </tr>
+                </tr> 
                 <tr>
                   <td>Carlos Vandal</td>
                   <td>12.345.689-k</td>
@@ -319,7 +427,7 @@
                   <td>20%</td>
                   <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
                   </td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
           </div>
@@ -670,6 +778,12 @@ import Vue from 'vue'
 import VeeValidate from "vee-validate";
 import Validator from "vee-validate";
 import es from 'vee-validate/dist/locale/es';
+import store from '@/store.js';
+import Datepicker from 'vuejs-datepicker';
+import * as lang from "vuejs-datepicker/src/locale";
+import moment from 'moment';
+
+Vue.use(require('vue-moment'));
 
 Vue.use(VeeValidate, {
 	classes: true,
@@ -688,18 +802,20 @@ VeeValidate.Validator.localize('es',es);
 export default{
   name: 'formularioPersonaNatural',
   components: {
-        
-    },
-  data () {
-    return {
+    Datepicker   
+  },
 
-      inputs: [
-        {
-          telefono:''
-        }
-      ],
-      
-      
+data () {
+  return {
+
+    language: "es",
+    languages: lang,
+    format:"dd-MM-yyyy",
+    disabledDates:{
+    from: new Date() //Deshabilita fechas futuras
+    },
+     //Inicializacion del Objeto principal para guardar y actualizar todos los formularios
+
      personaNatural:[{
        datosPersonales:{
          
@@ -722,14 +838,18 @@ export default{
        }
      }],
 
-     vocativo:'',
+    
+    //Data para el formulario Datos Principales formulario1
+     vocativos:[],
+     vocativoSeleccionado:'',
      nombre:'',
      apellidoPat:'',
      apellidoMat:'',
-     fechaNacimiento:'',
+     fechaNacimiento: '',
      nacionalidad:'',
      sexo:'',
-     edoCivil:'',
+     edoCivilSeleccionado:'',
+     edoCiviles:[],
      nivelEstudios:'',
      centroEstudio:'',
      profesion:'',
@@ -744,9 +864,71 @@ export default{
      apellidoPatAcom:'',
      apellidoMatAcom:'',
      emailAcom:'',
-     calle:''
+
+     //Data para el formulario de direcciones formulario2
+      calle:'',
+      numeroCalle:'',
+      oficina:'',
+      continuacion:'',
+      pais:'',
+      provincias:[],
+      provinciaSeleccionada:'',
+      regiones:[],
+      regionSeleccionada:'',
+      comunas:[],
+      comunaSeleccionada:'',
+      telefono:'',
+      telEx:'',
+      email:'',
+      correspondencia:'',
+      cobranza:'',
+      callePar:'',
+      numeroCallePar:'',
+      oficinaPar:'',
+      continuacionPar:'',
+      paisPar:'',
+      provinciaPar:'',
+      regionPar:'',
+      comunaPar:'',
+      telefonoPar:'',
+      emailPar:'',
+      correspondenciaPar:'',
+      cobranzaPar:'',
+      telefonosArray:[],
+      emailsArray:[],
+      telefonosParArray:[],
+      emailsParArray:[],
+      inputsTel: [
+        {
+          telEx:''
+        }
+      ],
+      
+      inputsEmail: [
+        {
+          email:''
+        }
+      ],
+      
+      inputsTelPar: [
+        {
+          telefonoPar:''
+        }
+      ],
+      
+      inputsEmailPar: [
+        {
+          emailPar:''
+        }
+      ],
 
 
+//Data para el formulario Composicion Accionaria
+
+      rutComp:'',
+      razonSocial:'',
+      porcentaje:'',
+      composicion:[]
     }
   },
 
@@ -755,32 +937,76 @@ export default{
     ...mapMutations(['frm1','frm2','frm3', 
                      'frm4','frm5','frm6']),
 
+    
+    addTel() {
+            
+            this.inputsTel.push({ telEx: '' });
+            this.inputsTel.reverse();
+            
+        },
+    removeTel(index) {
+            this.inputsTel.splice(index, 1);
+        },
 
-     add(index) {
+    addEmail() {
             
-            this.inputs.push({ telefono: '' });
-            this.inputs.reverse();
+            this.inputsEmail.push({ email: '' });
+            this.inputsEmail.reverse();
             
         },
-        remove(index) {
-            this.inputs.splice(index, 1);
+    removeEmail(index) {
+            this.inputsEmail.splice(index, 1);
         },
+    
+    addTelefonoPar() {
+            
+            this.inputsTelPar.push({ telefonoPar: '' });
+            this.inputsTelPar.reverse();
+            
+        },
+
+    removeTelefonoPar(index) {
+            this.inputsTelPar.splice(index, 1);
+        },
+
+    addEmailPar() {
+            
+            this.inputsEmailPar.push({ emailPar: '' });
+            this.inputsEmailPar.reverse();
+            
+        },
+    removeEmailPar(index) {
+            this.inputsEmailPar.splice(index, 1);
+        },
+
+    agregarComposicion(){
+      this.composicion.push({
+        rutComp: this.rutComp,
+        razonSocial: this.razonSocial,
+        porcentaje: this.porcentaje
+      });
+
+      this.rutComp = '';
+      this.razonSocial = '';
+      this.porcentaje = '';
+    },    
 
     guardar: function(){
 
-      this.$validator.validate()
+     /* this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 						this.personaNatural.push({
         datosPersonales:{
-        vocativo: this.vocativo,
+        rutGlobal: this.$store.state.rutGlobal, 
+        vocativo: this.vocativoSeleccionado,
         nombre: this.nombre,
         apellidoPat: this.apellidoPat,
         apellidoMat: this.apellidoMat,
-        fechaNacimiento: this.fechaNacimiento,
+        fechaNacimiento: moment(this.fechaNacimiento).format('DD-MM-YYYY'),
         nacionalidad: this.nacionalidad,
         sexo: this.sexo,
-        edoCivil: this.edoCivil,
+        edoCivil: this.edoCivilSeleccionado,
         nivelEstudios: this.nivelEstudios,
         centroEstudio: this.centroEstudio,
         profesion: this.profesion,
@@ -798,30 +1024,85 @@ export default{
         },
         
         direcciones:{
-          calle:this.calle
+          calle:this.calle,
+         // telefono: this.telefono,
+         // telefono: this.telefonosArray.push(this.telefono),
+         telefonosArray: this.telefonosArray,
+         emailsArray: this.emailsArray,
+         telefonosParArray: this.telefonosParArray,
+         emailsParArray: this.emailsParArray
           
         }
       });
       
       console.log(this.personaNatural);
-					} else {
+				/*	} else {
 						alert("Pailax");
 					}
-        });
-        
-        
-        
+        });*/       
+    },
+
+    getListadoVocativo: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarVocativo').then((response) => {
+      this.vocativos = response.data;
+      //console.log(this.vocativos);
+      })
+
+    },
+
+    getListadoEdoCivil: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarEdo').then((response) => {
+      this.edoCiviles = response.data;
+     // console.log(this.edoCiviles);
+      })
+
+    },
+
+    getListadoRegion: function(){
+      Vue.axios.get('http://postulacion.isc.cl/listarRegion').then((response) => {
+      this.regiones = response.data;
+      console.log(this.regiones);
+    })
     
-        
+    },
+
+     getListadoProvincia: function(){
+      let idReg = this.regionSeleccionada;
+      
+      Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
+      this.provincias = response.data;
+      console.log(this.provincias);
+    })
+    
+    },
+
+     getListadoComuna: function(){
+       let idComuna = this.provinciaSeleccionada;
+
+      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
+      this.comunas = response.data;
+      console.log(this.comunas);
+    })
+    
     }
   },
 
+  created: function(){ 
+        this.getListadoVocativo();
+        this.getListadoEdoCivil();
+        this.getListadoRegion();
+           
+  },
+  
   computed:{
     ...mapState(['rutGlobal','formulario1', 'formulario2', 'formulario3',
                  'formulario4','formulario5','formulario6'])
   }
 }
 </script>
+
 
 <style lang="">
 
@@ -859,4 +1140,10 @@ export default{
 		opacity: 1;
 	}
 }
+
+.form-control:disabled, .ingreso__form-input:disabled, .datos-personales__input:disabled, .creacion-solicitud__select:disabled, .creacion-solicitud__form-input:disabled, .form-control[readonly], [readonly].ingreso__form-input, [readonly].datos-personales__input, [readonly].creacion-solicitud__select, [readonly].creacion-solicitud__form-input {
+    background-color: white;
+    opacity: 1;
+}
+
 </style>

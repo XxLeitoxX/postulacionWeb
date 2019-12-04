@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store ({
     state: {
-    rutGlobal: 111111111,
+    rutGlobal: '11111111-1',
     done1: 'header__progress-number-active',
     done2: 'header__progress-number',
     done3: 'header__progress-number',

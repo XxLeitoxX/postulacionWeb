@@ -54,7 +54,6 @@
       <form class="creacion-solicitud__form pt-3" id="datosPersonales">
         <div class="creacion-solicitud__form-left">
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="rut">RUT*</label>
-          {{ rut }}
           <input type="text" v-on:keyup.enter="updateRutNum()" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="mail">Correo Electrónico*</label>
           <input type="email" v-model="correo" id="mail" class="creacion-solicitud__form-input" required>
@@ -142,7 +141,7 @@ Vue.use(VueAxios, axios);
     agregarSolicitud: function(){
 
       this.nuevaSolicitud.push({
-        rut: this.rut,
+       // rut: this.rut,
         telefono: this.telefono,
         correo: this.correo,
         camara: this.camaraSeleccionada
@@ -170,10 +169,9 @@ dv : function(T){
     return S?S-1:'k';
 },
 updateRutNum: function(){
-  
+  console.log(this.$store.state.rutGlobal);
   let estadoRut = this.validaRut(this.rut);
   this.rutNoValido = estadoRut;
-
 
 
 }
@@ -183,6 +181,7 @@ updateRutNum: function(){
   created: function(){
     Vue.axios.get('http://postulacion.isc.cl/listarCamaras').then((response) => {
         this.camaras = response.data;
+        console.log(this.camaras);
         
     })
   },
