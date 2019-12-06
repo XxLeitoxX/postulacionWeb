@@ -11,7 +11,6 @@ import personaNaturalFormulario6 from '@/components/formulario-persona-natural/P
 import cabecera from '@/components/formulario-persona-natural/Cabecera'
 import formularioPersonaNatural from '@/components/formulario-persona-natural/formulario-persona-natural'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -62,7 +61,7 @@ export default new Router({
       component: cabecera
     },
     {
-      path:'/formulario-persona-natural',
+      path: '/formulario-persona-natural',
       name: 'formularioPersonaNatural',
       component: formularioPersonaNatural
     }

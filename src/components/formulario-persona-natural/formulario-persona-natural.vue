@@ -5,7 +5,6 @@
         <!-- LEFT COLUMN -->
         <div class="col-md-6">
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
-           
           <form class="datos-personales">
             <label class="datos-personales__label" for="RUT">RUT*</label>
             <input type="text" id="rut" name="RUT"  class="datos-personales__input" :value="rutGlobal"  v-validate="'required'">
@@ -22,18 +21,8 @@
             <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
            <!-- <input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date"> -->
-           <datepicker 
-           v-model="fechaNacimiento" 
-           v-validate="'required'"
-           :disabled-dates="disabledDates" 
-           :language="languages[language]" 
-           :format="format"  
-           :value="fechaNacimiento" 
-            input-class="datos-personales__input datos-personales__input--date">
-            </datepicker>
-         
-            
-            
+           <datepicker v-model="fechaNacimiento" v-validate="'required'" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">
+          </datepicker>
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
             <input v-model="nacionalidad" type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
             <label class="datos-personales__label datos-personales__pasaporte-label invisible"
@@ -59,15 +48,24 @@
             <label class="datos-personales__label" for="profesion">Profesión*</label>
             <input v-model="profesion" type="text" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">
             <div class="pt-2 w-100 datos-personales--cv">
-              <input type="file"  class="d-none" id="cv"
+              <!--<input type="file"  class="d-none" id="cv"
                 accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                v-validate="'required'" name="CV">
+                v-validate="'required'" name="CV">-->
+               <b-form-file v-model="cv"  class="d-none" id="cv" v-validate="'required'" name="CV"></b-form-file>
+               <!-- <br> Selected file: {{cv && cv.name}} -->
               <label for="cv" class="d-flex additional-docs__label">
                 <div class="datos-personales__icon-container btn--sibling-hover-right mr-2">
                   <img src="@/assets/images/mas.png" alt="Añadir curriculum empresa" class="img-fluid">
                 </div>
                 <div class="btn--hover-right d-flex align-items-center">
                   <p class="text-small font-weight-bold">Curriculum vitae*</p>
+                </div>
+              </label>
+              <label for="cv" class="d-flex additional-docs__label">
+                 <div class="datos-personales__icon-container btn--sibling-hover-right mr-2">
+                </div>
+                <div class="btn--hover-right d-flex align-items-center">
+                  <p class="text-small font-weight-bold">{{cv && cv.name}}</p>
                 </div>
               </label>
             </div>
@@ -81,7 +79,6 @@
             <input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">
           </form>
         </div> <!-- col-md-6 -->
-
         <!-- RIGHT COLUMN -->
         <div class="col-md-6 formulario-2__right-column">
           <h3 class="text-uppercase text-primary redes-digitales__title">Información adicional</h3>
@@ -117,7 +114,6 @@
 
         </div> <!-- col-md-6 -->
 
-
       </div> <!-- row -->
 
        <div class="creacion-solicitud__buttons py-5">
@@ -126,11 +122,9 @@
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</router-link>
              <button @click="frm2" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
-       
       </div>  <!-- creacion-solicitud__buttons -->
 
     </div> <!-- container -->
-
 
     <div class="pn-formulario-2" v-if="formulario2 == true">
     <div class="container">
@@ -142,11 +136,11 @@
           <form class="direccion1__form">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="calle1">Calle*</label>
-            <input v-model="calle" type="text" id="calle1" class="direccion1__input direccion1__input--left-big form-control" required>
+            <input v-model="calle" v-validate="'required'" name="calle" type="text" id="calle1" class="direccion1__input direccion1__input--left-big form-control" required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero1">Número*</label>
-            <input v-model="numeroCalle" type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
-              required>
+            <input v-model="numeroCalle" v-validate="'required'" name="numero" type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
+              >
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina1">Oficina</label>
             <input v-model="oficina" type="text" id="oficina1" class="direccion1__input direccion1__input--right-small2 form-control">
@@ -159,19 +153,19 @@
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia1">Provincia*</label>
-            <select v-model="provinciaSeleccionada" @change="getListadoComuna" type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="provinciaSeleccionada" v-validate="'required'" name="provincia" @change="getListadoComuna" type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control"
               required>
             <option v-for="(provincia, key) in provincias" :value="provincia.provinciaId" :key="key">{{ provincia.provincia }}</option>
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region1">Región*</label>
-            <select v-model="regionSeleccionada"  @change="getListadoProvincia" type="text" id="region1" class="direccion1__input direccion1__input--left form-control"
+            <select v-model="regionSeleccionada" v-validate="'required'" name="region" @change="getListadoProvincia" type="text" id="region1" class="direccion1__input direccion1__input--left form-control"
               required>
               <option v-for="(region, key) in regiones" :value="region.regionId" :key="key">{{ region.region }}</option>
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna1">Comuna*</label>
-            <select v-model="comunaSeleccionada" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="comunaSeleccionada" v-validate="'required'" name="comuna" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
               required>
               <option v-for="(comuna, key) in comunas" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
             </select>
@@ -185,7 +179,7 @@
                     <label class="text-small font-weight-bold" for="telefono1">Teléfono*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
-                    <input type="tel" id="telefono1" class="form-control"  v-model="telefonosArray[k]" required>
+                    <input type="tel" id="telefono1" v-validate="'required'" name="telefono" class="form-control"  v-model="telefonosArray[k]" required>
                       <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
                   </div>
                   <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
@@ -201,7 +195,7 @@
                     <label class="text-small font-weight-bold" for="mail1">Email*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-6 direccion__tel-mail-center">
-                    <input type="email" id="mail1" class="form-control" v-model="emailsArray[j]" required>
+                    <input type="email" id="mail1" v-validate="'required'" name="email" class="form-control" v-model="emailsArray[j]" required>
                     <i class="fas fa-minus-circle eliminar-input" @click="removeEmail(j)" v-show="j || ( !j && inputsEmail.length > 1)"></i>
                   </div>
                   <div class="col-2 col-sm-1 col-md-3 direccion__tel-mail-right">
@@ -215,39 +209,27 @@
            <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="telefono1">Teléfono*</label>
             <div class="direccion1__input direccion1__input--left" v-for="(inputTel,k) in inputsTel" :key="k">-->
-              
-            <!--<input v-model="telefonosArray[k]" type="tel" id="telefono1" 
-              class="direccion1__input direccion1__input--left direccion1__input--tel form-control">
-               
+            <!--<input v-model="telefonosArray[k]" type="tel" id="telefono1" class="direccion1__input direccion1__input--left direccion1__input--tel form-control">
                 <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
-            </div> 
-           
-              <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
-                height="33px"></button>-->
-            
-          
-           
-            
+            </div>
+            <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png" alt="Añadir teléfono" height="33px"></button>-->
            <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="mail1">Email*</label>
-           <div class="direccion1__input direccion1__input--right" v-for="(inputEmail,j) in inputsEmail" :key="j+10">-->
-             
+           <div class="direccion1__input direccion1__input--right" v-for="(inputEmail,j) in inputsEmail" :key="j+10">-->  
             <!--<input v-model="email" type="email" id="mail1"
               class="direccion1__input direccion1__input--right direccion1__input--mail form-control" required>
               <i class="fas fa-minus-circle eliminar-input" @click="removeEmail(j)" v-show="j || ( !j && inputsEmail.length > 1)"></i>
-            </div> 
+            </div>
             <button class="btn--direccion1-tel btn--hover-up"  @click="addEmail()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
                 height="33px"></button>-->
-            <form class="direccion1__form">    
+            <form class="direccion1__form">
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--left">
-              <input v-model="correspondencia" type="checkbox" class="custom-control-input" id="dir-correspondencia2">
-              <label class="custom-control-label text-small pt-1" for="dir-correspondencia2">Usar dirección para
-                correspondencia</label>
+              <input v-model="correspondencia" type="checkbox" class="custom-control-input" id="dir-correspondencia">
+              <label class="custom-control-label text-small pt-1" for="dir-correspondencia">Usar dirección para correspondencia</label>
             </div>
             <div class="custom-control custom-checkbox direccion1-check direccion1-check--right">
-              <input v-model="cobranza" type="checkbox" class="custom-control-input" id="dir-cobranza2">
-              <label class="custom-control-label text-small pt-1" for="dir-cobranza2">Usar dirección para
-                cobranzas</label>
+              <input v-model="cobranza" type="checkbox" class="custom-control-input" id="dir-cobranza">
+              <label class="custom-control-label text-small pt-1" for="dir-cobranza">Usar dirección para cobranzas</label>
             </div>
           </form>
 
@@ -255,10 +237,10 @@
           <form class="direccion1__form">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="calle2">Calle*</label>
-            <input v-model="callePar" type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control" required>
+            <input v-model="callePar" v-validate="'required'" name="calle" type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control" required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero2">Número*</label>
-            <input v-model="numeroCallePar" type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
+            <input v-model="numeroCallePar" v-validate="'required'" name="numero" type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
               required>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina2">Oficina</label>
@@ -272,16 +254,22 @@
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia2">Provincia*</label>
-            <select v-model="provinciaPar" type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
-              required></select>
+            <select  v-model="provinciaSeleccionadaPar"  @change="getListadoComunaPar" v-validate="'required'" name="provincia" type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
+              required>
+              <option v-for="(provincia, key) in provinciasPar" :value="provincia.provinciaId" :key="key">{{ provincia.provincia }}</option>
+              </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region2">Región*</label>
-            <select v-model="regionPar" type="text" id="region2" class="direccion1__input direccion1__input--left form-control"
-              required></select>
+            <select v-model="regionSeleccionadaPar" @change="getListadoProvinciaPar" type="text" v-validate="'required'" name="region" id="region2" class="direccion1__input direccion1__input--left form-control"
+              required>
+              <option v-for="(region, key) in regionesPar" :value="region.regionId" :key="key">{{ region.region }}</option>
+            </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna2">Comuna*</label>
-            <select v-model="comunaPar" type="text" id="comuna2" class="direccion1__input direccion1__input--right form-control"
-              required></select>
+            <select v-model="comunaSeleccionadaPar" type="text" id="comuna2" v-validate="'required'" name="comuna" class="direccion1__input direccion1__input--right form-control"
+              >
+              <option v-for="(comuna, key) in comunasPar" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
+              </select>
           </form>
            <!-- <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="telefono2">Teléfono*</label>
@@ -294,11 +282,11 @@
                 height="33px"></button>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="mail2">Email*</label>
-            <div class="direccion1__input direccion1__input--right" v-for="(inputEmailPar,p) in inputsEmailPar" :key="p">    
+            <div class="direccion1__input direccion1__input--right" v-for="(inputEmailPar,p) in inputsEmailPar" :key="p">
             <input v-model="emailPar" type="email" id="mail2"
               class="direccion1__input direccion1__input--right direccion1__input--mail form-control" required>
               <i class="fas fa-minus-circle eliminar-input" @click="removeEmailPar(p)" v-show="p || ( !p && inputsEmailPar.length > 1)"></i>
-            </div> 
+            </div>
             <button class="btn--direccion1-tel btn--hover-up" @click="addEmailPar()"><img src="@/assets/images/mas.png" alt="Añadir teléfono"
                 height="33px"></button>-->
            <div class="container">
@@ -310,7 +298,7 @@
                     <label class="text-small font-weight-bold" for="telefono2">Teléfono*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
-                    <input v-model="telefonosParArray[z]" type="tel" id="telefono2" class="form-control" required>
+                    <input v-model="telefonosParArray[z]" v-validate="'required'" name="telefono" type="tel" id="telefono2" class="form-control" required>
                      <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
                   </div>
                   <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
@@ -326,7 +314,7 @@
                     <label class="text-small font-weight-bold" for="mail2">Email*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-6 direccion__tel-mail-center">
-                    <input v-model="emailsParArray[p]" type="email" id="mail2" class="form-control" required>
+                    <input v-model="emailsParArray[p]" type="email" v-validate="'required'" name="email" id="mail2" class="form-control" required>
                      <i class="fas fa-minus-circle eliminar-input" @click="removeEmailPar(p)" v-show="p || ( !p && inputsEmailPar.length > 1)"></i>
                   </div>
                   <div class="col-2 col-sm-1 col-md-3 direccion__tel-mail-right">
@@ -353,8 +341,19 @@
 
         <!-- RIGHT COLUMN -->
         <div class="col-lg-5">
-        </div> <!-- col-md-6 -->
+           <div v-show="errors.all().length" class="alert alert-danger posicion-mensaje">
 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <ul class="ul-decorater">
+                <li v-for="(error, i) in errors.all()">{{error}}</li>
+            </ul>
+
+          </div>
+        </div> <!-- col-md-6 -->
+       
       </div> <!-- row -->
 
       <div class="creacion-solicitud__buttons py-5">
@@ -385,7 +384,7 @@
             <label for="porcentaje"
               class="accionarios-participacion__label text-small font-weight-bold">Porcentaje</label>
             <input v-model="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
-            <button class="btn--accionarios-participacion btn--hover-up" @click="agregarComposicion"><img src="@/assets/images/mas.png"
+            <button class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" height="33px"></button>
           </form>
 
@@ -399,14 +398,22 @@
                   <th scope="col"> </th>
                 </tr>
               </thead>
-              <tbody v-for="com in composicion">
+            <tbody v-for="com in composicion">
                 <tr>
-                  <td> Cualquier verga </td>
+                  <td> {{com.nombre}} </td>
                   <td>{{ com.rutComp }}</td>
                   <td>{{ com.porcentaje }}%</td>
                   <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
                   </td>
-                </tr>
+                </tr> 
+            <!--  <tbody v-for="item in searchGente">
+              <tr>
+                  <td> {{ item.nombre }} </td>
+                  <td>{{ item.rut }}</td>
+                  <td>{{ item.porcentaje }}%</td>
+                  <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
+                  </td>
+                </tr>  -->
               <!--  <tr>
                   <td>Carlos Vandal</td>
                   <td>12.345.689-k</td>
@@ -435,11 +442,52 @@
 
         <!-- RIGHT COLUMN -->
         <div class="col-md-5 col-lg-6">
+          <div class="container">
+              <form class="personas-asociadas" v-if="formRegistrarPersona">
+                  <div class="personas-asociadas-form">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
+                      for="rut">RUT*</label>
+                    <input type="number" id="rut" class="personas-asociadas-form__input--left form-control" required>
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
+                      for="vocativo">Vocativo</label>
+                    <select type="text" id="vocativo"
+                      class="personas-asociadas-form__input--right-big form-control"></select>
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
+                      for="nombres">Nombres</label>
+                    <input type="text" id="nombres" class="personas-asociadas-form__input--left-big  form-control">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
+                      for="apellido-pat">Apellido Paterno</label>
+                    <input type="text" id="apellido-pat"
+                      class="personas-asociadas-form__input--right-big  form-control">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
+                      for="apellido-mat">Apellido Materno</label>
+                    <input type="text" id="apellido-mat" class="personas-asociadas-form__input--left  form-control">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
+                      for="email">Email</label>
+                    <input type="email" id="email" class="personas-asociadas-form__input--right form-control">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
+                      for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" class="personas-asociadas-form__input--left form-control">
+                    <label
+                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
+                      for="fecha-nacimiento">Fecha
+                      nacimiento</label>
+                    <input type="date" id="fecha-nacimiento" class="personas-asociadas-form__input--right form-control">
+                  </div>
+                </form>
+          </div>
         </div> <!-- col-md-6 -->
       </div> <!-- row -->
 
       <div class="creacion-solicitud__buttons py-5 mt-5">
-        <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
+        <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm2" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
@@ -465,17 +513,17 @@
                 <p class="text-uppercase">Infraestructura</p>
                 <form>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="contratistas-gen">
+                    <input type="checkbox" v-model="contratistasGenerales" class="custom-control-input" id="contratistas-gen">
                     <label class="custom-control-label text-small pt-1" for="contratistas-gen">Contratistas
                       Generales</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="infraest-publica">
+                    <input type="checkbox" v-model="obrasInfra" class="custom-control-input" id="infraest-publica">
                     <label class="custom-control-label text-small pt-1" for="infraest-publica">Obras Infraestructura
                       Pública</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="concesiones">
+                    <input type="checkbox" v-model="conseciones" class="custom-control-input" id="concesiones">
                     <label class="custom-control-label text-small pt-1" for="concesiones">Concesiones</label>
                   </div>
                 </form>
@@ -484,11 +532,11 @@
                 <p class="text-uppercase">Vivienda</p>
                 <form>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="inmobiliario">
+                    <input type="checkbox" v-model="inmobiliario" class="custom-control-input" id="inmobiliario">
                     <label class="custom-control-label text-small pt-1" for="inmobiliario">Inmobiliario</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="vivienda">
+                    <input type="checkbox" v-model="vivienda" class="custom-control-input" id="vivienda">
                     <label class="custom-control-label text-small pt-1" for="vivienda">Vivienda</label>
                   </div>
                 </form>
@@ -497,15 +545,15 @@
                 <p class="text-uppercase">Suministros</p>
                 <form>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="proveedores">
+                    <input type="checkbox" v-model="proveedores" class="custom-control-input" id="proveedores">
                     <label class="custom-control-label text-small pt-1" for="proveedores">Proveedores</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="industriales">
+                    <input type="checkbox" v-model="industriales" class="custom-control-input" id="industriales">
                     <label class="custom-control-label text-small pt-1" for="industriales">Industriales</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="especialidades">
+                    <input type="checkbox" v-model="especialidades" class="custom-control-input" id="especialidades">
                     <label class="custom-control-label text-small pt-1" for="especialidades">Especialidades</label>
                   </div>
                 </form>
@@ -520,7 +568,7 @@
       </div> <!-- row -->
 
         <div class="creacion-solicitud__buttons py-5 mt-5">
-        <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
+        <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm3" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
@@ -600,7 +648,7 @@
       </div> <!-- row -->
 
        <div class="creacion-solicitud__buttons py-5 mt-5">
-        <a href="" class="btn btn-danger btn--big m-2">Guardar y cerrar</a>
+        <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm4" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
@@ -808,6 +856,26 @@ export default{
 data () {
   return {
 
+    listaGente:[
+      {
+      id:'1',
+      nombre:'Leo',
+      rut:'11111111-1',
+      porcentaje: 20
+      },
+      {
+      id:'2',
+      nombre:'Gaby',
+      rut:'22222222-2',
+      porcentaje: 50
+    },
+    {
+      id:'3',
+      nombre:'Gene',
+      rut:'33333333-3',
+      porcentaje: 80
+    }
+    ],
     language: "es",
     languages: lang,
     format:"dd-MM-yyyy",
@@ -854,7 +922,7 @@ data () {
      centroEstudio:'',
      profesion:'',
      especialidad:'',
-     cv:'',
+     cv:null,
      intereses:'',
      empresa:'',
      cargoEmpresa: '',
@@ -877,6 +945,12 @@ data () {
       regionSeleccionada:'',
       comunas:[],
       comunaSeleccionada:'',
+      provinciasPar:[],
+      provinciaSeleccionadaPar:'',
+      regionesPar:[],
+      regionSeleccionadaPar:'',
+      comunasPar:[],
+      comunaSeleccionadaPar:'',
       telefono:'',
       telEx:'',
       email:'',
@@ -927,8 +1001,20 @@ data () {
 
       rutComp:'',
       razonSocial:'',
-      porcentaje:'',
-      composicion:[]
+      porcentaje:0,
+      composicion:[],
+      formRegistrarPersona: false,
+
+
+ //Data para Selección de comités
+      contratistasGenerales:false,
+      obrasInfra:false,
+      conseciones:false,
+      inmobiliario:false,
+      vivienda:false,
+      proveedores:false,
+      industriales:false,
+      especialidades:false     
     }
   },
 
@@ -979,7 +1065,7 @@ data () {
             this.inputsEmailPar.splice(index, 1);
         },
 
-    agregarComposicion(){
+    /*agregarComposicion(){
       this.composicion.push({
         rutComp: this.rutComp,
         razonSocial: this.razonSocial,
@@ -989,14 +1075,17 @@ data () {
       this.rutComp = '';
       this.razonSocial = '';
       this.porcentaje = '';
-    },    
+
+      
+    },*/
+    
 
     guardar: function(){
 
      /* this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
-						this.personaNatural.push({
+     this.personaNatural.push({
         datosPersonales:{
         rutGlobal: this.$store.state.rutGlobal, 
         vocativo: this.vocativoSeleccionado,
@@ -1011,7 +1100,7 @@ data () {
         centroEstudio: this.centroEstudio,
         profesion: this.profesion,
         especialidad: this.especialidad,
-        cv:'',
+        cv: this.cv,
         intereses: this.intereses,
         empresa: this.empresa,
         cargoEmpresa:  this.cargoEmpresa,
@@ -1024,14 +1113,55 @@ data () {
         },
         
         direcciones:{
+          comercial:{
           calle:this.calle,
-         // telefono: this.telefono,
-         // telefono: this.telefonosArray.push(this.telefono),
-         telefonosArray: this.telefonosArray,
-         emailsArray: this.emailsArray,
-         telefonosParArray: this.telefonosParArray,
-         emailsParArray: this.emailsParArray
+          numero:this.numeroCalle,
+          oficina: this.oficina,
+          continuacion: this.continuacion,
+          region: this.regionSeleccionada,
+          provincia: this.provinciaSeleccionada,
+          comuna: this.comunaSeleccionada,
+          telefono: this.telefonosArray,
+          email: this.emailsArray,
+          correspondencia: this.correspondencia,
+          cobranza: this.cobranza
+        },
+        particular:{
+            calle: this.callePar,
+            numero: this.numeroCallePar,
+            oficina: this.oficinaPar,
+            continuacion: this.continuacionPar,
+            region: this.regionSeleccionadaPar,
+            provincia: this.provinciaSeleccionadaPar,
+            comuna: this.comunaSeleccionadaPar,
+            telefono: this.telefonosParArray,
+            email: this.emailsParArray,
+            correspondenciaPar: this.correspondenciaPar,
+            cobranzaPar: this.cobranzaPar
+
+          }
           
+        },
+        composicion:{
+          rutComp: this.rutComp,
+          porcentaje: this.porcentaje,
+          razonSocial: this.razonSocial
+        },
+        comites:{
+          infraestructura:{
+            contratistasGenerales:this.contratistasGenerales,
+            obrasInfra: this.obrasInfra,
+            conseciones: this.conseciones
+          },
+          vivienda:{
+            inmobiliario: this.inmobiliario,
+            vivienda: this.vivienda
+          },
+          suministros:{
+             proveedores: this.proveedores,
+             industriales: this.industriales,
+             especialidades: this.especialidades
+          }
         }
       });
       
@@ -1042,6 +1172,39 @@ data () {
         });*/       
     },
 
+  buscar: function (){
+    
+  if(this.rutComp == ''){
+    alert("Debe llenar campo rut");
+  }else{
+      
+  for(var i=0; i< this.listaGente.length; i++){
+
+    if(this.listaGente[i].rut == this.rutComp){
+
+      this.composicion.push({
+        rutComp: this.listaGente[i].rut,
+        nombre: this.listaGente[i].nombre,
+        porcentaje: this.porcentaje
+      });
+
+      this.formRegistrarPersona = false;
+      this.guardar();
+      this.rutComp = '';
+      this.razonSocial = '';
+      this.porcentaje = '';
+      
+      return 0;
+    }
+  }   
+  
+      this.formRegistrarPersona = true;
+     
+    
+}
+    
+  
+},
     getListadoVocativo: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarVocativo').then((response) => {
@@ -1063,17 +1226,33 @@ data () {
     getListadoRegion: function(){
       Vue.axios.get('http://postulacion.isc.cl/listarRegion').then((response) => {
       this.regiones = response.data;
-      console.log(this.regiones);
+      //console.log(this.regiones);
+    })
+    
+    },
+
+    getListadoRegionPar: function(){
+      Vue.axios.get('http://postulacion.isc.cl/listarRegion').then((response) => {
+      this.regionesPar = response.data;
+      //console.log(this.regionesPar);
     })
     
     },
 
      getListadoProvincia: function(){
       let idReg = this.regionSeleccionada;
-      
       Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
       this.provincias = response.data;
       console.log(this.provincias);
+    })
+    
+    },
+
+    getListadoProvinciaPar: function(){
+      let idReg = this.regionSeleccionadaPar;
+      Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
+      this.provinciasPar = response.data;
+      console.log(this.provinciasPar);
     })
     
     },
@@ -1086,19 +1265,35 @@ data () {
       console.log(this.comunas);
     })
     
-    }
+    },
+
+    getListadoComunaPar: function(){
+       let idComuna = this.provinciaSeleccionadaPar;
+
+      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
+      this.comunasPar = response.data;
+      console.log(this.comunas);
+    })
+    
+    },
+
   },
 
   created: function(){ 
         this.getListadoVocativo();
         this.getListadoEdoCivil();
         this.getListadoRegion();
+        this.getListadoRegionPar();
            
   },
   
   computed:{
     ...mapState(['rutGlobal','formulario1', 'formulario2', 'formulario3',
-                 'formulario4','formulario5','formulario6'])
+                 'formulario4','formulario5','formulario6']),
+
+    /*searchGente: function () {
+      return this.listaGente.filter((item) => item.rut.includes(this.rutComp));
+    } */           
   }
 }
 </script>
