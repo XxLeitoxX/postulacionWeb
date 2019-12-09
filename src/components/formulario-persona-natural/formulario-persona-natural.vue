@@ -20,9 +20,10 @@
             <label class="datos-personales__label" for="apellido-mat">Apellido Materno*</label>
             <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
-           <!-- <input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date"> -->
-           <datepicker v-model="fechaNacimiento" v-validate="'required'" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">
+            <!--<input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date">-->
+           <datepicker v-model="fechaNacimiento" name="Fecha" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">  
           </datepicker>
+       
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
             <input v-model="nacionalidad" type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
             <label class="datos-personales__label datos-personales__pasaporte-label invisible"
@@ -120,7 +121,7 @@
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <router-link to="/creacion-de-solicitud" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</router-link>
-             <button @click="frm2" class="btn btn-primary btn--big m-2">Siguiente<i
+             <button  @click="siguiente" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
 
@@ -361,7 +362,7 @@
         <button @click="frm1" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frm3" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="siguiente2" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!--creacion-solicitud__buttons -->
 
@@ -491,7 +492,7 @@
         <button @click="frm2" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frm4" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="siguiente3" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
     </div>
@@ -572,7 +573,7 @@
         <button @click="frm3" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frm5" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="siguiente4" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
 
@@ -652,7 +653,7 @@
         <button @click="frm4" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
         
-        <button @click="frm6" class="btn btn-primary btn--big m-2">Siguiente<i
+        <button @click="siguiente5" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
       </div>  <!-- creacion-solicitud__buttons -->
 
@@ -699,7 +700,7 @@
                           haven't heard of them accusamus labore sustainable VHS.
                           <div class="compromisos__input pt-5">
                             <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="leido1" required>
+                              <input type="checkbox" v-model="terms" class="custom-control-input" id="leido1" required>
                               <label class="custom-control-label font-weight-bold pt-1" for="leido1">He leído las
                                 condiciones y
                                 términos de la CCHC</label>
@@ -728,7 +729,7 @@
                           haven't heard of them accusamus labore sustainable VHS.
                           <div class="compromisos__input pt-5">
                             <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="leido2" required>
+                              <input type="checkbox" v-model="terms2" class="custom-control-input" id="leido2" required>
                               <label class="custom-control-label font-weight-bold pt-1" for="leido2">He leído las
                                 condiciones y
                                 términos de la CCHC</label>
@@ -757,7 +758,7 @@
                           haven't heard of them accusamus labore sustainable VHS.
                           <div class="compromisos__input pt-5">
                             <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" id="leido3" required>
+                              <input type="checkbox" v-model="terms3" class="custom-control-input" id="leido3" required>
                               <label class="custom-control-label font-weight-bold pt-1" for="leido3">He leído las
                                 condiciones y
                                 términos de la CCHC</label>
@@ -781,12 +782,13 @@
             <div class="card mt-3">
               <div class="card-header text-white text-uppercase bg-primary py-3 px-5">Datos del solicitante</div>
               <div class="card-body pt-4 pb-5 px-5 card__form">
-                <p class="card__form-label">Nombre: <span class="card__form-data">Carlos Vandal</span></p>
-                <p class="card__form-label">Teléfono: <span class="card__form-data">+569 9999 9999</span></p>
-                <p class="card__form-label">Email: <span class="card__form-data">carlos.vandal@bri.cl</span></p>
-                <p class="card__form-label">Empresa: <span class="card__form-data">Colibrí</span></p>
-                <p class="card__form-label">Dirección: <span class="card__form-data">Eliodoro Yañez 1163, Providencia,
-                    Santiago</span></p>
+                <p class="card__form-label">Nombre: <span class="card__form-data">{{ nombre }} {{ apellidoPat }}</span></p>
+                <p class="card__form-label">Teléfono: <span class="card__form-data" v-for="telefono in telefonosArray">{{ telefono }}</span></p>
+                <p class="card__form-label">Email: <span class="card__form-data" v-for="email in emailsArray">{{ email }}</span></p>
+                <p class="card__form-label">Empresa: <span class="card__form-data">{{ empresa }}</span></p>
+                <p class="card__form-label">Dirección: <span class="card__form-data">{{ calle }} {{ numeroCalle }}, {{ nombreProvinciaSelect }},
+                  {{ nombreRegionSelect }}
+                    </span></p>
               </div>
             </div>
 
@@ -797,8 +799,9 @@
             </div>
           </div> <!-- col-md-6 -->
         </div> <!-- row -->
+        <span v-if="msgTerm" class="font-weight-bold pt-1" style="color:red">*Debe acpetar términos y condiciones</span>
         <div class="d-flex justify-content-center pt-5">
-          <button class="btn btn--big btn--submit text-white text-uppercase">Enviar postulación</button>
+          <button :disabled="isDisabled" class="btn btn--big btn--submit text-white text-uppercase" @click="enviarPostulacion()">Enviar postulación</button>
         </div>
       </form>
 
@@ -876,11 +879,12 @@ data () {
       porcentaje: 80
     }
     ],
+    
     language: "es",
     languages: lang,
     format:"dd-MM-yyyy",
     disabledDates:{
-    from: new Date() //Deshabilita fechas futuras
+     from: new Date() //Deshabilita fechas futuras
     },
      //Inicializacion del Objeto principal para guardar y actualizar todos los formularios
 
@@ -913,7 +917,7 @@ data () {
      nombre:'',
      apellidoPat:'',
      apellidoMat:'',
-     fechaNacimiento: '',
+     fechaNacimiento:'',
      nacionalidad:'',
      sexo:'',
      edoCivilSeleccionado:'',
@@ -941,7 +945,9 @@ data () {
       pais:'',
       provincias:[],
       provinciaSeleccionada:'',
+      nombreProvinciaSelect:'',
       regiones:[],
+      nombreRegionSelect:'',
       regionSeleccionada:'',
       comunas:[],
       comunaSeleccionada:'',
@@ -1014,7 +1020,14 @@ data () {
       vivienda:false,
       proveedores:false,
       industriales:false,
-      especialidades:false     
+      especialidades:false, 
+            
+//Data Compromisos
+      terms: false,
+      terms2: false,
+      terms3: false,
+      msgTerm: true
+           
     }
   },
 
@@ -1023,6 +1036,80 @@ data () {
     ...mapMutations(['frm1','frm2','frm3', 
                      'frm4','frm5','frm6']),
 
+    siguiente(){
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+
+            this.guardar();
+            this.frm2();
+            console.log("Puede Pasar");
+
+          } else {
+						alert("Debe llenar campos requeridos");
+					}
+        });  
+    },                
+
+    siguiente2(){
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+
+            this.guardar();
+            this.frm3();
+            console.log("Puede Pasar");
+
+          } else {
+						alert("Debe llenar campos requeridos");
+					}
+        });  
+    },
+
+    siguiente3(){
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+
+            this.guardar();
+            this.frm4();
+            console.log("Puede Pasar");
+
+          } else {
+						alert("Debe llenar campos requeridos");
+					}
+        });  
+    },
+
+    siguiente4(){
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+
+            this.guardar();
+            this.frm5();
+            console.log("Puede Pasar");
+
+          } else {
+						alert("Debe llenar campos requeridos");
+					}
+        });  
+    },
+
+    siguiente5(){
+      this.$validator.validate()
+				.then(esValido => {
+					if (esValido) {
+
+            this.guardar();
+            this.frm6();
+            console.log("Puede Pasar");
+
+          } else {
+						alert("Debe llenar campos requeridos");
+					}
+        });  
+    },
     
     addTel() {
             
@@ -1205,6 +1292,11 @@ data () {
     
   
 },
+
+    enviarPostulacion: function(){
+      alert("Postulacion Enviada");
+    },
+
     getListadoVocativo: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarVocativo').then((response) => {
@@ -1243,7 +1335,9 @@ data () {
       let idReg = this.regionSeleccionada;
       Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
       this.provincias = response.data;
-      console.log(this.provincias);
+      this.nombreProvinciaSelect = response.data[0].provincia;
+      //console.log(this.provincias);
+      this.getNombreRegion();
     })
     
     },
@@ -1252,7 +1346,8 @@ data () {
       let idReg = this.regionSeleccionadaPar;
       Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
       this.provinciasPar = response.data;
-      console.log(this.provinciasPar);
+      //console.log(this.provinciasPar);
+      
     })
     
     },
@@ -1262,7 +1357,7 @@ data () {
 
       Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
       this.comunas = response.data;
-      console.log(this.comunas);
+      //console.log(this.comunas);
     })
     
     },
@@ -1272,10 +1367,20 @@ data () {
 
       Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
       this.comunasPar = response.data;
-      console.log(this.comunas);
+      //console.log(this.comunas);
     })
     
     },
+
+    getNombreRegion: function(){
+
+      let idReg = this.regionSeleccionada;
+      Vue.axios.get('http://postulacion.isc.cl/listarRegionnombre/'+idReg).then((response) => {
+      this.nombreRegionSelect = response.data[0].region;
+      //console.log(this.nombreRegionSelect);
+      })
+
+    }
 
   },
 
@@ -1284,12 +1389,23 @@ data () {
         this.getListadoEdoCivil();
         this.getListadoRegion();
         this.getListadoRegionPar();
+        
            
   },
   
   computed:{
     ...mapState(['rutGlobal','formulario1', 'formulario2', 'formulario3',
                  'formulario4','formulario5','formulario6']),
+
+    isDisabled: function(){
+    
+    if(this.terms==true && this.terms2==true && this.terms3==true){
+      this.msgTerm = false;
+      return false;
+    }
+      this.msgTerm = true;
+      return true; 
+    }             
 
     /*searchGente: function () {
       return this.listaGente.filter((item) => item.rut.includes(this.rutComp));
@@ -1299,7 +1415,7 @@ data () {
 </script>
 
 
-<style lang="">
+<style>
 
 .ul-decorater{
     /*list-style: none;*/
