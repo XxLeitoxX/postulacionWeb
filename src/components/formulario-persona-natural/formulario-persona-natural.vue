@@ -166,7 +166,7 @@
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna1">Comuna*</label>
-            <select v-model="comunaSeleccionada" v-validate="'required'" name="comuna" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="comunaSeleccionada" v-validate="'required'" @change="getNombreComuna" name="comuna" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
               required>
               <option v-for="(comuna, key) in comunas" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
             </select>
@@ -267,7 +267,7 @@
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna2">Comuna*</label>
-            <select v-model="comunaSeleccionadaPar" type="text" id="comuna2" v-validate="'required'" name="comuna" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="comunaSeleccionadaPar"  type="text" id="comuna2" v-validate="'required'" name="comuna" class="direccion1__input direccion1__input--right form-control"
               >
               <option v-for="(comuna, key) in comunasPar" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
               </select>
@@ -379,13 +379,13 @@
           <h3 class="text-primary text-uppercase font-weight-bold">Composición accionaria</h3>
           <form class="accionarios-participacion__form accionarios-participacion__form--pnatural">
             <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
-            <input v-model="rutComp" id="rut" type="text" class="form-control accionarios-participacion__input">
+            <input v-model="rutComp" id="rut" :disabled="disabled == 1" type="text" class="form-control accionarios-participacion__input">
             <label for="name" class="accionarios-participacion__label text-small font-weight-bold">Razón social</label>
-            <input v-model="razonSocial" id="name" type="text" class="form-control accionarios-participacion__input">
+            <input v-model="razonSocial" id="name" :disabled="disabled == 1" type="text" class="form-control accionarios-participacion__input" readonly>
             <label for="porcentaje"
               class="accionarios-participacion__label text-small font-weight-bold">Porcentaje</label>
-            <input v-model="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
-            <button class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
+            <input v-model="porcentaje" ref="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
+            <button type="" class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" height="33px"></button>
           </form>
 
@@ -399,13 +399,17 @@
                   <th scope="col"> </th>
                 </tr>
               </thead>
-            <tbody v-for="com in composicion">
+            <tbody v-for="(com, indice) in composicion" :key='indice'>
                 <tr>
                   <td> {{com.nombre}} </td>
                   <td>{{ com.rutComp }}</td>
                   <td>{{ com.porcentaje }}%</td>
-                  <td><i class="fas fa-pencil-alt icon-edit"></i> <i class="fas fa-times-circle icon-delete"></i>
+                  <td><a @click="editarPorcentaje(indice)"><i class="fas fa-pencil-alt icon-edit"></i></a> <a @click="eliminarComposicion(indice)"><i class="fas fa-times-circle icon-delete"></i></a>
                   </td>
+                 <!-- <td v-if="!com.editing">{{ com.porcentaje }}%</td>-->
+                 <!-- <td v-else style="text-align: center; width: 1%;"><input type="number" @keyup.enter="updateComposicion(indice)" v-model="porcentaje" class="edit-composicion">%</td>-->
+                  <!--<td><a @click="editarPorcentaje(indice)"><i class="fas fa-pencil-alt icon-edit"></i></a> <a @click="eliminarComposicion(indice)"><i class="fas fa-times-circle icon-delete"></i></a>
+                  </td>-->
                 </tr> 
             <!--  <tbody v-for="item in searchGente">
               <tr>
@@ -444,7 +448,63 @@
         <!-- RIGHT COLUMN -->
         <div class="col-md-5 col-lg-6">
           <div class="container">
-              <form class="personas-asociadas" v-if="formRegistrarPersona">
+
+            <div>
+            <b-modal ref="modal-crear" hide-footer title="Crear Persona">
+              <div class="d-block text-center">
+                <h3 style="padding:5%;">La persona no existe ¿Desea crearlo?</h3>
+              </div>
+              <div class="d-block text-center">
+                <b-button size="sm" variant="primary" @click="aceptarCreacion()">Si</b-button>
+                <b-button size="sm" variant="danger" @click="cancelarCreacion()">No</b-button></div>
+            </b-modal>
+            </div>
+
+            <div>
+            <b-modal ref="modal-editar" hide-footer title="Editar Porcentaje">
+              <div class="d-block text-center">
+                <h3 style="padding:5%;">¿Seguro que desea editar el porcentaje con el RUT {{ rutComp }}</h3>
+              </div>
+              <div class="d-block text-center">
+                <b-button size="sm" variant="primary" @click="aceptarEdicion()">Si</b-button>
+                <b-button size="sm" variant="danger" @click="cancelarEdicion()">No</b-button></div>
+            </b-modal>
+            </div>
+
+            <div>
+            <b-modal ref="modal-eliminar" hide-footer title="Eliminar Persona">
+              <div class="d-block text-center">
+                <h3 style="padding:5%;">¿Seguro que desea eliminar a la persona con el RUT {{ rutComp }}?</h3>
+              </div>
+              <div class="d-block text-center">
+                <b-button size="sm" variant="primary" @click="aceptarEliminacion()">Si</b-button>
+                <b-button size="sm" variant="danger" @click="cancelarEliminacion()">No</b-button></div>
+            </b-modal>
+            </div>
+<form v-if="formRegistrarPersona">
+  <div class="row">
+    <div class="col">
+      <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="nombre">Nombre</label>
+      <input type="text" class="form-control" placeholder="">
+    </div>
+    <div class="col">
+      <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="nombre">RUT</label>
+      <input type="text" class="form-control" placeholder="">
+    </div>
+    </div>
+    <div class="row">
+    <div class="col">
+      <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="porcentaje">Porcentaje</label>
+      <input type="text" class="form-control" placeholder="">
+    </div>
+    <div class="col">
+      <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="social">Razón Social</label>
+      <input type="text" class="form-control" placeholder="">
+    </div>
+    </div>
+  <button type="submit" class="btn btn-primary" style="float:right; padding: 2% 5% 2% 5%; margin-top: 2%;">Crear</button>
+</form>
+              <!--<form class="personas-asociadas" v-if="formRegistrarPersona">
                   <div class="personas-asociadas-form">
                     <label
                       class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
@@ -452,37 +512,21 @@
                     <input type="number" id="rut" class="personas-asociadas-form__input--left form-control" required>
                     <label
                       class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
-                      for="vocativo">Vocativo</label>
-                    <select type="text" id="vocativo"
-                      class="personas-asociadas-form__input--right-big form-control"></select>
+                      for="vocativo">Nombres</label>
+                      <input type="text" id="nombres" class="personas-asociadas-form__input--right-big  form-control">
                     <label
                       class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
-                      for="nombres">Nombres</label>
-                    <input type="text" id="nombres" class="personas-asociadas-form__input--left-big  form-control">
+                      for="porcentaje">Porcentaje</label>
+                    <input type="number" id="porcentaje" class="personas-asociadas-form__input--left-big  form-control">
                     <label
                       class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
-                      for="apellido-pat">Apellido Paterno</label>
-                    <input type="text" id="apellido-pat"
+                      for="razon-social">Razón Social</label>
+                    <input type="text" id="razon-social"
                       class="personas-asociadas-form__input--right-big  form-control">
-                    <label
-                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
-                      for="apellido-mat">Apellido Materno</label>
-                    <input type="text" id="apellido-mat" class="personas-asociadas-form__input--left  form-control">
-                    <label
-                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
-                      for="email">Email</label>
-                    <input type="email" id="email" class="personas-asociadas-form__input--right form-control">
-                    <label
-                      class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold"
-                      for="telefono">Teléfono</label>
-                    <input type="tel" id="telefono" class="personas-asociadas-form__input--left form-control">
-                    <label
-                      class="personas-asociadas-form__label personas-asociadas-form__label--right text-small font-weight-bold"
-                      for="fecha-nacimiento">Fecha
-                      nacimiento</label>
-                    <input type="date" id="fecha-nacimiento" class="personas-asociadas-form__input--right form-control">
+                  
+                   
                   </div>
-                </form>
+                </form>-->
           </div>
         </div> <!-- col-md-6 -->
       </div> <!-- row -->
@@ -786,9 +830,8 @@
                 <p class="card__form-label">Teléfono: <span class="card__form-data" v-for="telefono in telefonosArray">{{ telefono }}</span></p>
                 <p class="card__form-label">Email: <span class="card__form-data" v-for="email in emailsArray">{{ email }}</span></p>
                 <p class="card__form-label">Empresa: <span class="card__form-data">{{ empresa }}</span></p>
-                <p class="card__form-label">Dirección: <span class="card__form-data">{{ calle }} {{ numeroCalle }}, {{ nombreProvinciaSelect }},
-                  {{ nombreRegionSelect }}
-                    </span></p>
+                <p class="card__form-label">Dirección: <span class="card__form-data">{{ calle }} {{ numeroCalle }}, {{ nombreComunaSelect }}, {{ nombreProvinciaSelect }}
+                </span></p>
               </div>
             </div>
 
@@ -863,20 +906,23 @@ data () {
       {
       id:'1',
       nombre:'Leo',
-      rut:'11111111-1',
-      porcentaje: 20
+      rut:'1',
+      razon: 'Leonardo C.A',
+      editing: false
       },
       {
       id:'2',
       nombre:'Gaby',
-      rut:'22222222-2',
-      porcentaje: 50
+      rut:'2',
+      razon:'Gabriela C.A',
+      editing: false
     },
     {
       id:'3',
       nombre:'Gene',
-      rut:'33333333-3',
-      porcentaje: 80
+      rut:'3',
+      razon: 'Genesis C.A',
+      editing: false
     }
     ],
     
@@ -886,6 +932,8 @@ data () {
     disabledDates:{
      from: new Date() //Deshabilita fechas futuras
     },
+
+    
      //Inicializacion del Objeto principal para guardar y actualizar todos los formularios
 
      personaNatural:[{
@@ -917,7 +965,7 @@ data () {
      nombre:'',
      apellidoPat:'',
      apellidoMat:'',
-     fechaNacimiento:'',
+     fechaNacimiento: new Date(),
      nacionalidad:'',
      sexo:'',
      edoCivilSeleccionado:'',
@@ -947,10 +995,11 @@ data () {
       provinciaSeleccionada:'',
       nombreProvinciaSelect:'',
       regiones:[],
-      nombreRegionSelect:'',
+      //nombreRegionSelect:'',
       regionSeleccionada:'',
       comunas:[],
       comunaSeleccionada:'',
+      nombreComunaSelect:'',
       provinciasPar:[],
       provinciaSeleccionadaPar:'',
       regionesPar:[],
@@ -1010,6 +1059,10 @@ data () {
       porcentaje:0,
       composicion:[],
       formRegistrarPersona: false,
+      disabled: 0,
+      encuentra:'',
+      editPor: false,
+      respuesta: false,
 
 
  //Data para Selección de comités
@@ -1037,78 +1090,78 @@ data () {
                      'frm4','frm5','frm6']),
 
     siguiente(){
-      this.$validator.validate()
+      /*this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 
             this.guardar();
             this.frm2();
             console.log("Puede Pasar");
 
-          } else {
+          /*} else {
 						alert("Debe llenar campos requeridos");
 					}
-        });  
+        });  */
     },                
 
     siguiente2(){
-      this.$validator.validate()
+     /* this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 
             this.guardar();
             this.frm3();
             console.log("Puede Pasar");
 
-          } else {
+         /* } else {
 						alert("Debe llenar campos requeridos");
 					}
-        });  
+        });  */
     },
 
     siguiente3(){
-      this.$validator.validate()
+      /*this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 
             this.guardar();
             this.frm4();
             console.log("Puede Pasar");
 
-          } else {
+         /* } else {
 						alert("Debe llenar campos requeridos");
 					}
-        });  
+        }); */ 
     },
 
     siguiente4(){
-      this.$validator.validate()
+     /* this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 
             this.guardar();
             this.frm5();
             console.log("Puede Pasar");
 
-          } else {
+         /* } else {
 						alert("Debe llenar campos requeridos");
 					}
-        });  
+        });  */
     },
 
     siguiente5(){
-      this.$validator.validate()
+     /* this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {
+					if (esValido) {*/
 
             this.guardar();
             this.frm6();
             console.log("Puede Pasar");
 
-          } else {
+        /*  } else {
 						alert("Debe llenar campos requeridos");
 					}
-        });  
+        });  */
     },
     
     addTel() {
@@ -1230,9 +1283,10 @@ data () {
           
         },
         composicion:{
-          rutComp: this.rutComp,
-          porcentaje: this.porcentaje,
-          razonSocial: this.razonSocial
+          com: this.composicion
+            /*rutComp: this.composicion[0].rutComp,
+            porcentaje: this.porcentaje*/
+          
         },
         comites:{
           infraestructura:{
@@ -1259,39 +1313,188 @@ data () {
         });*/       
     },
 
-  buscar: function (){
+
+  buscar: function (indice){
     
+
   if(this.rutComp == ''){
     alert("Debe llenar campo rut");
   }else{
       
   for(var i=0; i< this.listaGente.length; i++){
-
+   
+  
     if(this.listaGente[i].rut == this.rutComp){
 
-      this.composicion.push({
+      this.razonSocial = this.listaGente[i].razon;
+      
+      this.encuentra = '';
+      let posi = '';
+      for(let k = 0; k < this.composicion.length; k++) {
+       
+        if (this.composicion[k].rutComp == this.rutComp) {
+          this.encuentra = this.rutComp;
+          posi = k;
+          break;
+        }
+        
+      }
+    
+    
+      if(this.editPor == true){
+
+
+        this.composicion.splice(posi, 1);
+
+          this.composicion.push({
         rutComp: this.listaGente[i].rut,
         nombre: this.listaGente[i].nombre,
-        porcentaje: this.porcentaje
+        porcentaje: this.porcentaje,
+        editing: this.listaGente[i].editing});
+       this.guardar();
+       this.editPor = false;
+
+      }else{
+
+      if(this.encuentra == ''){
+        this.composicion.push({
+        rutComp: this.listaGente[i].rut,
+        nombre: this.listaGente[i].nombre,
+        porcentaje: this.porcentaje,
+        editing: this.listaGente[i].editing
+
       });
 
-      this.formRegistrarPersona = false;
-      this.guardar();
-      this.rutComp = '';
-      this.razonSocial = '';
-      this.porcentaje = '';
+       this.guardar();
+       this.editPor = false;
+      }else{
+
+
+          alert("El Rut " +this.rutComp+" ya exite");
+        this.razonSocial = '';
+      }  
+
       
-      return 0;
-    }
-  }   
-  
-      this.formRegistrarPersona = true;
+
+      }
+        
+
+
+      this.formRegistrarPersona = false;
+      
+      this.disabled = 0;
+      this.rutComp = '';
+      //this.razonSocial = '';
+      this.porcentaje = '';
      
+      return;
     
+  }
+
+ 
+  
+  }   
+    this.showModalCrear();
+    
+        
 }
     
   
 },
+
+
+eliminarComposicion: function (indice){
+
+      
+
+      if(this.respuesta == true){
+        this.composicion.splice(indice, 1);
+        this.rutComp = '';
+        this.razonSocial = '';
+        this.porcentaje = '';
+        this.disabled = 0;
+      }else{
+        this.showModalEliminar();
+        
+      }
+      
+      
+     
+},
+
+editarPorcentaje: function (indice){
+
+      this.showModalEditar();
+      this.porcentaje = this.composicion[indice].porcentaje;
+      this.rutComp = this.composicion[indice].rutComp;
+      this.disabled = 1;
+      this.editPor = true;
+      
+     
+},
+
+//Funciones para los modales de Informacion Comercial
+
+showModalCrear(){
+      this.$refs['modal-crear'].show();
+},
+
+aceptarCreacion(){
+   this.formRegistrarPersona = true;
+   this.$refs['modal-crear'].hide();
+},
+
+cancelarCreacion(){
+    this.formRegistrarPersona = false;
+    this.rutComp = '';
+    this.razonSocial = '';
+    this.porcentaje = '';
+    this.disabled = 0;
+    this.$refs['modal-crear'].hide();
+
+  },
+
+showModalEliminar(){
+      this.$refs['modal-eliminar'].show();
+},
+
+aceptarEliminacion(){
+      this.$refs['modal-eliminar'].hide();
+      this.respuesta = true;
+      this.eliminarComposicion();
+},
+
+cancelarEliminacion(){
+    this.$refs['modal-eliminar'].hide();
+    this.respuesta = false;
+
+  },
+
+showModalEditar() {
+    this.$refs['modal-editar'].show();
+},
+
+aceptarEdicion(){
+      this.$refs['modal-editar'].hide();
+      this.setFocus();
+},
+
+cancelarEdicion(){
+    this.$refs['modal-editar'].hide();
+    this.rutComp = '';
+    this.razonSocial = '';
+    this.porcentaje = '';
+    this.disabled = 0;
+    this.editPor = false;
+
+},
+
+setFocus(){
+    this.$refs.porcentaje.focus();
+},  
+
+
+
 
     enviarPostulacion: function(){
       alert("Postulacion Enviada");
@@ -1335,9 +1538,7 @@ data () {
       let idReg = this.regionSeleccionada;
       Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
       this.provincias = response.data;
-      this.nombreProvinciaSelect = response.data[0].provincia;
-      //console.log(this.provincias);
-      this.getNombreRegion();
+      
     })
     
     },
@@ -1353,11 +1554,11 @@ data () {
     },
 
      getListadoComuna: function(){
-       let idComuna = this.provinciaSeleccionada;
+       let idProvincia = this.provinciaSeleccionada;
 
-      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
+      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idProvincia).then((response) => {
       this.comunas = response.data;
-      //console.log(this.comunas);
+      this.getNombreProvincia();
     })
     
     },
@@ -1367,17 +1568,38 @@ data () {
 
       Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
       this.comunasPar = response.data;
+      this.getNombreProvinciaPar();
       //console.log(this.comunas);
     })
     
     },
 
-    getNombreRegion: function(){
+    /*getNombreRegion: function(){
 
       let idReg = this.regionSeleccionada;
       Vue.axios.get('http://postulacion.isc.cl/listarRegionnombre/'+idReg).then((response) => {
       this.nombreRegionSelect = response.data[0].region;
-      //console.log(this.nombreRegionSelect);
+      console.log(this.nombreRegionSelect);
+      })
+
+    },*/
+
+    getNombreProvincia: function(){
+
+      let idProv = this.provinciaSeleccionada;
+      Vue.axios.get('http://postulacion.isc.cl/listarProvincianombre/'+idProv).then((response) => {
+      this.nombreProvinciaSelect = response.data[0].provincia;
+      console.log(this.nombreProvinciaSelect);
+      })
+
+    },
+
+    getNombreComuna: function(){
+
+      let idComuna = this.comunaSeleccionada;
+      Vue.axios.get('http://postulacion.isc.cl/listarComunanombre/'+idComuna).then((response) => {
+      this.nombreComunaSelect = response.data[0].comuna;
+      console.log(this.nombreComunaSelect);
       })
 
     }
@@ -1456,5 +1678,29 @@ data () {
     background-color: white;
     opacity: 1;
 }
+
+
+.edit-composicion{
+  background: transparent;
+  border: none;
+  text-align: center;
+  width: 40%;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #2072BE;
+    opacity: 0.1;
+}
+
+/*.form-control:disabled{
+    background-color: #e9ecef;
+    opacity: 1;
+}*/
 
 </style>
