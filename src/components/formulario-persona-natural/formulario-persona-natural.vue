@@ -625,7 +625,7 @@
   </div> 
 
 
- <div class="pn-formulario-5" v-show="formulario5 == true">
+ <div class="pn-formulario-5" v-show="formulario5 == true"> 
     <div class="container">
       <div class="row">
 
@@ -634,10 +634,131 @@
           <h3 class="text-primary text-uppercase">Patrocinantes</h3>
           <p class="text-muted text-small">Ambos socios deben tener sus cuotas al día</p>
 
-          <form class="d-grid patrocinante__form pt-3">
-            <label class="patrocinante__label text-small font-weight-bold" for="rut1">RUT*</label>
-            <input id="rut1" class="patrocinante__input form-control" required>
-            <label class="patrocinante__label text-small font-weight-bold" for="patrocinante1">Patrocinante 1*</label>
+<form class="pt-3">
+  <div class="row">
+<div class="col-lg-6">
+<label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinante 1*</label>  
+<input type="text" class="patrocinante__input form-control" v-model="nombrePatro"  @click="getListarPatrocinante">
+<input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinante" style="display:none;">
+         <!-- <ul class="mt-2" :class="listaHov" style="padding-left:0" v-if="nombrePatro.length > 0 ? mostrarListadoPatro=true : ''">-->
+            <ul class="mt-2" :class="mostrarListaPatrocinanteScroll" style="padding-left:0" v-if="mostrarListadoPatrocinante">
+					  <li v-for="(item, index) in buscarPatrocinante" :key="index" @click="itemClicked(item)" class="list-group-item listLine" style="cursor:pointer;">
+              <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						  <span>{{ item.nombre }} {{ item.apePat }}</span><br>
+              <span>{{ item.camara }}</span>
+					  </li>
+			    </ul>
+</div>
+
+<div class="col-lg-6">
+  <label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinador*</label>  
+<input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinador" @click="getListarPatrocinador">
+<input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinador" style="display:none;">
+          <!--<ul class="mt-2" :class="listaHov" v-if="nombrePatrocinador.length > 0 ? mostrarListadoPatro=true : ''">-->
+            <ul class="mt-2" :class="mostrarListaPatrocinadorScroll" style="padding-left:0" v-if="mostrarListadoPatrocinador">
+					  <li v-for="(item, index) in buscarPatrocinador" :key="index" @click="itemClickedPatrocinador(item)" class="list-group-item listLine" style="cursor:pointer;">
+              <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						  <span>{{ item.nombre }} {{item.apePat}}</span>
+              <span>{{ item.camara }}</span>
+					  </li>
+			    </ul>
+</div>
+  </div>
+<br>
+  <div class="row" @click="cerrarScrollPostulacion">
+    <div class="col-lg-6">
+      <a href="" download class="patrocinante__download">
+              <img src="@/assets/images/mas.png" alt="Descargar formulario" width="33px" class="btn--sibling-hover-right">
+              <span class="font-weight-bold text-small pl-1 btn--hover-right">Descargar formulario</span>
+            </a>
+            <div class="patrocinante__attachment pt-2">
+              <input type="file" class="d-none" id="respaldo" required>
+              <label for="respaldo" class="d-flex patrocinante__attachment-label">
+                <div class="patrocinante__attachment-icon-container mr-2 btn--sibling-hover-right">
+                  <img src="@/assets/images/mas.png" alt="Adjuntar respaldo de patrocinante" width="33px">
+                </div>
+                <div class="btn--hover-right">
+                  <p class="text-small font-weight-bold">Adjuntar respaldo de patrocinante*</p>
+                  <p class="text-small text-muted">De donde conoce al postulante, Trayectoria del postulante, Aporte al
+                    gremio</p>
+                </div>
+              </label>
+            </div>
+    </div>
+  </div>
+</form>
+
+<form class="pt-3">
+  <div class="row">
+<div class="col-lg-6">
+<label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinante 2*</label>  
+<input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinante2"  @click="getListarPatrocinante2">
+<input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinante2" style="display:none;">
+         <!-- <ul class="mt-2" :class="listaHov" style="padding-left:0" v-if="nombrePatro.length > 0 ? mostrarListadoPatro=true : ''">-->
+            <ul class="mt-2" :class="mostrarListaPatrocinanteScroll2" style="padding-left:0" v-if="mostrarListadoPatrocinante2">
+					  <li v-for="(item, index) in buscarPatrocinante2" :key="index" @click="itemClicked2(item)" class="list-group-item listLine" style="cursor:pointer;">
+              <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						  <span>{{ item.nombre }} {{ item.apePat }}</span><br>
+              <span>{{ item.camara }}</span>
+					  </li>
+			    </ul>
+</div>
+
+<div class="col-lg-6">
+  <label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinador*</label>  
+<input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinador2" @click="getListarPatrocinador2">
+<input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinador2" style="display:none;">
+          <!--<ul class="mt-2" :class="listaHov" v-if="nombrePatrocinador.length > 0 ? mostrarListadoPatro=true : ''">-->
+            <ul class="mt-2" :class="mostrarListaPatrocinadorScroll2" style="padding-left:0" v-if="mostrarListadoPatrocinador2">
+					  <li v-for="(item, index) in buscarPatrocinador2" :key="index" @click="itemClickedPatrocinador2(item)" class="list-group-item listLine" style="cursor:pointer;">
+              <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						  <span>{{ item.nombre }} {{item.apePat}}</span>
+              <span>{{ item.camara }}</span>
+					  </li>
+			    </ul>
+</div>
+  </div>
+<br>
+  <div class="row"  @click="cerrarScrollPostulacion">
+    <div class="col-lg-6">
+      <a href="" download class="patrocinante__download">
+              <img src="@/assets/images/mas.png" alt="Descargar formulario" width="33px" class="btn--sibling-hover-right">
+              <span class="font-weight-bold text-small pl-1 btn--hover-right">Descargar formulario</span>
+            </a>
+            <div class="patrocinante__attachment pt-2">
+              <input type="file" class="d-none" id="respaldo" required>
+              <label for="respaldo" class="d-flex patrocinante__attachment-label">
+                <div class="patrocinante__attachment-icon-container mr-2 btn--sibling-hover-right">
+                  <img src="@/assets/images/mas.png" alt="Adjuntar respaldo de patrocinante" width="33px">
+                </div>
+                <div class="btn--hover-right">
+                  <p class="text-small font-weight-bold">Adjuntar respaldo de patrocinante*</p>
+                  <p class="text-small text-muted">De donde conoce al postulante, Trayectoria del postulante, Aporte al
+                    gremio</p>
+                </div>
+              </label>
+            </div>
+    </div>
+  </div>
+</form> 
+          <!--<form class="d-grid patrocinante__form pt-3">
+            <label class="patrocinante__label text-small font-weight-bold" for="rut1">RUT*</label>-->
+            <!--<suggestions
+    v-model="query"
+    :options="options"
+    :onInputChange="onCountryInputChange"
+    :onItemSelected="onSearchItemSelected"
+    ></suggestions>-->
+        <!--  <input type="text" placeholder="Buscar" class="patrocinante__input form-control" v-model="nombrePatro">
+          <ul class="patrocinante__attachment pt-2" style="width:27%;" v-if="nombrePatro.length > 0 ? mostrarListadoPatro=true : ''">
+					  <li v-for="(item, index) in buscarPatrocinante" :key="index" @click="itemClicked(item)" class="list-group-item" style="cursor:pointer;">
+              <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						  <span>{{ item.nombre }}</span>
+              <span>{{ item.camara }}</span>
+					  </li>
+			    </ul>-->
+            <!--<input id="rut1" class="patrocinante__input form-control" required>-->
+            <!--<label class="patrocinante__label text-small font-weight-bold" for="patrocinante1">Patrocinante 1*</label>
             <input id="patrocinante1" class="patrocinante__input form-control" required>
             <label class="patrocinante__label text-small font-weight-bold" for="patrocinador1">Patrocinador*</label>
             <select id="patrocinador1" class="patrocinante__input form-control" required></select>
@@ -658,9 +779,9 @@
                 </div>
               </label>
             </div>
-          </form>
+          </form>-->
 
-          <form class="d-grid patrocinante__form pt-5">
+          <!--<form class="d-grid patrocinante__form pt-5">
             <label class="patrocinante__label text-small font-weight-bold" for="rut2">RUT*</label>
             <input id="rut2" class="patrocinante__input form-control" required>
             <label class="patrocinante__label text-small font-weight-bold" for="patrocinante2">Patrocinante 2*</label>
@@ -684,11 +805,11 @@
                 </div>
               </label>
             </div>
-          </form>
+          </form>-->
         </div> <!-- col-md-6 -->
 
         <!-- RIGHT COLUMN -->
-        <div class="col-sm-3 col-md-3 col-lg-5">
+        <div class="col-sm-3 col-md-3 col-lg-5"  @click="cerrarScrollPostulacion">
         </div> <!-- col-md-6 -->
       </div> <!-- row -->
 
@@ -836,7 +957,7 @@
             </div>
 
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="enviar-copia">
+              <input type="checkbox" class="custom-control-input" id="enviar-copia" v-model="enviarCopiaMail">
               <label class="custom-control-label font-weight-bold text-muted pt-1" for="enviar-copia">Enviar una copia
                 de los datos entregados en la solicitud a mi correo electrónico</label>
             </div>
@@ -876,6 +997,10 @@ import store from '@/store.js';
 import Datepicker from 'vuejs-datepicker';
 import * as lang from "vuejs-datepicker/src/locale";
 import moment from 'moment';
+import Suggestions from 'v-suggestions'
+import 'v-suggestions/dist/v-suggestions.css' // you can import the stylesheets also (optional)
+
+Vue.component('suggestions', Suggestions)
 
 Vue.use(require('vue-moment'));
 
@@ -901,6 +1026,13 @@ export default{
 
 data () {
   return {
+
+      /*query: '',
+      countries: [],
+      selectedCountry: null,
+      options: {},
+      formateo:[],*/
+      
 
     listaGente:[
       {
@@ -1079,8 +1211,37 @@ data () {
       terms: false,
       terms2: false,
       terms3: false,
-      msgTerm: true
-           
+      msgTerm: true,
+
+//Data para Patrocinantes
+       patrocinantes:[],
+       patrocinadores:[],
+       patrocinantes2:[],
+       patrocinadores2:[],
+       nombrePatro:'',
+       nombrePatrocinador:'',
+       mostrarListadoPatrocinante: false,
+       mostrarListadoPatrocinador: false,
+       mostrarListadoPatrocinante2: false,
+       mostrarListadoPatrocinador2: false,
+       patrocinanteSelec:'',
+       patrocinadorSelec:'',
+       patrocinanteSelec2:'',
+       patrocinadorSelec2:'',
+       mostrarListaPatrocinanteScroll:'listaHov',
+       mostrarListaPatrocinadorScroll:'listaHov',
+       mostrarListaPatrocinanteScroll2:'listaHov',
+       mostrarListaPatrocinadorScroll2:'listaHov',
+       nombrePatrocinante2:'',
+       nombrePatrocinador2:'',
+       perIdPatrocinante:'',
+       perIdPatrocinador:'',
+       perIdPatrocinante2:'',
+       perIdPatrocinador2:'',
+
+       //Data compromisos
+       enviarCopiaMail: false
+       
     }
   },
 
@@ -1088,6 +1249,30 @@ data () {
 
     ...mapMutations(['frm1','frm2','frm3', 
                      'frm4','frm5','frm6']),
+
+                    
+
+     /*onCountryInputChange (query) {
+       //console.log(query);
+      if (this.query.trim().length === 0) {
+        return null
+      }
+      // return the matching countries as an array
+      //return this.countries.filter((asd) => asd.nombre.includes(this.query));
+      return this.countries.filter((country) => {
+        //console.log(country);
+        return country.toLowerCase().includes(this.query.toLowerCase()) 
+      })
+      
+    },*/
+    /*onCountrySelected (item) {
+      console.log(item);
+      this.selectedCountry = item
+    },*/
+    /*onSearchItemSelected (item) {
+      console.log(item);
+      this.query = item
+    },*/              
 
     siguiente(){
       /*this.$validator.validate()
@@ -1303,6 +1488,15 @@ data () {
              industriales: this.industriales,
              especialidades: this.especialidades
           }
+        },
+        patrocinantes:{
+          patrocinante1: this.perIdPatrocinante,
+          patrocinador1: this.perIdPatrocinador,
+          patrocinante2: this.perIdPatrocinandte2,
+          patrocinador2: this.perIdPatrocinador2
+        },
+        compromisos:{
+          enviarCopiaMail: this.enviarCopiaMail
         }
       });
       
@@ -1496,8 +1690,142 @@ setFocus(){
 
 
 
-    enviarPostulacion: function(){
-      alert("Postulacion Enviada");
+enviarPostulacion: function(){
+    alert("Postulacion Enviada");
+  },
+
+ itemClicked(item) {
+   console.log(item.perId);
+    this.patrocinanteSelec = item.perId;
+    this.perIdPatrocinante = item.perId;
+    this.nombrePatro = item.nombre + ' ' + item.rut + '-' + item.dv + ' ' + item.camara;
+    this.mostrarListaPatrocinanteScroll = 'listaHovHidden';
+ },
+
+ itemClicked2(item) {
+   console.log(item.perId);
+    
+    
+    if(this.patrocinanteSelec != item.perId){
+      this.patrocinanteSelec2 = item.perId;
+      this.perIdPatrocinante2 = item.perId;
+      this.nombrePatrocinante2 = item.nombre + ' ' + item.rut + '-' + item.dv + ' ' + item.camara;
+      this.mostrarListaPatrocinanteScroll2 = 'listaHovHidden';
+    }else{
+      alert("No puede ser el mismo patrocinante");
+      this.mostrarListadoPatrocinante2=false;
+      this.nombrePatrocinante2 = '';
+    }
+    
+ },
+
+ itemClickedPatrocinador(item) {
+   console.log(item.perId);
+   
+    this.patrocinadorSelec = item.perId;
+    this.perIdPatrocinador = item.perId;
+    this.nombrePatrocinador = item.nombre + ' ' + item.apePat + ' ' + item.rut + '-' + item.dv;
+    this.mostrarListaPatrocinadorScroll = 'listaHovHidden'; 
+   
+    
+        
+ },
+
+ itemClickedPatrocinador2(item) {
+   console.log(item.perId);
+    this.patrocinadorSelec2 = item.perId;
+    this.perIdPatrocinador2 = item.perId;
+    this.nombrePatrocinador2 = item.nombre + ' ' + item.apePat + ' ' + item.rut + '-' + item.dv;
+    this.mostrarListaPatrocinadorScroll2 = 'listaHovHidden'; 
+        
+ },
+ 
+
+    getListarPatrocinante: function(){
+      console.log('Buscando...');
+      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinante').then((response) => {
+      this.patrocinantes = response.data;
+      });
+      this.mostrarListaPatrocinanteScroll='listaHov';
+      this.mostrarListaPatrocinadorScroll='listaHovHidden';
+      this.mostrarListadoPatrocinante=true;
+      this.nombrePatrocinador='';
+      this.mostrarListadoPatrocinador=false;
+
+    },
+
+    getListarPatrocinante2: function(){
+      console.log('Buscando...');
+      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinante').then((response) => {
+      this.patrocinantes2 = response.data;
+      });
+
+      this.mostrarListaPatrocinanteScroll2='listaHov';
+      this.mostrarListaPatrocinadorScroll2='listaHovHidden';
+      this.mostrarListadoPatrocinante2=true;
+      this.nombrePatrocinador2='';
+      this.mostrarListadoPatrocinador2=false;
+
+    },
+
+    getListarPatrocinador: function(){
+      console.log("Buscando Patrocinador...");
+      let idPatrocinante = this.patrocinanteSelec;
+
+      if(idPatrocinante !='' && this.nombrePatro !=''){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinador/'+idPatrocinante).then((response) => {
+      this.patrocinadores = response.data;
+      }).catch(function (error) {
+        // handle error
+      console.log(error);
+      });
+
+      this.mostrarListaPatrocinadorScroll='listaHov';
+      this.mostrarListaPatrocinanteScroll='listaHovHidden';
+      this.mostrarListadoPatrocinador=true;
+      this.mostrarListadoPatrocinante=false;
+
+      }else{
+        console.log("Debe introducir un patrocinante");
+        this.mostrarListadoPatrocinador=false;
+        this.mostrarListaPatrocinadorScroll='listaHovHidden';
+      }
+      
+
+    },
+
+    getListarPatrocinador2: function(){
+      console.log("Buscando Patrocinador2...");
+      let idPatrocinante = this.patrocinanteSelec2;
+
+      if(idPatrocinante !='' && this.nombrePatrocinante2 !=''){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinador/'+idPatrocinante).then((response) => {
+      this.patrocinadores2 = response.data;
+      this.mostrarListaPatrocinadorScroll2='listaHov';
+      this.mostrarListaPatrocinanteScroll2='listaHovHidden';
+      this.mostrarListadoPatrocinador2=true;
+      this.mostrarListadoPatrocinante2=false;
+      }).catch(function (error) {
+        // handle error
+      console.log(error);
+      });
+
+      }else{
+        console.log("Debe introducir un patrocinante");
+        this.mostrarListadoPatrocinador2=false;
+        this.mostrarListaPatrocinadorScroll2='listaHovHidden';
+      }
+      
+    },
+
+    cerrarScrollPostulacion(){
+      console.log("Le estoy dando click");
+      this.mostrarListadoPatrocinador2=false;
+      this.mostrarListadoPatrocinante2=false;
+      this.mostrarListadoPatrocinador=false;
+      this.mostrarListadoPatrocinante=false;
     },
 
     getListadoVocativo: function(){
@@ -1611,6 +1939,7 @@ setFocus(){
         this.getListadoEdoCivil();
         this.getListadoRegion();
         this.getListadoRegionPar();
+        //this.getListarPatrocinante();
         
            
   },
@@ -1627,11 +1956,32 @@ setFocus(){
     }
       this.msgTerm = true;
       return true; 
-    }             
+    },             
 
-    /*searchGente: function () {
-      return this.listaGente.filter((item) => item.rut.includes(this.rutComp));
-    } */           
+    buscarPatrocinante: function () {
+      return this.patrocinantes.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.nombrePatro.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.nombrePatro.toLowerCase());
+            });
+    },
+    buscarPatrocinante2: function () {
+      return this.patrocinantes2.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.nombrePatrocinante2.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.nombrePatrocinante2.toLowerCase());
+            });
+    },
+    buscarPatrocinador: function () {
+      return this.patrocinadores.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.nombrePatrocinador.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.nombrePatrocinador.toLowerCase());
+            });
+    },
+    buscarPatrocinador2: function () {
+      return this.patrocinadores2.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.nombrePatrocinador2.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.nombrePatrocinador2.toLowerCase());
+            });
+    }            
   }
 }
 </script>
@@ -1696,6 +2046,42 @@ setFocus(){
     height: 100vh;
     background-color: #2072BE;
     opacity: 0.1;
+}
+
+.input{
+  display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #D3D3D3;
+    border-radius: 0.25rem;
+    -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.listaHov :hover{
+background-color: #f8f9fa;
+}
+
+.listaHov{
+  overflow: scroll;
+  max-height: 300px;
+}
+
+.listaHovHidden{
+overflow:none;
+}
+
+.listLine{
+  border-left:solid 8px #2072BE;
 }
 
 /*.form-control:disabled{
