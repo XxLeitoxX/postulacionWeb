@@ -146,7 +146,7 @@
               for="oficina1">Oficina</label>
             <input v-model="oficina" type="text" id="oficina1" class="direccion1__input direccion1__input--right-small2 form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
-              for="continuacion1">Continuación</label>
+              for="continuacion1">Referencia </label>
             <input v-model="continuacion" type="text" id="continuacion1" class="direccion1__input direccion1__input--left form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="pais1">País*</label>
@@ -247,7 +247,7 @@
               for="oficina2">Oficina</label>
             <input v-model="oficinaPar" type="text" id="oficina2" class="direccion1__input direccion1__input--right-small2 form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
-              for="continuacion2">Continuación</label>
+              for="continuacion2">Referencia </label>
             <input v-model="continuacionPar" type="text" id="continuacion2" class="direccion1__input direccion1__input--left form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="pais2">País*</label>
@@ -634,10 +634,30 @@
           <h3 class="text-primary text-uppercase">Patrocinantes</h3>
           <p class="text-muted text-small">Ambos socios deben tener sus cuotas al día</p>
 
+<!-- Modales de Ayuda-->
+<b-modal ref="modal-ayuda-patrocinante" hide-footer title="Ayuda">
+              <div class="d-block text-center">
+                <p style="padding:5%;">Los patrocinantes son los socios...</p>
+              </div>
+              <div class="d-block text-center">
+                <b-button size="sm" variant="primary" @click="okAyuda()">ok</b-button>
+              </div>
+</b-modal>
+
+<b-modal ref="modal-ayuda-patrocinador" hide-footer title="Ayuda">
+              <div class="d-block text-center">
+                <p style="padding:5%;">Los Representantes del Socio son los socios...</p>
+              </div>
+              <div class="d-block text-center">
+                <b-button size="sm" variant="primary" @click="okAyudaPatrocinador()">ok</b-button>
+              </div>
+</b-modal>
+<!-- Fin devModales de Ayuda -->
 <form class="pt-3">
   <div class="row">
 <div class="col-lg-6">
-<label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinante 1*</label>  
+<label class="patrocinante__label text-small font-weight-bold" for="rut1"><i id="AyudaPatrocinante1" @click="showAyudaPatrocinador()" class="fas fa-question-circle question-icon"></i> Socio Patrocinante 1*</label>
+<!-- HTML title specified via default slot -->
 <input type="text" class="patrocinante__input form-control" v-model="nombrePatro"  @click="getListarPatrocinante">
 <input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinante" style="display:none;">
          <!-- <ul class="mt-2" :class="listaHov" style="padding-left:0" v-if="nombrePatro.length > 0 ? mostrarListadoPatro=true : ''">-->
@@ -651,7 +671,7 @@
 </div>
 
 <div class="col-lg-6">
-  <label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinador*</label>  
+  <label class="patrocinante__label text-small font-weight-bold" for="rut1"><i id="AyudaPatrocinante1" @click="showAyudaPatrocinador()" class="fas fa-question-circle question-icon"></i>Representante del Socio*</label>  
 <input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinador" @click="getListarPatrocinador">
 <input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinador" style="display:none;">
           <!--<ul class="mt-2" :class="listaHov" v-if="nombrePatrocinador.length > 0 ? mostrarListadoPatro=true : ''">-->
@@ -691,7 +711,7 @@
 <form class="pt-3">
   <div class="row">
 <div class="col-lg-6">
-<label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinante 2*</label>  
+<label class="patrocinante__label text-small font-weight-bold" for="rut1"><i id="AyudaPatrocinante1" @click="showAyuda()" class="fas fa-question-circle question-icon"></i> Socio Patrocinante 2*</label>  
 <input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinante2"  @click="getListarPatrocinante2">
 <input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinante2" style="display:none;">
          <!-- <ul class="mt-2" :class="listaHov" style="padding-left:0" v-if="nombrePatro.length > 0 ? mostrarListadoPatro=true : ''">-->
@@ -705,7 +725,7 @@
 </div>
 
 <div class="col-lg-6">
-  <label class="patrocinante__label text-small font-weight-bold" for="rut1">Patrocinador*</label>  
+  <label class="patrocinante__label text-small font-weight-bold" for="rut1"><i id="AyudaPatrocinante1" @click="showAyudaPatrocinador()" class="fas fa-question-circle question-icon"></i>Representante del Socio*</label>  
 <input type="text" class="patrocinante__input form-control" v-model="nombrePatrocinador2" @click="getListarPatrocinador2">
 <input type="text" class="patrocinante__input form-control" v-model="perIdPatrocinador2" style="display:none;">
           <!--<ul class="mt-2" :class="listaHov" v-if="nombrePatrocinador.length > 0 ? mostrarListadoPatro=true : ''">-->
@@ -1073,10 +1093,12 @@ data () {
          
        },
        direcciones:{
+         comercial:{},
+         particular:{}
 
        },
        composicion:{
-
+         com: []
        },
        comites:{
 
@@ -1088,8 +1110,9 @@ data () {
        compromisos:{
 
        }
-     }],
-
+  }],
+    
+    //personaNatural:[],
     
     //Data para el formulario Datos Principales formulario1
      vocativos:[],
@@ -1141,8 +1164,8 @@ data () {
       telefono:'',
       telEx:'',
       email:'',
-      correspondencia:'',
-      cobranza:'',
+      correspondencia:false,
+      cobranza:false,
       callePar:'',
       numeroCallePar:'',
       oficinaPar:'',
@@ -1153,8 +1176,8 @@ data () {
       comunaPar:'',
       telefonoPar:'',
       emailPar:'',
-      correspondenciaPar:'',
-      cobranzaPar:'',
+      correspondenciaPar:false,
+      cobranzaPar:false,
       telefonosArray:[],
       emailsArray:[],
       telefonosParArray:[],
@@ -1238,6 +1261,7 @@ data () {
        perIdPatrocinador:'',
        perIdPatrocinante2:'',
        perIdPatrocinador2:'',
+       
 
        //Data compromisos
        enviarCopiaMail: false
@@ -1251,7 +1275,6 @@ data () {
                      'frm4','frm5','frm6']),
 
                     
-
      /*onCountryInputChange (query) {
        //console.log(query);
       if (this.query.trim().length === 0) {
@@ -1274,6 +1297,7 @@ data () {
       this.query = item
     },*/              
 
+    
     siguiente(){
       /*this.$validator.validate()
 				.then(esValido => {
@@ -1492,7 +1516,7 @@ data () {
         patrocinantes:{
           patrocinante1: this.perIdPatrocinante,
           patrocinador1: this.perIdPatrocinador,
-          patrocinante2: this.perIdPatrocinandte2,
+          patrocinante2: this.perIdPatrocinante2,
           patrocinador2: this.perIdPatrocinador2
         },
         compromisos:{
@@ -1664,6 +1688,22 @@ cancelarEliminacion(){
 
   },
 
+  okAyuda(){
+    this.$refs['modal-ayuda-patrocinante'].hide();
+  },
+
+  showAyuda(){
+    this.$refs['modal-ayuda-patrocinante'].show();
+  },
+
+  okAyudaPatrocinador(){
+    this.$refs['modal-ayuda-patrocinador'].hide();
+  },
+
+  showAyudaPatrocinador(){
+    this.$refs['modal-ayuda-patrocinador'].show();
+  },
+
 showModalEditar() {
     this.$refs['modal-editar'].show();
 },
@@ -1691,8 +1731,19 @@ setFocus(){
 
 
 enviarPostulacion: function(){
-    alert("Postulacion Enviada");
-  },
+    this.guardar();
+    let obj = JSON.stringify(this.personaNatural);
+//console.log(obj);
+    Vue.axios.post('http://postulacion.isc.cl/personaNatural', obj).then((response) => {
+      alert("Postulacion Enviada");
+      console.log(response.data);
+      //console.log(response);
+     
+    }).catch(function (error) {
+      console.log("AXIOS ERROR: ", error);
+      });
+
+},
 
  itemClicked(item) {
    console.log(item.perId);
@@ -1703,7 +1754,7 @@ enviarPostulacion: function(){
  },
 
  itemClicked2(item) {
-   console.log(item.perId);
+   //console.log(item.perId);
     
     
     if(this.patrocinanteSelec != item.perId){
@@ -2083,6 +2134,14 @@ overflow:none;
 .listLine{
   border-left:solid 8px #2072BE;
 }
+
+.question-icon{
+    margin-right: 5px;
+    color: #2072BE;
+    font-size: 16px;
+    cursor:pointer;
+}
+
 
 /*.form-control:disabled{
     background-color: #e9ecef;

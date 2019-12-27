@@ -44,32 +44,8 @@
   </header>
     <div class="container">
 
-      <h3 class="text-center text-uppercase text-primary">Para comenzar el proceso, por favor ingrese RUT del
-        postulante, y cámara regional para crear un número de solicitud</h3>
-
-      <div v-if="!rutNoValido" class="alert alert-danger" role="alert">
-  <strong>Error!</strong> RUT no válido.
-</div>
-
-      <form class="creacion-solicitud__form pt-3" id="datosPersonales">
-        <div class="creacion-solicitud__form-left">
-          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="rut">RUT*</label>
-          <input type="text" v-on:keyup.enter="updateRutNum()" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
-          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="mail">Correo Electrónico*</label>
-          <input type="email" v-model="correo" id="mail" class="creacion-solicitud__form-input" required>
-        </div>
-        <div class="creacion-solicitud__form-right">
-          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="telefono">Teléfono*</label>
-          <input type="tel" v-model="telefono" id="telefono" class="creacion-solicitud__form-input" required>
-          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="camara">Cámara Regional</label>
-          <select id="camara" class="creacion-solicitud__form-input" v-model="camaraSeleccionada">
-            <option value="" disabled>Seleccione una camara</option>
-            <option v-for="(camara, key) in camaras" :value="camara.camRegId" :key="key">{{ camara.camRegGls }}</option>
-          </select>
-        </div>
-         <!--<span>Selected: {{ camaraSeleccionada }}</span>-->
-        <h3 class="text-primary text-uppercase py-4">Seleccione que tipo de postulación realiza</h3>
-        <div class="creacion-solicitud__radios">
+      <h3 class="text-primary text-uppercase py-4">Seleccione que tipo de postulación realiza</h3>
+      <div class="creacion-solicitud__radios">
           <div class="fcustom-control custom-radio form-check-inline creacion-solicitud__opt-container py-1">
             <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="natural" value="#/persona-natural">
             <label class="custom-control-label text-uppercase font-weight-bold text-small pt-1" for="natural">Persona Natural</label>
@@ -88,6 +64,29 @@
             <label class="custom-control-label text-uppercase font-weight-bold text-small pt-1" for="empresario">Empresario Individual</label>
           </div>
         </div>
+    
+      <form class="creacion-solicitud__form pt-3" id="datosPersonales">
+        <h3 class="text-center text-uppercase text-primary mt-5">Para comenzar el proceso, por favor ingrese RUT del
+        postulante, y cámara regional para crear un número de solicitud</h3>
+          <div v-if="!rutNoValido" class="alert alert-danger" role="alert">
+          <strong>Error!</strong> RUT no válido.
+          </div>
+        <div class="creacion-solicitud__form-left">
+          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="rut">RUT*</label>
+          <input type="text" v-on:keyup.enter="updateRutNum()" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
+          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="mail">Correo Electrónico*</label>
+          <input type="email" v-model="correo" id="mail" class="creacion-solicitud__form-input" required>
+        </div>
+        <div class="creacion-solicitud__form-right">
+          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="telefono">Teléfono*</label>
+          <input type="tel" v-model="telefono" id="telefono" class="creacion-solicitud__form-input" required>
+          <label class="creacion-solicitud__form-label text-small font-weight-bold" for="camara">Cámara Regional</label>
+          <select id="camara" class="creacion-solicitud__form-input" v-model="camaraSeleccionada">
+            <option value="" disabled>Seleccione una camara</option>
+            <option v-for="(camara, key) in camaras" :value="camara.camRegId" :key="key">{{ camara.camRegGls }}</option>
+          </select>
+        </div>
+         <!--<span>Selected: {{ camaraSeleccionada }}</span>-->
       </form>
       <div class="creacion-solicitud__buttons py-5">
         <router-link to="/" class="btn btn-danger text-uppercase btn--big m-2">Cancelar</router-link>
