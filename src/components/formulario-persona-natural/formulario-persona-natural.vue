@@ -1622,16 +1622,17 @@ data () {
 
 
 eliminarComposicion: function (indice){
-
-      
-
+    console.log(indice);
+    console.log(this.rutComp);
       if(this.respuesta == true){
+        console.log("Dijo que si");
         this.composicion.splice(indice, 1);
         this.rutComp = '';
         this.razonSocial = '';
         this.porcentaje = '';
         this.disabled = 0;
       }else{
+        console.log("Dijo que no");
         this.showModalEliminar();
         
       }
