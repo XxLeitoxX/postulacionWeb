@@ -7,12 +7,12 @@
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
           <form class="datos-personales">
             <label class="datos-personales__label" for="RUT">RUT*</label>
-            <input type="text" id="rut" name="RUT"  class="datos-personales__input" :value="rutGlobal"  v-validate="'required'">
-            <label class="datos-personales__label" for="vocativo">Vocativo*</label>
+            <input type="text" v-model="rut" id="rutInput" name="rut"  class="datos-personales__input" v-validate="'required'">
+            <!--<label class="datos-personales__label" for="vocativo">Vocativo*</label>
             <select v-model="vocativoSeleccionado" name="vocativo" type="text" id="vocativo" class="datos-personales__input" v-validate="'required'">
               <option value="" disabled>Seleccione uno</option>
               <option v-for="(vocativo, key) in vocativos" :value="vocativo.vocativoId" :key="key">{{ vocativo.vocativo }}</option>
-            </select>
+            </select>-->
             <label class="datos-personales__label" for="nombres">Nombres*</label>
             <input v-model="nombre" name="nombres" v-validate="'required'" type="text" id="nombres" class="datos-personales__input">
             <label class="datos-personales__label" for="apellido-pat">Apellido Paterno*</label>
@@ -26,10 +26,10 @@
        
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
             <input v-model="nacionalidad" type="text" id="nacionalidad" class="datos-personales__input datos-personales__input-nacionalidad">
-            <label class="datos-personales__label datos-personales__pasaporte-label invisible"
+           <!-- <label class="datos-personales__label datos-personales__pasaporte-label invisible"
               for="pasaporte">Pasaporte*</label>
             <input type="text" id="pasaporte"
-              class="datos-personales__input  datos-personales__pasaporte-input invisible">
+              class="datos-personales__input  datos-personales__pasaporte-input invisible">-->
             <label class="datos-personales__label" for="sexo">Sexo*</label>
             <select v-model="sexo" id="sexo" class="datos-personales__input" v-validate="'required'" name="sexo">
               <option value="1">Femenino</option>
@@ -42,12 +42,20 @@
             </select>
             <label class="datos-personales__label" for="nivelDeEstudios">Nivel de
               estudios</label>
-            <input v-model="nivelEstudios" type="text" id="nivelDeEstudios" class="datos-personales__input">
-            <label class="datos-personales__label" for="centroDeEstudios">Centro de
+            <!--<input v-model="nivelEstudios" type="text" id="nivelDeEstudios" class="datos-personales__input">-->
+            <select v-model="nivelSeleccionado" id="nivelDeEstudios" class="datos-personales__input" >
+              <option>Seleccione una opción</option>
+              <option v-for="(nivel, key) in nivelEstudios" :value="nivel.idNivel" :key="key">{{ nivel.nivelEstudios }}</option>
+            </select>
+            <!--<label class="datos-personales__label" for="centroDeEstudios">Centro de
               estudios*</label>
-            <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" v-validate="'required'" name="centroEstudio">
+            <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" v-validate="'required'" name="centroEstudio">-->
             <label class="datos-personales__label" for="profesion">Profesión*</label>
-            <input v-model="profesion" type="text" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">
+               <select v-model="profesionSeleccionado" id="profesion" class="datos-personales__input" >
+              <option>Seleccione una opción</option>
+              <option v-for="(profesion, key) in profesiones" :value="profesion.idProf" :key="key">{{ profesion.profesion }}</option>
+            </select>
+            <!--<input v-model="profesion" type="text" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">-->
             <div class="pt-2 w-100 datos-personales--cv">
               <!--<input type="file"  class="d-none" id="cv"
                 accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -71,13 +79,25 @@
               </label>
             </div>
             <label class="datos-personales__label" for="especialidad">Especialidad</label>
-            <input v-model="especialidad" type="text" id="especialidad" class="datos-personales__input">
+            <select v-model="especialidadSeleccionada" id="especialidad" class="datos-personales__input" >
+              <option>Seleccione una opción</option>
+              <option v-for="(especialidad, key) in especialidades" :value="especialidad.idEspecialidad" :key="key">{{ especialidad.especialidad }}</option>
+            </select>
+            <!--<input v-model="especialidad" type="text" id="especialidad" class="datos-personales__input">-->
             <label class="datos-personales__label" for="hobbies">Interés/Hobbies</label>
-            <input v-model="intereses" type="text" id="hobbies" class="datos-personales__input">
+            <!--<input v-model="intereses" type="text" id="hobbies" class="datos-personales__input">-->
+            <select v-model="interesSeleccionado" id="hobbies" class="datos-personales__input" >
+              <option>Seleccione una opción</option>
+              <option v-for="(interes, key) in intereses" :value="interes.idInt" :key="key">{{ interes.intGls }}</option>
+            </select>
             <label class="datos-personales__label" for="empresa">Empresa</label>
             <input v-model="empresa" type="text" id="empresa" class="datos-personales__input">
             <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
-            <input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">
+            <!--<input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">-->
+            <select v-model="cargoEmpresaSeleccionado" id="cargoEmpresa" class="datos-personales__input" >
+              <option>Seleccione una opción</option>
+              <option  v-for="(cargoEmpresa, key) in cargoEmpresas" :value="cargoEmpresa.idCargo" :key="key">{{ cargoEmpresa.nombreCargo }}</option>
+            </select>
           </form>
         </div> <!-- col-md-6 -->
         <!-- RIGHT COLUMN -->
@@ -91,7 +111,7 @@
           <h3 class="text-uppercase text-primary font-weight-bold pt-5">Acompañante</h3>
           <form class="acompanante__form">
             <label for="rut1" class="text-small font-weight-bold">RUT*</label>
-            <input v-model="rutAcom" type="number" id="rut1" class="form-control" v-validate="'required'" name="rut2">
+            <input v-model="rutAcom" type="text" id="rut1" class="form-control" v-validate="'required'" name="rut2">
             <label for="acompanante-name1" class="text-small font-weight-bold">Nombres*</label>
             <input v-model="nombreAcom" type="text" id="acompanante-name1" class="form-control" v-validate="'required'" name="nombre2">
             <label for="acompanante-apellido-pat1" class="text-small font-weight-bold">Apellido Paterno*</label>
@@ -180,8 +200,27 @@
                     <label class="text-small font-weight-bold" for="telefono1">Teléfono*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
-                    <input type="tel" id="telefono1" v-validate="'required'" name="telefono" class="form-control"  v-model="telefonosArray[k]" required>
-                      <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
+                    <div class="row">
+                      <div class="col-lg-3" style="padding-right: 2px;">
+                        <select v-model="tipoTelArray[k]" id="tipoTel" class="datos-personales__input" v-validate="'required'" name="Tipo">
+                          <option value="0">Fijo</option>
+                          <option value="1">Celular</option>
+                          <!--<option value="2">Principal</option>-->
+                        </select>
+                      </div>
+
+                      <div class="col-lg-9">
+                        <input type="tel" 
+                        id="telefono1"
+                         v-validate="'required'" 
+                         name="telefono" 
+                         class="form-control" 
+                         v-model="telefonosArray[k]" 
+                         required
+                         placeholder="ej 9 12345678">
+                        <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
                     <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png"
@@ -299,8 +338,23 @@
                     <label class="text-small font-weight-bold" for="telefono2">Teléfono*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
-                    <input v-model="telefonosParArray[z]" v-validate="'required'" name="telefono" type="tel" id="telefono2" class="form-control" required>
+                    <div class="row">
+                      <div class="col-lg-3" style="padding-right: 2px;">
+                      <select v-model="tipoTelParArray[z]" id="tipoTelPar" class="datos-personales__input" v-validate="'required'" name="Tipo">
+                          <option value="0">Fijo</option>
+                          <option value="1">Celular</option>
+                          <!--<option value="2">Principal</option>-->
+                        </select>
+                      </div>
+
+                      <div class="col-lg-9">
+                      <input v-model="telefonosParArray[z]"  placeholder="ej 9 12345678" v-validate="'required'" name="telefono" type="tel" id="telefono2" class="form-control" required>
                      <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
+                      </div> 
+                      
+                    </div>
+                    
+                    
                   </div>
                   <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
                     <button class="btn--direccion1-tel btn--hover-up"  @click="addTelefonoPar()"><img src="@/assets/images/mas.png"
@@ -377,6 +431,36 @@
         <!-- LEFT COLUMN -->
         <div class="col-md-7 col-lg-6">
           <h3 class="text-primary text-uppercase font-weight-bold">Composición accionaria</h3>
+         <!--<form action="">
+            <div class="form-group">
+              <div class="row">
+               
+
+                <div class="col-lg-4">
+                  <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
+                  <input v-model="rutComp" id="rut" :disabled="disabled == 1" type="text" class="form-control">
+                </div>
+
+                <div class="col-lg-4">
+                  <label for="porcentaje"
+                  class="accionarios-participacion__label text-small 
+                  font-weight-bold">Porcentaje</label>
+                  <input v-model="porcentaje" ref="porcentaje" 
+                  id="porcentaje" type="number" 
+                  class="form-control accionarios-participacion__input">
+                </div>
+
+                <div class="col-lg-4" style="padding-left:0%;">
+                <button type="button" 
+                class="btn--accionarios-participacion btn--hover-up" 
+                @click="buscar" style="margin-top:13%;"><img src="@/assets/images/mas.png"
+                alt="Adjuntar declaración de impuestos a la renta" 
+                height="33px"></button>
+                </div>
+
+              </div>
+            </div>
+          </form>-->
           <form class="accionarios-participacion__form accionarios-participacion__form--pnatural">
             <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
             <input v-model="rutComp" id="rut" :disabled="disabled == 1" type="text" class="form-control accionarios-participacion__input">
@@ -385,7 +469,7 @@
             <label for="porcentaje"
               class="accionarios-participacion__label text-small font-weight-bold">Porcentaje</label>
             <input v-model="porcentaje" ref="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
-            <button type="" class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
+            <button type="button" class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" height="33px"></button>
           </form>
 
@@ -402,7 +486,7 @@
             <tbody v-for="(com, indice) in composicion" :key='indice'>
                 <tr>
                   <td> {{com.nombre}} </td>
-                  <td>{{ com.rutComp }}</td>
+                  <td>{{ com.rutComp }}-{{ com.dvComp }}</td>
                   <td>{{ com.porcentaje }}%</td>
                   <td><a @click="editarPorcentaje(indice)"><i class="fas fa-pencil-alt icon-edit"></i></a> <a @click="eliminarComposicion(indice)"><i class="fas fa-times-circle icon-delete"></i></a>
                   </td>
@@ -1054,7 +1138,7 @@ data () {
       formateo:[],*/
       
 
-    listaGente:[
+    /*listaGente:[
       {
       id:'1',
       nombre:'Leo',
@@ -1076,7 +1160,7 @@ data () {
       razon: 'Genesis C.A',
       editing: false
     }
-    ],
+    ],*/
     
     language: "es",
     languages: lang,
@@ -1115,6 +1199,7 @@ data () {
     //personaNatural:[],
     
     //Data para el formulario Datos Principales formulario1
+     rut:'',
      vocativos:[],
      vocativoSeleccionado:'',
      nombre:'',
@@ -1125,14 +1210,19 @@ data () {
      sexo:'',
      edoCivilSeleccionado:'',
      edoCiviles:[],
-     nivelEstudios:'',
+     nivelSeleccionado:'',
+     nivelEstudios:[],
      centroEstudio:'',
-     profesion:'',
-     especialidad:'',
+     profesionSeleccionado:'',
+     profesiones:[],
+     especialidadSeleccionada:'',
+     especialidades:[],
      cv:null,
-     intereses:'',
+     interesSeleccionado:'',
+     intereses: [],
      empresa:'',
-     cargoEmpresa: '',
+     cargoEmpresaSeleccionado:'',
+     cargoEmpresas: [],
      sitioWeb:'',
      rutAcom:'',
      nombreAcom:'',
@@ -1162,6 +1252,7 @@ data () {
       comunasPar:[],
       comunaSeleccionadaPar:'',
       telefono:'',
+      tipoTel:0,
       telEx:'',
       email:'',
       correspondencia:false,
@@ -1175,12 +1266,15 @@ data () {
       regionPar:'',
       comunaPar:'',
       telefonoPar:'',
+      tipoTelPar:0,
       emailPar:'',
       correspondenciaPar:false,
       cobranzaPar:false,
       telefonosArray:[],
+      tipoTelArray:[],
       emailsArray:[],
       telefonosParArray:[],
+      tipoTelParArray:[],
       emailsParArray:[],
       inputsTel: [
         {
@@ -1208,8 +1302,9 @@ data () {
 
 
 //Data para el formulario Composicion Accionaria
-
+      listaPersonaJuridica:[],
       rutComp:'',
+      dvComp:'',
       razonSocial:'',
       porcentaje:0,
       composicion:[],
@@ -1436,7 +1531,8 @@ data () {
 					if (esValido) {*/
      this.personaNatural.push({
         datosPersonales:{
-        rutGlobal: this.$store.state.rutGlobal, 
+        //rutGlobal: this.$store.state.rutGlobal, 
+        rut: this.rut,
         vocativo: this.vocativoSeleccionado,
         nombre: this.nombre,
         apellidoPat: this.apellidoPat,
@@ -1445,14 +1541,14 @@ data () {
         nacionalidad: this.nacionalidad,
         sexo: this.sexo,
         edoCivil: this.edoCivilSeleccionado,
-        nivelEstudios: this.nivelEstudios,
+        nivelEstudios: this.nivelSeleccionado,
         centroEstudio: this.centroEstudio,
-        profesion: this.profesion,
-        especialidad: this.especialidad,
+        profesion: this.profesionSeleccionado,
+        especialidad: this.especialidadSeleccionada,
         cv: this.cv,
-        intereses: this.intereses,
+        intereses: this.interesSeleccionado,
         empresa: this.empresa,
-        cargoEmpresa:  this.cargoEmpresa,
+        cargoEmpresa:  this.cargoEmpresaSeleccionado,
         sitioWeb: this.sitioWeb,
         rutAcom: this.rutAcom,
         nombreAcom: this.nombreAcom,
@@ -1471,6 +1567,7 @@ data () {
           provincia: this.provinciaSeleccionada,
           comuna: this.comunaSeleccionada,
           telefono: this.telefonosArray,
+          tipoTel: this.tipoTelArray,
           email: this.emailsArray,
           correspondencia: this.correspondencia,
           cobranza: this.cobranza
@@ -1484,6 +1581,7 @@ data () {
             provincia: this.provinciaSeleccionadaPar,
             comuna: this.comunaSeleccionadaPar,
             telefono: this.telefonosParArray,
+            tipoTel: this.tipoTelParArray,
             email: this.emailsParArray,
             correspondenciaPar: this.correspondenciaPar,
             cobranzaPar: this.cobranzaPar
@@ -1539,12 +1637,12 @@ data () {
     alert("Debe llenar campo rut");
   }else{
       
-  for(var i=0; i< this.listaGente.length; i++){
+  for(var i=0; i< this.listaPersonaJuridica.length; i++){
    
   
-    if(this.listaGente[i].rut == this.rutComp){
+    if(this.listaPersonaJuridica[i].rut == this.rutComp){
 
-      this.razonSocial = this.listaGente[i].razon;
+      this.razonSocial = this.listaPersonaJuridica[i].razon;
       
       this.encuentra = '';
       let posi = '';
@@ -1565,10 +1663,11 @@ data () {
         this.composicion.splice(posi, 1);
 
           this.composicion.push({
-        rutComp: this.listaGente[i].rut,
-        nombre: this.listaGente[i].nombre,
-        porcentaje: this.porcentaje,
-        editing: this.listaGente[i].editing});
+        rutComp: this.listaPersonaJuridica[i].rut,
+        dvComp: this.listaPersonaJuridica[i].dv,
+        nombre: this.listaPersonaJuridica[i].nombre,
+        porcentaje: this.porcentaje});
+        //editing: this.listaPersonaJuridica[i].editing});
        this.guardar();
        this.editPor = false;
 
@@ -1576,10 +1675,11 @@ data () {
 
       if(this.encuentra == ''){
         this.composicion.push({
-        rutComp: this.listaGente[i].rut,
-        nombre: this.listaGente[i].nombre,
+        rutComp: this.listaPersonaJuridica[i].rut,
+        nombre: this.listaPersonaJuridica[i].nombre,
         porcentaje: this.porcentaje,
-        editing: this.listaGente[i].editing
+        dvComp: this.listaPersonaJuridica[i].dv
+        //editing: this.listaPersonaJuridica[i].editing
 
       });
 
@@ -1622,22 +1722,32 @@ data () {
 
 
 eliminarComposicion: function (indice){
-    console.log(indice);
-    console.log(this.rutComp);
-      if(this.respuesta == true){
-        console.log("Dijo que si");
+
+  var opcion = confirm("¿Desea eliminar a esta persona?");
+    if (opcion == true) {
         this.composicion.splice(indice, 1);
         this.rutComp = '';
         this.razonSocial = '';
         this.porcentaje = '';
         this.disabled = 0;
-      }else{
-        console.log("Dijo que no");
+	} else {
+	   console.log("Chao");
+	}
+  //this.rutComp = this.composicion[indice].rutComp;
+ 
+      //if(this.respuesta == true){
+        
+        /*this.composicion.splice(indice, 1);
+        this.rutComp = '';
+        this.razonSocial = '';
+        this.porcentaje = '';
+        this.disabled = 0;*/
+     /* }else{
+        console.log("No eliminar");
         this.showModalEliminar();
         
-      }
-      
-      
+      }*/
+          
      
 },
 
@@ -1673,15 +1783,16 @@ cancelarCreacion(){
 
   },
 
-showModalEliminar(){
-      this.$refs['modal-eliminar'].show();
-},
+/*showModalEliminar(){
+  this.$refs['modal-eliminar'].show();
+},*/
 
-aceptarEliminacion(){
+/*aceptarEliminacion(indice){
       this.$refs['modal-eliminar'].hide();
       this.respuesta = true;
-      this.eliminarComposicion();
-},
+      this.eliminarComposicion(indice);
+},*/
+
 
 cancelarEliminacion(){
     this.$refs['modal-eliminar'].hide();
@@ -1732,13 +1843,16 @@ setFocus(){
 
 
 enviarPostulacion: function(){
+ 
     this.guardar();
-    let obj = JSON.stringify(this.personaNatural);
-//console.log(obj);
-    Vue.axios.post('http://postulacion.isc.cl/personaNatural', obj).then((response) => {
+    //console.log(this.personaNatural);
+    let obj = this.personaNatural;
+    let data = JSON.stringify(obj);
+    console.log(data);
+    Vue.axios.post('http://postulacion.isc.cl/personaNatural',  data).then((response) => {
       alert("Postulacion Enviada");
+      //console.log(response.config.data);
       console.log(response.data);
-      //console.log(response);
      
     }).catch(function (error) {
       console.log("AXIOS ERROR: ", error);
@@ -1889,6 +2003,51 @@ enviarPostulacion: function(){
 
     },
 
+    getlistarEspecialidad: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarEspecialidad').then((response) => {
+      this.especialidades = response.data;
+        console.log(this.especialidades);
+      })
+
+    },
+
+     getlistarProfesiones: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarProfesiones').then((response) => {
+      this.profesiones = response.data;
+        console.log(this.profesiones);
+      })
+
+    },
+
+    getlistarNivel: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarNivel').then((response) => {
+      this.nivelEstudios = response.data;
+        //console.log(this.nivelEstudios);
+      })
+
+    },
+
+    getlistarCargos: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarCargos').then((response) => {
+      this.cargoEmpresas = response.data;
+        //console.log(this.cargoEmpresas);
+      })
+
+    },
+
+    getListarIntereses: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarInteres').then((response) => {
+      this.intereses = response.data;
+        //console.log(this.intereses);
+      })
+
+    },
+
     getListadoEdoCivil: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarEdo').then((response) => {
@@ -1948,7 +2107,7 @@ enviarPostulacion: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
       this.comunasPar = response.data;
-      this.getNombreProvinciaPar();
+      //this.getNombreProvinciaPar();
       //console.log(this.comunas);
     })
     
@@ -1982,6 +2141,15 @@ enviarPostulacion: function(){
       console.log(this.nombreComunaSelect);
       })
 
+    },
+
+    getPersonaJuridica: function(){
+
+      Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      this.listaPersonaJuridica= response.data;
+      console.log(this.listaPersonaJuridica);
+      })
+
     }
 
   },
@@ -1991,9 +2159,13 @@ enviarPostulacion: function(){
         this.getListadoEdoCivil();
         this.getListadoRegion();
         this.getListadoRegionPar();
-        //this.getListarPatrocinante();
-        
-           
+        this.getPersonaJuridica();
+        this.getListarIntereses();
+        this.getlistarCargos();
+        this.getlistarNivel();
+        this.getlistarProfesiones();
+        this.getlistarEspecialidad();
+        //this.getListarPatrocinante();        
   },
   
   computed:{
@@ -2141,6 +2313,13 @@ overflow:none;
     color: #2072BE;
     font-size: 16px;
     cursor:pointer;
+}
+
+@media (min-width: 1200px){
+  .datos-personales--cv {
+    grid-column: 2/3;
+    padding-left: 0;
+}
 }
 
 
