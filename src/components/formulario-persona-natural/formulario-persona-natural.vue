@@ -91,17 +91,35 @@
               <option v-for="(interes, key) in intereses" :value="interes.idInt" :key="key">{{ interes.intGls }}</option>
             </select>
             <label class="datos-personales__label" for="empresa">Empresa</label>
-            <input v-model="empresa" type="text" id="empresa" class="datos-personales__input">
+           <!-- <input v-model="empresa" type="text" id="empresa" class="datos-personales__input">-->
+            <input type="text" id="empresa" class="datos-personales__input" v-model="empresa"  @click="getPersonaJuridica">
+            <input type="text" id="empresaPerid" class="datos-personales__input" v-model="empresaPerId" style="display:none;" />     
             <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
             <!--<input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">-->
             <select v-model="cargoEmpresaSeleccionado" id="cargoEmpresa" class="datos-personales__input" >
               <option>Seleccione una opción</option>
               <option  v-for="(cargoEmpresa, key) in cargoEmpresas" :value="cargoEmpresa.idCargo" :key="key">{{ cargoEmpresa.nombreCargo }}</option>
             </select>
+
+            
           </form>
+          <div class="contai">
+            <div class="row">
+              <div class="col-lg-6"></div>
+              <div class="col-lg-6">
+                 <ul class="mt-2" :class="mostrarListaPersonaJuridicaEmpresaScroll" v-if="mostrarListadoPersonaJuridicaEmpresa" style="padding-left:0">
+					            <li v-for="(item, index) in buscarPersonaJuridicaEmpresaFiltro" :key="index" @click="itemClickedPersonaJuridicaEmpresa(item)" class="list-group-item listLine" style="cursor:pointer;">
+                        <!--<span>{{ item.rut }}-{{ item.dv }}</span><br>-->
+						            <span>{{ item.nombre }} {{ item.apePat }}</span>
+					            </li>
+                  </ul>
+              </div>
+            </div>
+          </div>
+         
         </div> <!-- col-md-6 -->
         <!-- RIGHT COLUMN -->
-        <div class="col-md-6 formulario-2__right-column">
+        <div class="col-md-6 formulario-2__right-column" @click="cerrarScrollPersonaJuridicaEmpresa">
           <h3 class="text-uppercase text-primary redes-digitales__title">Información adicional</h3>
           <form class="redes-digitales__form">
             <label for="sitio-web" class="text-small font-weight-bold">Sitio web</label>
@@ -205,10 +223,11 @@
                         <select v-model="tipoTelArray[k]" id="tipoTel" class="datos-personales__input" v-validate="'required'" name="Tipo">
                           <option value="0">Fijo</option>
                           <option value="1">Celular</option>
+                          <option value="2">Principal</option>
                           <!--<option value="2">Principal</option>-->
                         </select>
                       </div>
-
+                     
                       <div class="col-lg-9">
                         <input type="tel" 
                         id="telefono1"
@@ -217,8 +236,12 @@
                          class="form-control" 
                          v-model="telefonosArray[k]" 
                          required
-                         placeholder="ej 9 12345678">
+                         placeholder="ej 9 12345678"
+                         @keyup="validarTelefono(k)"
+                         >
                         <i class="fas fa-minus-circle eliminar-input" @click="removeTel(k)" v-show="k || ( !k && inputsTel.length > 1)" ></i>
+                        <!--<button class="btn btn-primary" @click="validarTelefono(k)">Validar</button>-->
+                        <span style="color:red;font-size:14px;" v-if="formatoTelefono">Formato incorrecto</span>
                       </div>
                     </div>
                   </div>
@@ -431,17 +454,24 @@
         <!-- LEFT COLUMN -->
         <div class="col-md-7 col-lg-6">
           <h3 class="text-primary text-uppercase font-weight-bold">Composición accionaria</h3>
-         <!--<form action="">
+         <form action="">
             <div class="form-group">
               <div class="row">
                
 
                 <div class="col-lg-4">
                   <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
-                  <input v-model="rutComp" id="rut" :disabled="disabled == 1" type="text" class="form-control">
+                  <input v-model="rutPersonaJuridica" id="rut"  @click="getPersonaJuridica" :disabled="disabled == 1" type="text" class="form-control">
+                  <input type="text" class="patrocinante__input form-control" v-model="rutComp" style="display:none;">
+                    <ul class="mt-2" :class="mostrarListaPersonaJuridicaScroll" v-if="mostrarListadoPersonaJuridica" style="padding-left:0">
+					            <li v-for="(item, index) in buscarPersonaJuridicaFiltro" :key="index" @click="itemClickedPersonaJuridica(item)" class="list-group-item listLine" style="cursor:pointer;">
+                        <span>{{ item.rut }}-{{ item.dv }}</span><br>
+						            <span>{{ item.nombre }} {{ item.apePat }}</span>
+					            </li>
+			              </ul>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4" @click="cerrarScrollPersonaJuridica">
                   <label for="porcentaje"
                   class="accionarios-participacion__label text-small 
                   font-weight-bold">Porcentaje</label>
@@ -450,7 +480,7 @@
                   class="form-control accionarios-participacion__input">
                 </div>
 
-                <div class="col-lg-4" style="padding-left:0%;">
+                <div class="col-lg-4" style="padding-left:0%;" @click="cerrarScrollPersonaJuridica">
                 <button type="button" 
                 class="btn--accionarios-participacion btn--hover-up" 
                 @click="buscar" style="margin-top:13%;"><img src="@/assets/images/mas.png"
@@ -460,8 +490,9 @@
 
               </div>
             </div>
-          </form>-->
-          <form class="accionarios-participacion__form accionarios-participacion__form--pnatural">
+          </form>
+
+          <!--<form class="accionarios-participacion__form accionarios-participacion__form--pnatural">
             <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
             <input v-model="rutComp" id="rut" :disabled="disabled == 1" type="text" class="form-control accionarios-participacion__input">
             <label for="name" class="accionarios-participacion__label text-small font-weight-bold">Razón social</label>
@@ -471,9 +502,9 @@
             <input v-model="porcentaje" ref="porcentaje" id="porcentaje" type="number" class="form-control accionarios-participacion__input">
             <button type="button" class="btn--accionarios-participacion btn--hover-up" @click="buscar"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" height="33px"></button>
-          </form>
+          </form>-->
 
-          <div class="table-responsive pt-3">
+          <div class="table-responsive pt-3" @click="cerrarScrollPersonaJuridica">
             <table class="table table-sm table--blue-border">
               <thead class="bg-primary text-white">
                 <tr>
@@ -530,7 +561,7 @@
         </div> <!-- col-md-6 -->
 
         <!-- RIGHT COLUMN -->
-        <div class="col-md-5 col-lg-6">
+        <div class="col-md-5 col-lg-6" @click="cerrarScrollPersonaJuridica">
           <div class="container">
 
             <div>
@@ -569,14 +600,18 @@
   <div class="row">
     <div class="col">
       <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="nombre">Nombre</label>
-      <input type="text" class="form-control" placeholder="">
+      <input type="text" class="form-control" placeholder="" v-model="nombrePersonaJuridicaNueva">
     </div>
     <div class="col">
       <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="nombre">RUT</label>
-      <input type="text" class="form-control" placeholder="">
+      <input type="text" class="form-control" placeholder="" v-model="rutPersonaJuridicaNueva">
+    </div>
+    <div class="col">
+      <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="nombre">DV</label>
+      <input type="text" class="form-control" placeholder="" v-model="dvPersonaJuridicaNueva">
     </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
     <div class="col">
       <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="porcentaje">Porcentaje</label>
       <input type="text" class="form-control" placeholder="">
@@ -585,8 +620,9 @@
       <label class="personas-asociadas-form__label personas-asociadas-form__label--left text-small font-weight-bold" for="social">Razón Social</label>
       <input type="text" class="form-control" placeholder="">
     </div>
-    </div>
-  <button type="submit" class="btn btn-primary" style="float:right; padding: 2% 5% 2% 5%; margin-top: 2%;">Crear</button>
+    </div> -->
+  <button  class="btn btn-danger" @click="cerrarCreacionPersonaJuridica" style="float:right; padding: 2% 5% 2% 5%; margin-top: 2%; margin-left:2%;">Cerrar</button>  
+  <button  class="btn btn-primary" @click="crearPersonaJuridicaNueva" style="float:right; padding: 2% 5% 2% 5%; margin-top: 2%;">Crear</button>
 </form>
               <!--<form class="personas-asociadas" v-if="formRegistrarPersona">
                   <div class="personas-asociadas-form">
@@ -1221,6 +1257,10 @@ data () {
      interesSeleccionado:'',
      intereses: [],
      empresa:'',
+     listaPersonaJuridicaEmpresa:[],
+     empresaPerId:'',
+     mostrarListadoPersonaJuridicaEmpresa:false,
+     mostrarListaPersonaJuridicaEmpresaScroll:'listaHov',
      cargoEmpresaSeleccionado:'',
      cargoEmpresas: [],
      sitioWeb:'',
@@ -1299,6 +1339,7 @@ data () {
           emailPar:''
         }
       ],
+      formatoTelefono: false,
 
 
 //Data para el formulario Composicion Accionaria
@@ -1313,6 +1354,12 @@ data () {
       encuentra:'',
       editPor: false,
       respuesta: false,
+      mostrarListaPersonaJuridicaScroll:'listaHov',
+      mostrarListadoPersonaJuridica:false,
+      rutPersonaJuridica:'',
+      nombrePersonaJuridicaNueva:'',
+      rutPersonaJuridicaNueva:'',
+      dvPersonaJuridicaNueva:'',
 
 
  //Data para Selección de comités
@@ -1469,7 +1516,6 @@ data () {
     },
     
     addTel() {
-            
             this.inputsTel.push({ telEx: '' });
             this.inputsTel.reverse();
             
@@ -1548,6 +1594,7 @@ data () {
         cv: this.cv,
         intereses: this.interesSeleccionado,
         empresa: this.empresa,
+        empresaPerId : this.empresaPerId,
         cargoEmpresa:  this.cargoEmpresaSeleccionado,
         sitioWeb: this.sitioWeb,
         rutAcom: this.rutAcom,
@@ -1633,7 +1680,7 @@ data () {
   buscar: function (indice){
     
 
-  if(this.rutComp == ''){
+  if(this.rutComp == '' && this.rutPersonaJuridica== ''){
     alert("Debe llenar campo rut");
   }else{
       
@@ -2043,7 +2090,7 @@ enviarPostulacion: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarInteres').then((response) => {
       this.intereses = response.data;
-        //console.log(this.intereses);
+        console.log(this.intereses);
       })
 
     },
@@ -2143,14 +2190,79 @@ enviarPostulacion: function(){
 
     },
 
-    getPersonaJuridica: function(){
+    /*getPersonaJuridica: function(){
 
       Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
       this.listaPersonaJuridica= response.data;
       console.log(this.listaPersonaJuridica);
       })
 
-    }
+    },*/
+
+    getPersonaJuridica: function(){
+      console.log('Buscando...');
+      Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      this.listaPersonaJuridica= response.data;
+      this.listaPersonaJuridicaEmpresa = response.data;
+      console.log(this.listaPersonaJuridica);
+      });
+
+      this.mostrarListaPersonaJuridicaScroll = 'listaHov';
+      this.mostrarListadoPersonaJuridica = true;
+      this.mostrarListadoPersonaJuridicaEmpresa = true;
+      this.mostrarListaPersonaJuridicaEmpresaScroll = 'listaHov';
+     
+
+    },
+
+    itemClickedPersonaJuridica(item) {
+      console.log(item);
+      this.rutComp = item.rut;
+      this.rutPersonaJuridica = item.rut + '-' + item.dv + ' ' + item.nombre;
+      this.mostrarListaPersonaJuridicaScroll = 'listaHovHidden';
+      this.mostrarListadoPersonaJuridica =false;
+     
+      
+  },
+
+  itemClickedPersonaJuridicaEmpresa(item){
+    console.log(item);
+    this.empresa = item.nombre;
+    this.empresaPerId = item.perId;
+    this.mostrarListaPersonaJuridicaEmpresaScroll = 'listaHovHidden'
+    this.mostrarListadoPersonaJuridicaEmpresa = false;
+  },
+
+  cerrarScrollPersonaJuridicaEmpresa(){
+    this.mostrarListadoPersonaJuridicaEmpresa = false;
+  },
+
+  cerrarScrollPersonaJuridica(){
+    this.mostrarListadoPersonaJuridica = false;
+  },
+
+  cerrarCreacionPersonaJuridica(){
+    this.formRegistrarPersona = false;
+  },
+
+  crearPersonaJuridicaNueva(){
+    this.composicion.push({
+        rutComp: this.rutPersonaJuridicaNueva,
+        nombre: this.nombrePersonaJuridicaNueva,
+        dvComp: this.dvPersonaJuridicaNueva
+      });
+  },
+
+   validarTelefono(i) {
+ 
+  let telefono = this.telefonosArray[i];
+  let expreg = /^(\+?56)?(\s?)(0?9)(\s?)[987654]\d{7}$/;
+  
+  if(expreg.test(telefono))
+	this.formatoTelefono = false;
+  else 
+    this.formatoTelefono = true;
+} 
 
   },
 
@@ -2159,7 +2271,7 @@ enviarPostulacion: function(){
         this.getListadoEdoCivil();
         this.getListadoRegion();
         this.getListadoRegionPar();
-        this.getPersonaJuridica();
+        //this.getPersonaJuridica();
         this.getListarIntereses();
         this.getlistarCargos();
         this.getlistarNivel();
@@ -2180,8 +2292,19 @@ enviarPostulacion: function(){
     }
       this.msgTerm = true;
       return true; 
+    },
+    buscarPersonaJuridicaEmpresaFiltro: function () {
+      return this.listaPersonaJuridicaEmpresa.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.empresa.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.empresa.toLowerCase());
+            });
     },             
-
+    buscarPersonaJuridicaFiltro: function () {
+      return this.listaPersonaJuridica.filter((item) => {
+                return item.nombre.toLowerCase().includes(this.rutComp.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.rutComp.toLowerCase());
+            });
+    },
     buscarPatrocinante: function () {
       return this.patrocinantes.filter((item) => {
                 return item.nombre.toLowerCase().includes(this.nombrePatro.toLowerCase()) || 

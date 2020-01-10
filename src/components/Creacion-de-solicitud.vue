@@ -55,7 +55,9 @@
             <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="juridica" value="#/persona-juridica-formulario-1">
             <label class="custom-control-label text-uppercase font-weight-bold text-small pt-1" for="juridica">Persona jurídica</label>
             <select name="" id="" class="creacion-solicitud__select">
-              <option value="" disabled selected>Tipo de sociedad</option>
+              <option value="" selected disabled>Tipo de sociedad</option>
+              <option>S.A</option>
+              <option>SPA</option>
             </select>
           </div>
           <div class="fcustom-control custom-radio form-check-inline creacion-solicitud__opt-container py-1">
@@ -82,7 +84,7 @@
           <input type="tel" v-model="telefono" id="telefono" class="creacion-solicitud__form-input" required>
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="camara">Cámara Regional</label>
           <select id="camara" class="creacion-solicitud__form-input" v-model="camaraSeleccionada">
-            <option value="" disabled>Seleccione una camara</option>
+            <option value="" disabled>Ubicación</option>
             <option v-for="(camara, key) in camaras" :value="camara.camRegId" :key="key">{{ camara.camRegGls }}</option>
           </select>
         </div>
