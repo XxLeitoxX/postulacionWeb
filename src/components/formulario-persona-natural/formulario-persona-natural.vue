@@ -92,7 +92,7 @@
             </select>
             <label class="datos-personales__label" for="empresa">Empresa</label>
            <!-- <input v-model="empresa" type="text" id="empresa" class="datos-personales__input">-->
-            <input type="text" id="empresa" class="datos-personales__input" v-model="empresa"  @click="getPersonaJuridica">
+            <input type="text" id="empresa" class="datos-personales__input" v-model="empresa"  @click="getPersonaJuridicaEmpresa">
             <input type="text" id="empresaPerid" class="datos-personales__input" v-model="empresaPerId" style="display:none;" />     
             <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
             <!--<input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">-->
@@ -227,9 +227,8 @@
                           <!--<option value="2">Principal</option>-->
                         </select>
                       </div>
-                     
                       <div class="col-lg-9">
-                        <input type="tel" 
+                        <input type="text" 
                         id="telefono1"
                          v-validate="'required'" 
                          name="telefono" 
@@ -246,7 +245,7 @@
                     </div>
                   </div>
                   <div class="col-2 col-sm-1 col-md-2 direccion__tel-mail-right">
-                    <button class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png"
+                    <button v-if="mostrarAdd" class="btn--direccion1-tel btn--hover-up"  @click="addTel()"><img src="@/assets/images/mas.png"
                         alt="Añadir teléfono" class="img-fluid"></button>
                   </div>
                 </div>
@@ -309,7 +308,7 @@
               for="oficina2">Oficina</label>
             <input v-model="oficinaPar" type="text" id="oficina2" class="direccion1__input direccion1__input--right-small2 form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
-              for="continuacion2">Referencia </label>
+              for="continuacion2">Puntos de Referencia</label>
             <input v-model="continuacionPar" type="text" id="continuacion2" class="direccion1__input direccion1__input--left form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="pais2">País*</label>
@@ -459,11 +458,11 @@
               <div class="row">
                
 
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <label for="rut" class="accionarios-participacion__label text-small font-weight-bold">RUT</label>
                   <input v-model="rutPersonaJuridica" id="rut"  @click="getPersonaJuridica" :disabled="disabled == 1" type="text" class="form-control">
-                  <input type="text" class="patrocinante__input form-control" v-model="rutComp" style="display:none;">
-                    <ul class="mt-2" :class="mostrarListaPersonaJuridicaScroll" v-if="mostrarListadoPersonaJuridica" style="padding-left:0">
+                  <!--<input type="text" class="patrocinante__input form-control" v-model="rutComp" style="display:none;">-->
+                    <ul class="mt-2" :class="mostrarListaPersonaJuridicaScroll" v-if="mostrarListadoPersonaJuridica" style="width:150%;padding-left:0">
 					            <li v-for="(item, index) in buscarPersonaJuridicaFiltro" :key="index" @click="itemClickedPersonaJuridica(item)" class="list-group-item listLine" style="cursor:pointer;">
                         <span>{{ item.rut }}-{{ item.dv }}</span><br>
 						            <span>{{ item.nombre }} {{ item.apePat }}</span>
@@ -471,7 +470,15 @@
 			              </ul>
                 </div>
 
-                <div class="col-lg-4" @click="cerrarScrollPersonaJuridica">
+                <div class="col-lg-3">
+                  <label for="porcentaje"
+                  class="accionarios-participacion__label text-small 
+                  font-weight-bold">Razón Social</label>
+                  <input v-model="razonSocial"  
+                  id="razonSocial" type="text" 
+                  class="form-control accionarios-participacion__input">
+                </div>
+                <div class="col-lg-3" @click="cerrarScrollPersonaJuridica">
                   <label for="porcentaje"
                   class="accionarios-participacion__label text-small 
                   font-weight-bold">Porcentaje</label>
@@ -480,13 +487,19 @@
                   class="form-control accionarios-participacion__input">
                 </div>
 
-                <div class="col-lg-4" style="padding-left:0%;" @click="cerrarScrollPersonaJuridica">
+                <div class="col-lg-3" style="padding-left:0%;" @click="cerrarScrollPersonaJuridica">
                 <button type="button" 
                 class="btn--accionarios-participacion btn--hover-up" 
-                @click="buscar" style="margin-top:13%;"><img src="@/assets/images/mas.png"
+                @click="buscar" style="margin-top:18%;"><img src="@/assets/images/mas.png"
                 alt="Adjuntar declaración de impuestos a la renta" 
                 height="33px"></button>
                 </div>
+
+                <!--<div class="col-lg-4" style="padding-left:0%;" @click="cerrarScrollPersonaJuridica">
+                <button type="button" 
+                class="btn btn-primary" 
+                @click="crearPersonaJuridicaNueva" style="margin-top:13%;"></button>
+                </div>-->
 
               </div>
             </div>
@@ -517,7 +530,7 @@
             <tbody v-for="(com, indice) in composicion" :key='indice'>
                 <tr>
                   <td> {{com.nombre}} </td>
-                  <td>{{ com.rutComp }}-{{ com.dvComp }}</td>
+                  <td>{{ com.rutPersonaJuridica }}-{{ com.dvComp }}</td>
                   <td>{{ com.porcentaje }}%</td>
                   <td><a @click="editarPorcentaje(indice)"><i class="fas fa-pencil-alt icon-edit"></i></a> <a @click="eliminarComposicion(indice)"><i class="fas fa-times-circle icon-delete"></i></a>
                   </td>
@@ -578,7 +591,7 @@
             <div>
             <b-modal ref="modal-editar" hide-footer title="Editar Porcentaje">
               <div class="d-block text-center">
-                <h3 style="padding:5%;">¿Seguro que desea editar el porcentaje con el RUT {{ rutComp }}</h3>
+                <h3 style="padding:5%;">¿Seguro que desea editar el porcentaje con el RUT {{ rutPersonaJuridica }}</h3>
               </div>
               <div class="d-block text-center">
                 <b-button size="sm" variant="primary" @click="aceptarEdicion()">Si</b-button>
@@ -589,7 +602,7 @@
             <div>
             <b-modal ref="modal-eliminar" hide-footer title="Eliminar Persona">
               <div class="d-block text-center">
-                <h3 style="padding:5%;">¿Seguro que desea eliminar a la persona con el RUT {{ rutComp }}?</h3>
+                <h3 style="padding:5%;">¿Seguro que desea eliminar a la persona con el RUT {{ rutPersonaJuridica }}?</h3>
               </div>
               <div class="d-block text-center">
                 <b-button size="sm" variant="primary" @click="aceptarEliminacion()">Si</b-button>
@@ -812,7 +825,7 @@
               <span class="font-weight-bold text-small pl-1 btn--hover-right">Descargar formulario</span>
             </a>
             <div class="patrocinante__attachment pt-2">
-              <input type="file" class="d-none" id="respaldo" required>
+              <input type="file" class="d-none" id="respaldo1" required>
               <label for="respaldo" class="d-flex patrocinante__attachment-label">
                 <div class="patrocinante__attachment-icon-container mr-2 btn--sibling-hover-right">
                   <img src="@/assets/images/mas.png" alt="Adjuntar respaldo de patrocinante" width="33px">
@@ -1105,7 +1118,7 @@
         </div> <!-- row -->
         <span v-if="msgTerm" class="font-weight-bold pt-1" style="color:red">*Debe acpetar términos y condiciones</span>
         <div class="d-flex justify-content-center pt-5">
-          <button :disabled="isDisabled" class="btn btn--big btn--submit text-white text-uppercase" @click="enviarPostulacion()">Enviar postulación</button>
+          <button type="submit" :disabled="isDisabled" class="btn btn--big btn--submit text-white text-uppercase" @click="enviarPostulacion()">Enviar postulación</button>
         </div>
       </form>
 
@@ -1286,12 +1299,14 @@ data () {
       comunaSeleccionada:'',
       nombreComunaSelect:'',
       provinciasPar:[],
-      provinciaSeleccionadaPar:'',
+      provinciaSeleccionadaPar:0,
       regionesPar:[],
-      regionSeleccionadaPar:'',
+      regionSeleccionadaPar:0,
       comunasPar:[],
-      comunaSeleccionadaPar:'',
+      comunaSeleccionadaPar:0,
       telefono:'',
+      codigoArea:'',
+      selectTipoTel:'',
       tipoTel:0,
       telEx:'',
       email:'',
@@ -1340,6 +1355,7 @@ data () {
         }
       ],
       formatoTelefono: false,
+      mostrarAdd: true,
 
 
 //Data para el formulario Composicion Accionaria
@@ -1360,6 +1376,8 @@ data () {
       nombrePersonaJuridicaNueva:'',
       rutPersonaJuridicaNueva:'',
       dvPersonaJuridicaNueva:'',
+      personasJuridicasNuevas:[],
+      juridicoEnArray: false,
 
 
  //Data para Selección de comités
@@ -1516,8 +1534,14 @@ data () {
     },
     
     addTel() {
+
+      if(this.inputsTel.length <= 2){
+
             this.inputsTel.push({ telEx: '' });
             this.inputsTel.reverse();
+           
+      }
+            //mostrarAdd = false;
             
         },
     removeTel(index) {
@@ -1526,8 +1550,10 @@ data () {
 
     addEmail() {
             
-            this.inputsEmail.push({ email: '' });
-            this.inputsEmail.reverse();
+            if(this.inputsEmail.length <= 2){
+              this.inputsEmail.push({ email: '' });
+              this.inputsEmail.reverse();
+            }
             
         },
     removeEmail(index) {
@@ -1535,10 +1561,10 @@ data () {
         },
     
     addTelefonoPar() {
-            
+            if(this.inputsTelPar.length <= 2){
             this.inputsTelPar.push({ telefonoPar: '' });
             this.inputsTelPar.reverse();
-            
+            }
         },
 
     removeTelefonoPar(index) {
@@ -1546,10 +1572,10 @@ data () {
         },
 
     addEmailPar() {
-            
+            if(this.inputsEmailPar.length <= 2){
             this.inputsEmailPar.push({ emailPar: '' });
             this.inputsEmailPar.reverse();
-            
+            }
         },
     removeEmailPar(index) {
             this.inputsEmailPar.splice(index, 1);
@@ -1572,6 +1598,7 @@ data () {
 
     guardar: function(){
 
+     
      /* this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
@@ -1580,11 +1607,11 @@ data () {
         //rutGlobal: this.$store.state.rutGlobal, 
         rut: this.rut,
         vocativo: this.vocativoSeleccionado,
-        nombre: this.nombre,
-        apellidoPat: this.apellidoPat,
-        apellidoMat: this.apellidoMat,
+        nombre: this.primeraMayuscula(this.nombre.toLowerCase()),
+        apellidoPat: this.primeraMayuscula(this.apellidoPat.toLowerCase()),
+        apellidoMat: this.primeraMayuscula(this.apellidoMat.toLowerCase()),
         fechaNacimiento: moment(this.fechaNacimiento).format('DD-MM-YYYY'),
-        nacionalidad: this.nacionalidad,
+        nacionalidad: this.primeraMayuscula(this.nacionalidad.toLowerCase()),
         sexo: this.sexo,
         edoCivil: this.edoCivilSeleccionado,
         nivelEstudios: this.nivelSeleccionado,
@@ -1598,18 +1625,18 @@ data () {
         cargoEmpresa:  this.cargoEmpresaSeleccionado,
         sitioWeb: this.sitioWeb,
         rutAcom: this.rutAcom,
-        nombreAcom: this.nombreAcom,
-        apellidoPatAcom: this.apellidoPatAcom,
-        apellidoMatAcom: this.apellidoMatAcom,
+        nombreAcom: this.primeraMayuscula(this.nombreAcom.toLowerCase()),
+        apellidoPatAcom: this.primeraMayuscula(this.apellidoPatAcom.toLowerCase()),
+        apellidoMatAcom: this.primeraMayuscula(this.apellidoMatAcom.toLowerCase()),
         emailAcom: this.emailAcom
         },
         
         direcciones:{
           comercial:{
-          calle:this.calle,
-          numero:this.numeroCalle,
+          calle: this.primeraMayuscula(this.calle.toLowerCase()),
+          numero: this.numeroCalle,
           oficina: this.oficina,
-          continuacion: this.continuacion,
+          continuacion: this.primeraMayuscula(this.continuacion.toLowerCase()),
           region: this.regionSeleccionada,
           provincia: this.provinciaSeleccionada,
           comuna: this.comunaSeleccionada,
@@ -1620,10 +1647,10 @@ data () {
           cobranza: this.cobranza
         },
         particular:{
-            calle: this.callePar,
+            calle: this.primeraMayuscula(this.callePar.toLowerCase()),
             numero: this.numeroCallePar,
             oficina: this.oficinaPar,
-            continuacion: this.continuacionPar,
+            continuacion: this.primeraMayuscula(this.continuacionPar.toLowerCase()),
             region: this.regionSeleccionadaPar,
             provincia: this.provinciaSeleccionadaPar,
             comuna: this.comunaSeleccionadaPar,
@@ -1680,23 +1707,27 @@ data () {
   buscar: function (indice){
     
 
-  if(this.rutComp == '' && this.rutPersonaJuridica== ''){
+  if(this.rutPersonaJuridica== ''){
     alert("Debe llenar campo rut");
   }else{
+ console.log(this.listaPersonaJuridica.length);
       
   for(var i=0; i< this.listaPersonaJuridica.length; i++){
    
-  
-    if(this.listaPersonaJuridica[i].rut == this.rutComp){
+ 
+    if(this.listaPersonaJuridica[i].rut == this.rutPersonaJuridica){
 
-      this.razonSocial = this.listaPersonaJuridica[i].razon;
+      //this.razonSocial = this.listaPersonaJuridica[i].razon;
       
       this.encuentra = '';
+     
       let posi = '';
+      
       for(let k = 0; k < this.composicion.length; k++) {
-       
-        if (this.composicion[k].rutComp == this.rutComp) {
-          this.encuentra = this.rutComp;
+        
+        if (this.composicion[k].rutPersonaJuridica == this.rutPersonaJuridica) {
+          this.encuentra = this.rutPersonaJuridica;
+          
           posi = k;
           break;
         }
@@ -1706,36 +1737,39 @@ data () {
     
       if(this.editPor == true){
 
-
-        this.composicion.splice(posi, 1);
-
+          this.composicion.splice(posi, 1);
           this.composicion.push({
-        rutComp: this.listaPersonaJuridica[i].rut,
+        rutPersonaJuridica: this.listaPersonaJuridica[i].rut,
         dvComp: this.listaPersonaJuridica[i].dv,
         nombre: this.listaPersonaJuridica[i].nombre,
         porcentaje: this.porcentaje});
+        this.guardar();
+        this.editPor = false;
+        
+        
+
         //editing: this.listaPersonaJuridica[i].editing});
-       this.guardar();
-       this.editPor = false;
+       
 
       }else{
 
       if(this.encuentra == ''){
         this.composicion.push({
-        rutComp: this.listaPersonaJuridica[i].rut,
+        rutPersonaJuridica: this.listaPersonaJuridica[i].rut,
         nombre: this.listaPersonaJuridica[i].nombre,
         porcentaje: this.porcentaje,
         dvComp: this.listaPersonaJuridica[i].dv
         //editing: this.listaPersonaJuridica[i].editing
 
       });
-
+      
        this.guardar();
        this.editPor = false;
+       
       }else{
 
 
-          alert("El Rut " +this.rutComp+" ya exite");
+          alert("El Rut " +this.rutPersonaJuridica+" ya exite");
         this.razonSocial = '';
       }  
 
@@ -1748,8 +1782,9 @@ data () {
       this.formRegistrarPersona = false;
       
       this.disabled = 0;
-      this.rutComp = '';
-      //this.razonSocial = '';
+      //this.rutPersonaJuridica = this.rutComp;
+      this.rutPersonaJuridica = '';
+      this.razonSocial = '';
       this.porcentaje = '';
      
       return;
@@ -1773,7 +1808,7 @@ eliminarComposicion: function (indice){
   var opcion = confirm("¿Desea eliminar a esta persona?");
     if (opcion == true) {
         this.composicion.splice(indice, 1);
-        this.rutComp = '';
+        this.rutPersonaJuridica = '';
         this.razonSocial = '';
         this.porcentaje = '';
         this.disabled = 0;
@@ -1799,13 +1834,11 @@ eliminarComposicion: function (indice){
 },
 
 editarPorcentaje: function (indice){
-
       this.showModalEditar();
       this.porcentaje = this.composicion[indice].porcentaje;
-      this.rutComp = this.composicion[indice].rutComp;
+      this.rutPersonaJuridica = this.composicion[indice].rutPersonaJuridica;
       this.disabled = 1;
-      this.editPor = true;
-      
+      this.editPor = true;  
      
 },
 
@@ -1818,11 +1851,13 @@ showModalCrear(){
 aceptarCreacion(){
    this.formRegistrarPersona = true;
    this.$refs['modal-crear'].hide();
+   this.rutPersonaJuridicaNueva = this.rutPersonaJuridica;
 },
 
 cancelarCreacion(){
     this.formRegistrarPersona = false;
-    this.rutComp = '';
+    //this.rutComp = '';
+    this.rutPersonaJuridica = '';
     this.razonSocial = '';
     this.porcentaje = '';
     this.disabled = 0;
@@ -1874,7 +1909,8 @@ aceptarEdicion(){
 
 cancelarEdicion(){
     this.$refs['modal-editar'].hide();
-    this.rutComp = '';
+    //this.rutComp = '';
+    this.rutPersonaJuridica ='';
     this.razonSocial = '';
     this.porcentaje = '';
     this.disabled = 0;
@@ -2215,10 +2251,23 @@ enviarPostulacion: function(){
 
     },
 
+     getPersonaJuridicaEmpresa: function(){
+      console.log('Buscando...');
+      Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      this.listaPersonaJuridicaEmpresa = response.data;
+      console.log(this.listaPersonaJuridica);
+      });
+
+      this.mostrarListadoPersonaJuridicaEmpresa = true;
+      this.mostrarListaPersonaJuridicaEmpresaScroll = 'listaHov';
+     
+
+    },
+
     itemClickedPersonaJuridica(item) {
-      console.log(item);
-      this.rutComp = item.rut;
-      this.rutPersonaJuridica = item.rut + '-' + item.dv + ' ' + item.nombre;
+      //this.rutComp = item.rut;
+      this.rutPersonaJuridica = item.rut;
+      this.razonSocial = item.nombre;
       this.mostrarListaPersonaJuridicaScroll = 'listaHovHidden';
       this.mostrarListadoPersonaJuridica =false;
      
@@ -2246,11 +2295,20 @@ enviarPostulacion: function(){
   },
 
   crearPersonaJuridicaNueva(){
-    this.composicion.push({
-        rutComp: this.rutPersonaJuridicaNueva,
+
+this.personasJuridicasNuevas.push({
+        rutPersonaJuridica: this.rutPersonaJuridicaNueva,
         nombre: this.nombrePersonaJuridicaNueva,
+        porcentaje: this.porcentaje,
         dvComp: this.dvPersonaJuridicaNueva
+        
       });
+
+      this.formRegistrarPersona = false;
+      //this.buscar();
+   
+
+      
   },
 
    validarTelefono(i) {
@@ -2258,11 +2316,34 @@ enviarPostulacion: function(){
   let telefono = this.telefonosArray[i];
   let expreg = /^(\+?56)?(\s?)(0?9)(\s?)[987654]\d{7}$/;
   
-  if(expreg.test(telefono))
-	this.formatoTelefono = false;
-  else 
+  if(expreg.test(telefono)){
+    this.formatoTelefono = false;
+  }
+	
+  else {
     this.formatoTelefono = true;
-} 
+  }
+
+  /*let telefonoCadenaArray = this.telefonosArray[i].split('');
+  //console.log(this.telefonosArray[i]);
+  //console.log(telefonoCadenaArray);
+
+  for (var i=0; i < telefonoCadenaArray.length; i++) {
+    if(i > 7){
+      let arregloString = telefonoCadenaArray.toString();
+      //this.codigoArea = telefonoCadenaArray[i] + telefonoCadenaArray[i+1];
+      console.log(arregloString);
+    }else{
+      //console.log("Numero")
+    }
+      //console.log(telefonoCadenaArray[i]);
+   }*/
+    
+},
+
+primeraMayuscula(string){
+  return string.charAt(0).toUpperCase() + string.slice(1);
+},
 
   },
 
@@ -2301,8 +2382,8 @@ enviarPostulacion: function(){
     },             
     buscarPersonaJuridicaFiltro: function () {
       return this.listaPersonaJuridica.filter((item) => {
-                return item.nombre.toLowerCase().includes(this.rutComp.toLowerCase()) || 
-                item.rut.toLowerCase().includes(this.rutComp.toLowerCase());
+                return item.nombre.toLowerCase().includes(this.rutPersonaJuridica.toLowerCase()) || 
+                item.rut.toLowerCase().includes(this.rutPersonaJuridica.toLowerCase());
             });
     },
     buscarPatrocinante: function () {
