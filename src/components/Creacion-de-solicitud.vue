@@ -97,8 +97,8 @@
       </div>
     </div>
 
-    <personaNaturalFormulario1 v-if="mostrarForm1 == true"></personaNaturalFormulario1>
-    <personaNaturalFormulario2 v-if="mostrarForm2 == true"></personaNaturalFormulario2>
+    <!--<personaNaturalFormulario1 v-if="mostrarForm1 == true"></personaNaturalFormulario1>
+    <personaNaturalFormulario2 v-if="mostrarForm2 == true"></personaNaturalFormulario2>-->
   </main>
 </template>
 
@@ -107,16 +107,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { mapState } from 'vuex'
-import personaNaturalFormulario1 from '@/components/formulario-persona-natural/Persona-Natural-Formulario-1'
-import personaNaturalFormulario2 from '@/components/formulario-persona-natural/Persona-Natural-Formulario-2'
 Vue.use(VueAxios, axios)
 
 export default {
   name: 'creacionSolicitud',
 
   components: {
-    personaNaturalFormulario1,
-    personaNaturalFormulario2
+   
   },
 
   data () {
