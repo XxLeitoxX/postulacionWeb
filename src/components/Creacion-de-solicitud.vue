@@ -52,7 +52,7 @@
           </div>
           <div
             class="fcustom-control custom-radio form-check-inline creacion-solicitud__opt-container creacion-solicitud__select-container py-1">
-            <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="juridica" value="#/persona-juridica-formulario-1">
+            <input v-model="valorCheck" class="custom-control-input" type="radio" name="tipo-postulacion" id="juridica" value="#/persona-juridica">
             <label class="custom-control-label text-uppercase font-weight-bold text-small pt-1" for="juridica">Persona jurídica</label>
             <select name="" id="" class="creacion-solicitud__select">
               <option value="" selected disabled>Tipo de sociedad</option>

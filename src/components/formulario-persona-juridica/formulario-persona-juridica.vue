@@ -1732,7 +1732,7 @@
 
   export default{
      props: ['attribute_name', 'errors_form'],
-  name: 'personaJuridicaForm',
+     name: 'personaJuridicaForm',
   components: {
       Datepicker
     },
