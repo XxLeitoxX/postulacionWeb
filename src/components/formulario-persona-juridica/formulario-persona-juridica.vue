@@ -352,7 +352,7 @@
             <h3 class="text-uppercase text-primary redes-digitales__title pt-5">Redes digitales de la empresa</h3>
             <form class="redes-digitales__form">
               <label for="sitio-web" class="text-small font-weight-bold">Sitio web</label>
-              <input type="url" id="sitio-web" class="form-control">
+              <input type="url" id="sitio-web" v-model="sitioWeb" class="form-control">
             </form>
 
           </div> <!-- col-md-6 -->
@@ -1686,7 +1686,7 @@
               </div> <!-- col-md-6 -->
             </div> <!-- row -->
             <div class="d-flex justify-content-center pt-5">
-              <button class="btn btn--big btn--submit text-white text-uppercase">Enviar postulación</button>
+              <button class="btn btn--big btn--submit text-white text-uppercase"  @click="enviarPostulacion()">Enviar postulación</button>
             </div>
           </form>
 
@@ -1840,6 +1840,7 @@
      comuna:'',
      telefonosArray:[],
      emailsArray:[],
+     sitioWeb:'',
      inputsTel: [
         {
           telEx:''
@@ -2612,6 +2613,7 @@
         facturacion: this.facturacion,
         volumenFacturado: this.volumenFacturado,
         rangos: this.rangos,
+        sitioWeb: this.sitioWeb
       },
         
         direcciones:{

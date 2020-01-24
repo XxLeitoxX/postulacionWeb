@@ -70,14 +70,18 @@
       <form class="creacion-solicitud__form pt-3" id="datosPersonales">
         <h3 class="text-center text-uppercase text-primary mt-5">Para comenzar el proceso, por favor ingrese RUT del
         postulante, y cámara regional para crear un número de solicitud</h3>
-          <div v-if="!rutNoValido" class="alert alert-danger" role="alert">
+          <!--<div v-if="!rutNoValido" class="alert alert-danger" role="alert">
           <strong>Error!</strong> RUT no válido.
-          </div>
+          </div>-->
         <div class="creacion-solicitud__form-left">
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="rut">RUT*</label>
-          <input type="text" v-on:keyup.enter="updateRutNum()" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
+          <input :class="rutNoValido ? campoValido : campoNoValido" type="text" v-on:keyup="updateRutNum()" placeholder="Ej. 11111111-1" v-model="rut" id="rut" class="creacion-solicitud__form-input" required>
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="mail">Correo Electrónico*</label>
           <input type="email" v-model="correo" id="mail" class="creacion-solicitud__form-input" required>
+        </div>
+
+        <div v-if="!rutNoValido" class="creacion-solicitud__form-left">
+          <span style="color:red; margin-right: 35%;">RUT no válido</span> 
         </div>
         <div class="creacion-solicitud__form-right">
           <label class="creacion-solicitud__form-label text-small font-weight-bold" for="telefono">Teléfono*</label>
@@ -128,7 +132,9 @@ export default {
       nuevaSolicitud: [],
       mostrarForm1: false,
       mostrarForm2: false,
-      mostrarCreacionSolicitud: true
+      mostrarCreacionSolicitud: true,
+      campoNoValido: 'rut-invalido',
+      campoValido: 'rut-valido'
     }
   },
 
@@ -189,3 +195,26 @@ updateRutNum: function(){
   }
 }
 </script>
+
+<style>
+
+.rut-invalido{
+  border-color: #f14d31;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23f14d3…%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E);
+    background-repeat: no-repeat;
+    background-position: center right calc(0.375em + 0.1875rem);
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+
+.rut-valido{
+    color: #495057;
+    background-color: #fff;
+    border-color: #76b1e8;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25)
+}
+
+</style>

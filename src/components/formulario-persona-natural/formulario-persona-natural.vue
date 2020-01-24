@@ -7,7 +7,7 @@
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
           <form class="datos-personales">
             <label class="datos-personales__label" for="RUT">RUT*</label>
-            <input type="text" v-model="rut" id="rutInput" name="rut"  class="datos-personales__input" v-validate="'required'">
+            <input type="text"  v-on:keyup="updateRutNum()" :class="rutNoValido ? campoValido : campoNoValido" v-model="rut" placeholder="Ej. 11111111-1" id="rutInput" name="rut"  class="datos-personales__input" >
             <!--<label class="datos-personales__label" for="vocativo">Vocativo*</label>
             <select v-model="vocativoSeleccionado" name="vocativo" type="text" id="vocativo" class="datos-personales__input" v-validate="'required'">
               <option value="" disabled>Seleccione uno</option>
@@ -21,7 +21,7 @@
             <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
             <!--<input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date">-->
-           <datepicker v-model="fechaNacimiento" name="Fecha" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">  
+           <datepicker v-model="fechaNacimiento" id="fecha" name="Fecha" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">  
           </datepicker>
        
             <label class="datos-personales__label" for="nacionalidad">Nacionalidad</label>
@@ -51,16 +51,27 @@
               estudios*</label>
             <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" v-validate="'required'" name="centroEstudio">-->
             <label class="datos-personales__label" for="profesion">Profesión*</label>
-               <select v-model="profesionSeleccionado" id="profesion" class="datos-personales__input" >
+               <select v-model="profesionSeleccionado" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">
               <option>Seleccione una opción</option>
               <option v-for="(profesion, key) in profesiones" :value="profesion.idProf" :key="key">{{ profesion.profesion }}</option>
             </select>
             <!--<input v-model="profesion" type="text" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">-->
             <div class="pt-2 w-100 datos-personales--cv">
-              <!--<input type="file"  class="d-none" id="cv"
+              <!--<input type="file"  class="d-none" id="cv" ref="filecv"
                 accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                v-validate="'required'" name="CV">-->
-               <b-form-file v-model="cv"  class="d-none" id="cv" v-validate="'required'" name="CV"></b-form-file>
+                v-validate="'required'"   @change="onFileSelectedCV">-->
+                
+                <template v-if="selectedFileCV.length == 0">
+                      <input type="file" name="CV" v-validate="''" ref="filecv" id="cv" class="d-none" accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                       @change="onFileSelectedCV">
+                    </template>
+                    <template v-else>
+                      <span v-for="(file, key) in selectedFileCV" :value="selectedFileCV" :key="'B-${key}'">
+                      Archivo seleccionado: {{ file.name }}
+                    </span>
+                    <i @click="removeFileCV" style="color: red; max-width: 100%; cursor:pointer" class="fas fa-minus-circle"></i>
+                    </template>
+               <!--<b-form-file v-model="cv"  class="d-none" id="cv" v-validate="'required'" name="CV"></b-form-file>-->
                <!-- <br> Selected file: {{cv && cv.name}} -->
               <label for="cv" class="d-flex additional-docs__label">
                 <div class="datos-personales__icon-container btn--sibling-hover-right mr-2">
@@ -79,20 +90,20 @@
               </label>
             </div>
             <label class="datos-personales__label" for="especialidad">Especialidad</label>
-            <select v-model="especialidadSeleccionada" id="especialidad" class="datos-personales__input" >
+            <select v-model="especialidadSeleccionada" id="especialidad" class="datos-personales__input" name="Especialidad">
               <option>Seleccione una opción</option>
               <option v-for="(especialidad, key) in especialidades" :value="especialidad.idEspecialidad" :key="key">{{ especialidad.especialidad }}</option>
             </select>
             <!--<input v-model="especialidad" type="text" id="especialidad" class="datos-personales__input">-->
             <label class="datos-personales__label" for="hobbies">Interés/Hobbies</label>
             <!--<input v-model="intereses" type="text" id="hobbies" class="datos-personales__input">-->
-            <select v-model="interesSeleccionado" id="hobbies" class="datos-personales__input" >
+            <select v-model="interesSeleccionado" id="hobbies" class="datos-personales__input" name="Intereses">
               <option>Seleccione una opción</option>
               <option v-for="(interes, key) in intereses" :value="interes.idInt" :key="key">{{ interes.intGls }}</option>
             </select>
             <label class="datos-personales__label" for="empresa">Empresa</label>
            <!-- <input v-model="empresa" type="text" id="empresa" class="datos-personales__input">-->
-            <input type="text" id="empresa" class="datos-personales__input" v-model="empresa"  @click="getPersonaJuridicaEmpresa">
+            <input type="text" id="empresa" class="datos-personales__input" v-model="empresa"  @click="getPersonaJuridicaEmpresa" name="Empresa">
             <input type="text" id="empresaPerid" class="datos-personales__input" v-model="empresaPerId" style="display:none;" />     
             <label class="datos-personales__label" for="cargoEmpresa">Cargo en la empresa</label>
             <!--<input v-model="cargoEmpresa" type="text" id="cargoEmpresa" class="datos-personales__input">-->
@@ -103,7 +114,7 @@
 
             
           </form>
-          <div class="contai">
+          <div class="container">
             <div class="row">
               <div class="col-lg-6"></div>
               <div class="col-lg-6">
@@ -123,7 +134,7 @@
           <h3 class="text-uppercase text-primary redes-digitales__title">Información adicional</h3>
           <form class="redes-digitales__form">
             <label for="sitio-web" class="text-small font-weight-bold">Sitio web</label>
-            <input v-model="sitioWeb" type="url" id="sitio-web" class="form-control">
+            <input v-model="sitioWeb" type="url" id="sitio-web" class="form-control" name="Web">
           </form>
 
           <h3 class="text-uppercase text-primary font-weight-bold pt-5">Acompañante</h3>
@@ -149,6 +160,26 @@
                 <li v-for="(error, i) in errors.all()">{{error}}</li>
             </ul>
 
+          </div>
+
+          <div v-if="errorRut.length" class="alert alert-danger posicion-mensaje">
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <ul class="ul-decorater">
+                <li v-for="(error, i) in errorRut">{{error}}</li>
+            </ul>
+
+          </div>
+
+          <div  v-if="!rutNoValido" class="alert alert-danger posicion-mensaje">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              <p>El RUT es invalido</p>
           </div>
 
         </div> <!-- col-md-6 -->
@@ -474,7 +505,7 @@
                   <label for="porcentaje"
                   class="accionarios-participacion__label text-small 
                   font-weight-bold">Razón Social</label>
-                  <input v-model="razonSocial"  
+                  <input :disabled="disabled == 1" v-model="razonSocial"  
                   id="razonSocial" type="text" 
                   class="form-control accionarios-participacion__input">
                 </div>
@@ -818,15 +849,25 @@
 </div>
   </div>
 <br>
-  <div class="row" @click="cerrarScrollPostulacion">
+  <div class="row">
     <div class="col-lg-6">
       <a href="" download class="patrocinante__download">
               <img src="@/assets/images/mas.png" alt="Descargar formulario" width="33px" class="btn--sibling-hover-right">
               <span class="font-weight-bold text-small pl-1 btn--hover-right">Descargar formulario</span>
             </a>
             <div class="patrocinante__attachment pt-2">
-              <input type="file" class="d-none" id="respaldo1" required>
-              <label for="respaldo" class="d-flex patrocinante__attachment-label">
+              <!--<input type="file" class="d-none" id="respaldo1" required>-->
+              <template v-if="selectedRespaldo1.length == 0">
+                      <input type="file" v-validate="'required'" ref="respaldo1" id="respaldo1" class="d-none" accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      required @change="onFileSelectedRespaldo1">
+                    </template>
+                    <template v-else>
+                      <span v-for="(file2, key) in selectedRespaldo1" :value="selectedRespaldo1" :key="'A-${key}'">
+                      Archivo seleccionado: {{ file2.name }}
+                    </span>
+                    <i @click="removeRespaldo1" style="color: red; max-width: 100%; cursor:pointer" class="fas fa-minus-circle"></i>
+                    </template>
+              <label for="respaldo1" class="d-flex patrocinante__attachment-label">
                 <div class="patrocinante__attachment-icon-container mr-2 btn--sibling-hover-right">
                   <img src="@/assets/images/mas.png" alt="Adjuntar respaldo de patrocinante" width="33px">
                 </div>
@@ -872,15 +913,25 @@
 </div>
   </div>
 <br>
-  <div class="row"  @click="cerrarScrollPostulacion">
+  <div class="row"  @click="">
     <div class="col-lg-6">
       <a href="" download class="patrocinante__download">
               <img src="@/assets/images/mas.png" alt="Descargar formulario" width="33px" class="btn--sibling-hover-right">
               <span class="font-weight-bold text-small pl-1 btn--hover-right">Descargar formulario</span>
             </a>
             <div class="patrocinante__attachment pt-2">
-              <input type="file" class="d-none" id="respaldo" required>
-              <label for="respaldo" class="d-flex patrocinante__attachment-label">
+              <!--<input type="file" class="d-none" id="respaldo" required>-->
+              <template v-if="selectedRespaldo2.length == 0">
+                      <input type="file" v-validate="'required'" ref="respaldo2" id="respaldo2" class="d-none" accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      required @change="onFileSelectedRespaldo2">
+                    </template>
+                    <template v-else>
+                      <span v-for="(file3, key) in selectedRespaldo2" :value="selectedRespaldo2" :key="'C-${key}'">
+                      Archivo seleccionado: {{ file3.name }}
+                    </span>
+                    <i @click="removeRespaldo2" style="color: red; max-width: 100%; cursor:pointer" class="fas fa-minus-circle"></i>
+                    </template>
+              <label for="respaldo2" class="d-flex patrocinante__attachment-label">
                 <div class="patrocinante__attachment-icon-container mr-2 btn--sibling-hover-right">
                   <img src="@/assets/images/mas.png" alt="Adjuntar respaldo de patrocinante" width="33px">
                 </div>
@@ -1248,7 +1299,12 @@ data () {
     //personaNatural:[],
     
     //Data para el formulario Datos Principales formulario1
-     rut:'',
+     rut:null,
+     errorRut:[],
+     rutNoValido: true,
+     campoNoValido: 'rut-invalido',
+    campoValido: 'rut-valido',
+    camposCorrectos: false,
      vocativos:[],
      vocativoSeleccionado:'',
      nombre:'',
@@ -1267,6 +1323,8 @@ data () {
      especialidadSeleccionada:'',
      especialidades:[],
      cv:null,
+     selectedFileCV:[],
+     filecv:'',
      interesSeleccionado:'',
      intereses: [],
      empresa:'',
@@ -1421,7 +1479,10 @@ data () {
        perIdPatrocinador:'',
        perIdPatrocinante2:'',
        perIdPatrocinador2:'',
-       
+       respaldo1:'',
+       selectedRespaldo1:[],
+       respaldo2:'',
+       selectedRespaldo2:[],
 
        //Data compromisos
        enviarCopiaMail: false
@@ -1461,12 +1522,28 @@ data () {
     siguiente(){
       /*this.$validator.validate()
 				.then(esValido => {
-					if (esValido) {*/
-
+          if (esValido) {*/
+          this.checkForm();
+          
+          if(this.camposCorrectos == true && this.rutNoValido == true){
+            
             this.guardar();
             this.frm2();
             console.log("Puede Pasar");
+          }
+            
+          else {
 
+            if(this.rutNoValido == true){
+              alert("Debe introducir un RUT valido");
+            }else{
+              if(this.camposCorrectos == false && this.rutNoValido == false){
+                alert("Debe llenar campos requeridos");
+              }
+              
+            }
+						
+					}
           /*} else {
 						alert("Debe llenar campos requeridos");
 					}
@@ -1474,7 +1551,7 @@ data () {
     },                
 
     siguiente2(){
-     /* this.$validator.validate()
+      /*this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
 
@@ -1489,7 +1566,7 @@ data () {
     },
 
     siguiente3(){
-      /*this.$validator.validate()
+     /* this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
 
@@ -1500,7 +1577,7 @@ data () {
          /* } else {
 						alert("Debe llenar campos requeridos");
 					}
-        }); */ 
+        }); */
     },
 
     siguiente4(){
@@ -1519,7 +1596,7 @@ data () {
     },
 
     siguiente5(){
-     /* this.$validator.validate()
+      /*this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
 
@@ -1527,7 +1604,7 @@ data () {
             this.frm6();
             console.log("Puede Pasar");
 
-        /*  } else {
+        /* } else {
 						alert("Debe llenar campos requeridos");
 					}
         });  */
@@ -1598,8 +1675,10 @@ data () {
 
     guardar: function(){
 
-     
-     /* this.$validator.validate()
+     this.onUploadCV();
+     this.onUploadRespaldo1();
+     this.onUploadRespaldo2();
+      /*this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
      this.personaNatural.push({
@@ -1697,10 +1776,10 @@ data () {
       });
       
       console.log(this.personaNatural);
-				/*	} else {
-						alert("Pailax");
+					/*} else {
+							alert("Debe llenar campos requeridos");
 					}
-        });*/       
+        });  */   
     },
 
 
@@ -1710,11 +1789,10 @@ data () {
   if(this.rutPersonaJuridica== ''){
     alert("Debe llenar campo rut");
   }else{
- console.log(this.listaPersonaJuridica.length);
-      
+ 
+
   for(var i=0; i< this.listaPersonaJuridica.length; i++){
    
- 
     if(this.listaPersonaJuridica[i].rut == this.rutPersonaJuridica){
 
       //this.razonSocial = this.listaPersonaJuridica[i].razon;
@@ -1722,9 +1800,9 @@ data () {
       this.encuentra = '';
      
       let posi = '';
-      
+      console.log( this.composicion);
       for(let k = 0; k < this.composicion.length; k++) {
-        
+        console.log(this.composicion[k].rutPersonaJuridica);
         if (this.composicion[k].rutPersonaJuridica == this.rutPersonaJuridica) {
           this.encuentra = this.rutPersonaJuridica;
           
@@ -1738,11 +1816,22 @@ data () {
       if(this.editPor == true){
 
           this.composicion.splice(posi, 1);
+/*console.log(this.juridicoEnArray);
+          if(this.juridicoEnArray == true){
+            this.composicion.push({
+        rutPersonaJuridica: this.listaPersonaJuridica[i].rutPersonaJuridicaNueva,
+        dvComp: this.listaPersonaJuridica[i].dvPersonaJuridicaNueva,
+        nombre: this.listaPersonaJuridica[i].nombrePersonaJuridicaNueva,
+        porcentaje: this.porcentaje});
+        this.juridicoEnArray = false;
+        }else{*/
           this.composicion.push({
         rutPersonaJuridica: this.listaPersonaJuridica[i].rut,
         dvComp: this.listaPersonaJuridica[i].dv,
         nombre: this.listaPersonaJuridica[i].nombre,
         porcentaje: this.porcentaje});
+      //  }
+          
         this.guardar();
         this.editPor = false;
         
@@ -1793,7 +1882,9 @@ data () {
 
  
   
-  }   
+  } 
+  
+  
     this.showModalCrear();
     
         
@@ -1835,10 +1926,24 @@ eliminarComposicion: function (indice){
 
 editarPorcentaje: function (indice){
       this.showModalEditar();
-      this.porcentaje = this.composicion[indice].porcentaje;
-      this.rutPersonaJuridica = this.composicion[indice].rutPersonaJuridica;
-      this.disabled = 1;
-      this.editPor = true;  
+/*console.log(this.juridicoEnArray);
+      if(this.juridicoEnArray == true){
+        this.porcentaje = this.composicion[indice].porcentaje;
+        this.rutPersonaJuridica = this.composicion[indice].rutPersonaJuridica;
+        this.razonSocial = this.composicion[indice].nombre;
+        this.disabled = 1;
+        this.editPor = true;
+        //this.juridicoEnArray = false;
+      }else{*/
+
+        this.porcentaje = this.composicion[indice].porcentaje;
+        this.rutPersonaJuridica = this.composicion[indice].rutPersonaJuridica;
+        this.razonSocial = this.composicion[indice].nombre;
+        this.disabled = 1;
+        this.editPor = true;
+
+     // }
+       
      
 },
 
@@ -1852,6 +1957,7 @@ aceptarCreacion(){
    this.formRegistrarPersona = true;
    this.$refs['modal-crear'].hide();
    this.rutPersonaJuridicaNueva = this.rutPersonaJuridica;
+   this.nombrePersonaJuridicaNueva = this.razonSocial;
 },
 
 cancelarCreacion(){
@@ -2236,6 +2342,45 @@ enviarPostulacion: function(){
     },*/
 
     getPersonaJuridica: function(){
+     
+     /*if(this.composicion.length > 0){
+       //for(var i=0; i< this.listaPersonaJuridica.length; i++){
+        for(var k = 0; k < this.composicion.length; k++) {
+          console.log(this.composicion[k].rutPersonaJuridica);
+          console.log(this.rutPersonaJuridica);
+          if(this.composicion[k].rutPersonaJuridica == this.rutPersonaJuridica){
+              console.log("existe");
+              return this.listaPersonaJuridica;
+          }else{
+             console.log('Buscando...');
+            Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      this.listaPersonaJuridica= response.data;
+      this.listaPersonaJuridicaEmpresa = response.data;
+      console.log(this.listaPersonaJuridica);
+      });
+
+      this.mostrarListaPersonaJuridicaScroll = 'listaHov';
+      this.mostrarListadoPersonaJuridica = true;
+      this.mostrarListadoPersonaJuridicaEmpresa = true;
+      this.mostrarListaPersonaJuridicaEmpresaScroll = 'listaHov';
+          }
+        }
+      //}
+     }else{
+
+       Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      this.listaPersonaJuridica= response.data;
+      this.listaPersonaJuridicaEmpresa = response.data;
+      console.log(this.listaPersonaJuridica);
+      });
+
+      this.mostrarListaPersonaJuridicaScroll = 'listaHov';
+      this.mostrarListadoPersonaJuridica = true;
+      this.mostrarListadoPersonaJuridicaEmpresa = true;
+      this.mostrarListaPersonaJuridicaEmpresaScroll = 'listaHov';
+
+     }*/
+      
       console.log('Buscando...');
       Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
       this.listaPersonaJuridica= response.data;
@@ -2296,7 +2441,15 @@ enviarPostulacion: function(){
 
   crearPersonaJuridicaNueva(){
 
-this.personasJuridicasNuevas.push({
+this.listaPersonaJuridica.push({
+        rut: this.rutPersonaJuridicaNueva,
+        nombre: this.nombrePersonaJuridicaNueva,
+        porcentaje: this.porcentaje,
+        dv: this.dvPersonaJuridicaNueva
+        
+      });
+
+this.composicion.push({
         rutPersonaJuridica: this.rutPersonaJuridicaNueva,
         nombre: this.nombrePersonaJuridicaNueva,
         porcentaje: this.porcentaje,
@@ -2304,10 +2457,12 @@ this.personasJuridicasNuevas.push({
         
       });
 
+      this.rutPersonaJuridica = '';
+      this.razonSocial = '';
+      this.porcentaje = '';
+      this.juridicoEnArray = true;
       this.formRegistrarPersona = false;
-      //this.buscar();
-   
-
+      
       
   },
 
@@ -2344,6 +2499,139 @@ this.personasJuridicasNuevas.push({
 primeraMayuscula(string){
   return string.charAt(0).toUpperCase() + string.slice(1);
 },
+
+onFileSelectedCV(event) {
+      this.filecv = this.$refs.filecv.files[0];
+      this.selectedFileCV = event.target.files
+      console.log(this.filecv);
+    },
+
+removeFileCV: function (e) {
+      this.selectedFileCV = '';
+    },
+    
+    onUploadCV() {
+      let fd = new FormData();
+      fd.append('filecv', this.filecv);
+    
+      Vue.axios.post( 'http://postulacion.isc.cl/uploadfilecv',
+                fd,
+                {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+            ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+    },
+    onFileSelectedRespaldo1(event) {
+      this.respaldo1 = this.$refs.respaldo1.files[0];
+      this.selectedRespaldo1 = event.target.files;
+      
+      console.log(this.respaldo1);
+    },
+
+removeRespaldo1: function (e) {
+      this.selectedRespaldo1 = '';
+    },
+    
+    onUploadRespaldo1() {
+      let fd = new FormData();
+      fd.append('respaldo1', this.respaldo1);
+    
+      Vue.axios.post( 'http://postulacion.isc.cl/uploadRespaldo1',
+                fd,
+                {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+            ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+    },
+    onFileSelectedRespaldo2(event) {
+      this.respaldo2 = this.$refs.respaldo2.files[0];
+      this.selectedRespaldo2 = event.target.files;
+      
+      console.log(this.respaldo2);
+    },
+
+removeRespaldo2: function (e) {
+      this.selectedRespaldo2 = '';
+    },
+    
+    onUploadRespaldo2() {
+      let fd = new FormData();
+      fd.append('respaldo2', this.respaldo2);
+    
+      Vue.axios.post( 'http://postulacion.isc.cl/uploadRespaldo2',
+                fd,
+                {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+            ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+    },
+
+    // Valida el rut con su cadena completa "XXXXXXXX-X"
+    validaRut: function (rutCompleto) {
+      rutCompleto = rutCompleto.replace('‐', '-')
+
+      if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)){
+        return false
+      }
+
+      var tmp = rutCompleto.split('-')
+      var digv = tmp[1]
+      var rut = tmp[0]
+      
+    if ( digv === 'K' ){
+      digv = 'k'
+    } 
+
+    return (this.dv(rut) == digv );
+},
+
+dv : function(T){
+    var M=0,S=1;
+    for(;T;T=Math.floor(T/10))
+        S=(S+T%10*(9-M++%6))%11;
+    return S?S-1:'k';
+},
+updateRutNum: function(){
+  console.log(this.$store.state.rutGlobal);
+  let estadoRut = this.validaRut(this.rut);
+  this.rutNoValido = estadoRut;
+},
+
+checkForm: function () {
+      if (this.rut) {
+        this.camposCorrectos = true;
+        return true;
+      }
+
+      this.errorRut = [];
+
+      if (!this.rut) {
+        this.errorRut.push('El RUT es obligatorio.');
+        
+      }
+      
+    }
 
   },
 
@@ -2524,6 +2812,25 @@ overflow:none;
     grid-column: 2/3;
     padding-left: 0;
 }
+}
+
+.rut-invalido{
+  border-color: #f14d31;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23f14d3…%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E);
+    background-repeat: no-repeat;
+    background-position: center right calc(0.375em + 0.1875rem);
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+
+.rut-valido{
+    color: #495057;
+    background-color: #fff;
+    border-color: #76b1e8;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25)
 }
 
 

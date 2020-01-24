@@ -57,7 +57,8 @@ import { mapState, mapMutations } from 'vuex'
 export default{
   name: 'cabecera',
   components:{
-    formularioPersonaNatural
+    formularioPersonaNatural,
+    
   },
   data () {
     return {
