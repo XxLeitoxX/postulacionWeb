@@ -6,8 +6,9 @@
         <div class="col-md-6">
           <h3 class="text-uppercase text-primary">Datos Personales</h3>
           <form class="datos-personales">
+            
             <label class="datos-personales__label" for="RUT">RUT*</label>
-            <input type="text"  v-on:keyup="updateRutNum()" :class="rutNoValido ? campoValido : campoNoValido" v-model="rut" placeholder="Ej. 11111111-1" id="rutInput" name="rut"  class="datos-personales__input" >
+            <input type="text"  v-on:keyup="updateRutNum()" :class="rutNoValido ? campoValido : campoNoValido" v-model="rut" id="rutInput" name="rut"  class="datos-personales__input">
             <!--<label class="datos-personales__label" for="vocativo">Vocativo*</label>
             <select v-model="vocativoSeleccionado" name="vocativo" type="text" id="vocativo" class="datos-personales__input" v-validate="'required'">
               <option value="" disabled>Seleccione uno</option>
@@ -16,9 +17,9 @@
             <label class="datos-personales__label" for="nombres">Nombres*</label>
             <input v-model="nombre" name="nombres" v-validate="'required'" type="text" id="nombres" class="datos-personales__input">
             <label class="datos-personales__label" for="apellido-pat">Apellido Paterno*</label>
-            <input v-model="apellidoPat" type="text" name="apellidoPat" v-validate="'required'" id="apellido-pat" class="datos-personales__input">
+            <input v-model="apellidoPat" type="text" v-validate="'required'" name="apellidoPat" id="apellido-pat" class="datos-personales__input">
             <label class="datos-personales__label" for="apellido-mat">Apellido Materno*</label>
-            <input v-model="apellidoMat" type="text" name="apellidoMat" v-validate="'required'" id="apellido-mat" class="datos-personales__input">
+            <input v-model="apellidoMat" type="text" v-validate="'required'" name="apellidoMat" id="apellido-mat" class="datos-personales__input">
             <label class="datos-personales__label" for="fecha-nac">Fecha nacimiento*</label>
             <!--<input v-model="fechaNacimiento" type="date" name="fechaNacimiento"  v-validate="'required'" id="fecha-nac" class="datos-personales__input datos-personales__input--date">-->
            <datepicker v-model="fechaNacimiento" id="fecha" name="Fecha" :disabled-dates="disabledDates" :language="languages[language]" :format="format" :value="fechaNacimiento" input-class="datos-personales__input datos-personales__input--date">  
@@ -31,13 +32,13 @@
             <input type="text" id="pasaporte"
               class="datos-personales__input  datos-personales__pasaporte-input invisible">-->
             <label class="datos-personales__label" for="sexo">Sexo*</label>
-            <select v-model="sexo" id="sexo" class="datos-personales__input" v-validate="'required'" name="sexo">
+            <select v-model="sexo" v-validate="'required'" id="sexo" class="datos-personales__input"  name="sexo">
               <option value="1">Femenino</option>
               <option value="2">Masculino</option>
               <option value="3">Sin especificar</option>
             </select>
             <label class="datos-personales__label" for="edoCivil">Estado civil*</label>
-            <select v-model="edoCivilSeleccionado" id="edoCivil" class="datos-personales__input" v-validate="'required'" name="edoCivil">
+            <select v-model="edoCivilSeleccionado" v-validate="'required'" id="edoCivil" class="datos-personales__input" name="edoCivil">
               <option v-for="(edoCivil, key) in edoCiviles" :value="edoCivil.idEdoCivil" :key="key">{{ edoCivil.edoCivil }}</option>
             </select>
             <label class="datos-personales__label" for="nivelDeEstudios">Nivel de
@@ -51,7 +52,7 @@
               estudios*</label>
             <input v-model="centroEstudio" type="text" id="centroDeEstudios" class="datos-personales__input" v-validate="'required'" name="centroEstudio">-->
             <label class="datos-personales__label" for="profesion">Profesión*</label>
-               <select v-model="profesionSeleccionado" id="profesion" class="datos-personales__input" v-validate="'required'" name="profesion">
+               <select v-model="profesionSeleccionado" v-validate="'required'" id="profesion" class="datos-personales__input" name="profesion">
               <option>Seleccione una opción</option>
               <option v-for="(profesion, key) in profesiones" :value="profesion.idProf" :key="key">{{ profesion.profesion }}</option>
             </select>
@@ -62,7 +63,7 @@
                 v-validate="'required'"   @change="onFileSelectedCV">-->
                 
                 <template v-if="selectedFileCV.length == 0">
-                      <input type="file" name="CV" v-validate="''" ref="filecv" id="cv" class="d-none" accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      <input type="file" name="CV" v-validate="'required'" ref="filecv" id="cv" class="d-none" accept=".jpg, .jpeg, .png, .pdf, application/pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                        @change="onFileSelectedCV">
                     </template>
                     <template v-else>
@@ -140,15 +141,15 @@
           <h3 class="text-uppercase text-primary font-weight-bold pt-5">Acompañante</h3>
           <form class="acompanante__form">
             <label for="rut1" class="text-small font-weight-bold">RUT*</label>
-            <input v-model="rutAcom" type="text" id="rut1" class="form-control" v-validate="'required'" name="rut2">
+            <input v-model="rutAcom" v-on:keyup="updateRutNum()" :class="rutNoValido ? campoValido : campoNoValido"  type="text" id="rut1" class="form-control"  name="rut2">
             <label for="acompanante-name1" class="text-small font-weight-bold">Nombres*</label>
-            <input v-model="nombreAcom" type="text" id="acompanante-name1" class="form-control" v-validate="'required'" name="nombre2">
+            <input v-model="nombreAcom" v-validate="'required'" type="text" id="acompanante-name1" class="form-control"  name="nombre2">
             <label for="acompanante-apellido-pat1" class="text-small font-weight-bold">Apellido Paterno*</label>
-            <input v-model="apellidoPatAcom" type="text" id="acompanante-apellido-pat1" class="form-control" v-validate="'required'" name="apellidoPat2">
+            <input v-model="apellidoPatAcom" v-validate="'required'" type="text" id="acompanante-apellido-pat1" class="form-control" name="apellidoPat2">
             <label for="acompanante-apellido-mat1" class="text-small font-weight-bold">Apellido Materno*</label>
-            <input v-model="apellidoMatAcom" type="text" id="acompanante-apellido-mat1" class="form-control" v-validate="'required'" name="apellidoMat2">
+            <input v-model="apellidoMatAcom" v-validate="'required'" type="text" id="acompanante-apellido-mat1" class="form-control" name="apellidoMat2">
             <label for="email1" class="text-small font-weight-bold">Email*</label>
-            <input v-model="emailAcom" type="email" id="email1" class="form-control" v-validate="'required'" name="email2">
+            <input v-model="emailAcom" v-validate="'required'" type="email" id="email1" class="form-control"  name="email2">
           </form>
           <div v-show="errors.all().length" class="alert alert-danger posicion-mensaje">
 
@@ -187,11 +188,22 @@
       </div> <!-- row -->
 
        <div class="creacion-solicitud__buttons py-5">
+         <div class="container text-center pt-5">
+               <p>
+                  <span>
+                    <img src="@/assets/images/icono alerta-25.png" alt="" style="margin-bottom: 30px;with:45px; height:45px;" class="img-fluid">
+                    </span> 
+                    Mantener los datos actualizados es de exclusiva responsabilidad del Socio
+                  </p>
+          </div>
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <router-link to="/creacion-de-solicitud" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</router-link>
              <button  @click="siguiente" class="btn btn-primary btn--big m-2">Siguiente<i
             class="fas fa-long-arrow-alt-right fa-lg"></i></button>
+
+            
+
       </div>  <!-- creacion-solicitud__buttons -->
 
     </div> <!-- container -->
@@ -206,10 +218,10 @@
           <form class="direccion1__form">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="calle1">Calle*</label>
-            <input v-model="calle" v-validate="'required'" name="calle" type="text" id="calle1" class="direccion1__input direccion1__input--left-big form-control" required>
+            <input v-model="calle" v-validate="'required'" name="calle" type="text" id="calle1" class="direccion1__input direccion1__input--left-big form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero1">Número*</label>
-            <input v-model="numeroCalle" v-validate="'required'" name="numero" type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
+            <input v-model="numeroCalle"  v-validate="'required'" name="numero" type="number" id="numero1" class="direccion1__input direccion1__input--right-small1 form-control"
               >
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina1">Oficina</label>
@@ -223,20 +235,17 @@
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia1">Provincia*</label>
-            <select v-model="provinciaSeleccionada" v-validate="'required'" name="provincia" @change="getListadoComuna" type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control"
-              required>
+            <select v-model="provinciaSeleccionada"  v-validate="'required'" name="provincia" @change="getListadoComuna" type="text" id="provincia1" class="direccion1__input direccion1__input--right form-control">
             <option v-for="(provincia, key) in provincias" :value="provincia.provinciaId" :key="key">{{ provincia.provincia }}</option>
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region1">Región*</label>
-            <select v-model="regionSeleccionada" v-validate="'required'" name="region" @change="getListadoProvincia" type="text" id="region1" class="direccion1__input direccion1__input--left form-control"
-              required>
+            <select v-model="regionSeleccionada"  v-validate="'required'" name="region" @change="getListadoProvincia" type="text" id="region1" class="direccion1__input direccion1__input--left form-control">
               <option v-for="(region, key) in regiones" :value="region.regionId" :key="key">{{ region.region }}</option>
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna1">Comuna*</label>
-            <select v-model="comunaSeleccionada" v-validate="'required'" @change="getNombreComuna" name="comuna" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control"
-              required>
+            <select v-model="comunaSeleccionada" v-validate="'required'"  @change="getNombreComuna" name="comuna" type="text" id="comuna1" class="direccion1__input direccion1__input--right form-control">
               <option v-for="(comuna, key) in comunas" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
             </select>
           </form>
@@ -251,7 +260,7 @@
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
                     <div class="row">
                       <div class="col-lg-3" style="padding-right: 2px;">
-                        <select v-model="tipoTelArray[k]" id="tipoTel" class="datos-personales__input" v-validate="'required'" name="Tipo">
+                        <select v-model="tipoTelArray[k]"  id="tipoTel" class="datos-personales__input" v-validate="'required'" name="Tipo">
                           <option value="0">Fijo</option>
                           <option value="1">Celular</option>
                           <option value="2">Principal</option>
@@ -260,6 +269,7 @@
                       </div>
                       <div class="col-lg-9">
                         <input type="text" 
+    
                         id="telefono1"
                          v-validate="'required'" 
                          name="telefono" 
@@ -330,11 +340,11 @@
           <form class="direccion1__form">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="calle2">Calle*</label>
-            <input v-model="callePar" v-validate="'required'" name="calle" type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control" required>
+            <input v-model="callePar"  v-validate="'required'" name="calle" type="text" id="calle2" class="direccion1__input direccion1__input--left-big form-control">
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small1"
               for="numero2">Número*</label>
-            <input v-model="numeroCallePar" v-validate="'required'" name="numero" type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
-              required>
+            <input v-model="numeroCallePar"  v-validate="'required'" name="numero" type="number" id="numero2" class="direccion1__input direccion1__input--right-small1 form-control"
+            >
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right-small2"
               for="oficina2">Oficina</label>
             <input v-model="oficinaPar" type="text" id="oficina2" class="direccion1__input direccion1__input--right-small2 form-control">
@@ -347,19 +357,19 @@
               placeholder="Chile" value="Chile" disabled>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="provincia2">Provincia*</label>
-            <select  v-model="provinciaSeleccionadaPar"  @change="getListadoComunaPar" v-validate="'required'" name="provincia" type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
-              required>
+            <select  v-model="provinciaSeleccionadaPar"  v-validate="'required'" @change="getListadoComunaPar"  name="provincia" type="text" id="provincia2" class="direccion1__input direccion1__input--right form-control"
+            >
               <option v-for="(provincia, key) in provinciasPar" :value="provincia.provinciaId" :key="key">{{ provincia.provincia }}</option>
               </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--left"
               for="region2">Región*</label>
-            <select v-model="regionSeleccionadaPar" @change="getListadoProvinciaPar" type="text" v-validate="'required'" name="region" id="region2" class="direccion1__input direccion1__input--left form-control"
-              required>
+            <select v-model="regionSeleccionadaPar" v-validate="'required'" @change="getListadoProvinciaPar" type="text"  name="region" id="region2" class="direccion1__input direccion1__input--left form-control"
+            >
               <option v-for="(region, key) in regionesPar" :value="region.regionId" :key="key">{{ region.region }}</option>
             </select>
             <label class="text-small font-weight-bold direccion1__label direccion1__label--right"
               for="comuna2">Comuna*</label>
-            <select v-model="comunaSeleccionadaPar"  type="text" id="comuna2" v-validate="'required'" name="comuna" class="direccion1__input direccion1__input--right form-control"
+            <select v-model="comunaSeleccionadaPar"  v-validate="'required'" type="text" id="comuna2"  name="comuna" class="direccion1__input direccion1__input--right form-control"
               >
               <option v-for="(comuna, key) in comunasPar" :value="comuna.comunaId" :key="key">{{ comuna.comuna }}</option>
               </select>
@@ -393,16 +403,18 @@
                   <div class="col-10 col-sm-9 col-md-7 col-lg-6 col-xl-7 direccion__tel-mail-center">
                     <div class="row">
                       <div class="col-lg-3" style="padding-right: 2px;">
-                      <select v-model="tipoTelParArray[z]" id="tipoTelPar" class="datos-personales__input" v-validate="'required'" name="Tipo">
+                      <select v-model="tipoTelParArray[z]"  v-validate="'required'" id="tipoTelPar" class="datos-personales__input"  name="Tipo">
                           <option value="0">Fijo</option>
                           <option value="1">Celular</option>
+                          <option value="2">Principal</option>
                           <!--<option value="2">Principal</option>-->
                         </select>
                       </div>
 
                       <div class="col-lg-9">
-                      <input v-model="telefonosParArray[z]"  placeholder="ej 9 12345678" v-validate="'required'" name="telefono" type="tel" id="telefono2" class="form-control" required>
-                     <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
+                      <input v-model="telefonosParArray[z]"  v-validate="'required'" @keyup="validarTelefonoPar(z)" placeholder="ej 9 12345678"  name="telefono" type="tel" id="telefono2" class="form-control" required>
+                       <i class="fas fa-minus-circle eliminar-input" @click="removeTelefonoPar(z)" v-show="z || ( !z && inputsTelPar.length > 1)"></i>
+                      <span style="color:red;font-size:14px;" v-if="formatoTelefonoPar">Formato incorrecto</span>
                       </div> 
                       
                     </div>
@@ -422,7 +434,7 @@
                     <label class="text-small font-weight-bold" for="mail2">Email*</label>
                   </div>
                   <div class="col-10 col-sm-9 col-md-6 direccion__tel-mail-center">
-                    <input v-model="emailsParArray[p]" type="email" v-validate="'required'" name="email" id="mail2" class="form-control" required>
+                    <input v-model="emailsParArray[p]" type="email"  name="email" id="mail2" class="form-control" >
                      <i class="fas fa-minus-circle eliminar-input" @click="removeEmailPar(p)" v-show="p || ( !p && inputsEmailPar.length > 1)"></i>
                   </div>
                   <div class="col-2 col-sm-1 col-md-3 direccion__tel-mail-right">
@@ -460,11 +472,31 @@
             </ul>
 
           </div>
+
+          <div v-if="errorRut.length" class="alert alert-danger posicion-mensaje">
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            <ul class="ul-decorater">
+                <li v-for="(error, i) in errorRut">{{error}}</li>
+            </ul>
+
+          </div>
         </div> <!-- col-md-6 -->
        
       </div> <!-- row -->
 
       <div class="creacion-solicitud__buttons py-5">
+        <div class="container text-center pt-5">
+                <p>
+                  <span>
+                    <img src="@/assets/images/icono alerta-25.png" alt="" style="margin-bottom: 30px;with:45px; height:45px;" class="img-fluid">
+                    </span> 
+                    Mantener los datos actualizados es de exclusiva responsabilidad del Socio
+                  </p>
+          </div>
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm1" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
@@ -497,6 +529,7 @@
 					            <li v-for="(item, index) in buscarPersonaJuridicaFiltro" :key="index" @click="itemClickedPersonaJuridica(item)" class="list-group-item listLine" style="cursor:pointer;">
                         <span>{{ item.rut }}-{{ item.dv }}</span><br>
 						            <span>{{ item.nombre }} {{ item.apePat }}</span>
+                        
 					            </li>
 			              </ul>
                 </div>
@@ -696,6 +729,14 @@
       </div> <!-- row -->
 
       <div class="creacion-solicitud__buttons py-5 mt-5">
+        <div class="container text-center pt-5">
+               <p>
+                  <span>
+                    <img src="@/assets/images/icono alerta-25.png" alt="" style="margin-bottom: 30px;with:45px; height:45px;" class="img-fluid">
+                    </span> 
+                    Mantener los datos actualizados es de exclusiva responsabilidad del Socio
+                  </p>
+          </div>
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm2" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
@@ -715,7 +756,7 @@
         <div class="col-md-6">
           <h3 class="text-primary text-uppercase font-weight-bold">Selección de comités</h3>
           <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
-            inscribirse:</p>
+            inscribirse: SANTIAGO</p>
           <div class="container-fluid">
             <div class="row">
               <div class="col-sm-5 col-md-12 col-xl-5">
@@ -762,14 +803,823 @@
                     <label class="custom-control-label text-small pt-1" for="industriales">Industriales</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" v-model="especialidades" class="custom-control-input" id="especialidades">
+                    <input type="checkbox" v-model="especialidadesComite" class="custom-control-input" id="especialidades">
                     <label class="custom-control-label text-small pt-1" for="especialidades">Especialidades</label>
                   </div>
                 </form>
               </div>
             </div>
           </div>
+
+
+
+
+        <div v-if="this.camara != ''">
+          <div id="arica" v-if="this.camara == '2'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: ARICA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteInfraArica" class="custom-control-input" id="contratistas-gen-arica">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-arica">Comité de Infraestructura</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteinmobiliarioArica" class="custom-control-input" id="inmobiliario-arica">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-arica">Comité de vivienda e Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresArica" class="custom-control-input" id="proveedores-arica">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-arica">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+          <div id="iquique"  v-if="this.camara == '3'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: IQUIQUE</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistaGIquique" class="custom-control-input" id="contratistas-iquique">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-iquique">Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteinmobiliarioIquique" class="custom-control-input" id="inmobiliario-iquique">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-iquique">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresIquique" class="custom-control-input" id="proveedores-iquique">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-iquique">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+          <div id="calama" v-if="this.camara == '4'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: CALAMA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGCalama" class="custom-control-input" id="contratistas-gen-calama">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-calama">Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+             <!-- <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteinmobiliarioCalama" class="custom-control-input" id="inmobiliario">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>-->
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresCalama" class="custom-control-input" id="proveedores-calama">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-calama">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+          <div id="antofagasta" v-if="this.camara == '5'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: ANTOFAGASTA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="infraEstAntofagasta" class="custom-control-input" id="contratistas-gen-anto">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-anto">Comité de Infraestructura</label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteinmobiliarioAntofagasta" class="custom-control-input" id="inmobiliario-anto">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-anto">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresAntofagasta" class="custom-control-input" id="proveedores-anto">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-anto">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+           <div id="copiapo" v-if="this.camara == '6'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: COPIAPÓ</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneralesCopiapo" class="custom-control-input" id="contratistas-gen-copi">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-copi">Comité de Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="comiteinmobiliarioCopiapo" class="custom-control-input" id="inmobiliario-copi">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-copi">Comité de vivienda e Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresCopiapo" class="custom-control-input" id="proveedores-copi">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-copi">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+        <div id="serena" v-if="this.camara == '7'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: LA SERENA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneralesSerena" class="custom-control-input" id="contratistas-gen-serena">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-serena">Comité de Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaSerena" class="custom-control-input" id="inmobiliario-serena">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-serena">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresSerena" class="custom-control-input" id="proveedores-serena">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-serena">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+         <div id="valparaiso" v-if="this.camara == '8'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: VALPARAÍSO</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneralesValparaiso" class="custom-control-input" id="contratistas-gen-valpa">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-valpa">Comité de Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaValparaiso" class="custom-control-input" id="vivienda-valpa">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-valpa">Comité de vivienda</label>
+                  </div>
+
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="inmobiliarioValparaiso" class="custom-control-input" id="inmobiliario-valpa">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-valpa">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <!--<div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresSerena" class="custom-control-input" id="proveedores">
+                    <label class="custom-control-label text-small pt-1" for="proveedores">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>-->
+            </div>
+          </div>
+          </div>
+
+          <div id="rancagua" v-if="this.camara == '9'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: RANCAGUA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneralesRancagua" class="custom-control-input" id="contratistas-gen-ran">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-ran">Comité de Contratistas Generales</label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaRancagua" class="custom-control-input" id="vivienda-ran">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-ran">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresRancagua" class="custom-control-input" id="proveedores-ran">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-ran">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div id="talca" v-if="this.camara == '10'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: TALCA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraTalca" class="custom-control-input" id="contratistas-gen-talca">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-talca">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaTalca" class="custom-control-input" id="vivienda-talca">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-talca">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresTalca" class="custom-control-input" id="proveedores-talca">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-talca">Comité Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div id="chillan" v-if="this.camara == '11'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: CHILLÁN</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraChillan" class="custom-control-input" id="obras-infra-chillan">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-chillan">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+
+                   <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneChillan" class="custom-control-input" id="contratistas-gen-chillan">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-chillan">Comité de Contratistas Generales
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaChillan" class="custom-control-input" id="inmobiliarioV-chillan">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliarioV-chillan">Comité de vivienda e Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresChillan" class="custom-control-input" id="proveedores-chillan">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-chillan">Proveedores</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesChillan" class="custom-control-input" id="especialidades-chillan">
+                    <label class="custom-control-label text-small pt-1" for="especialidades-chillan">Especialidades</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="industrialeshillan" class="custom-control-input" id="industriales-chillan">
+                    <label class="custom-control-label text-small pt-1" for="industriales-chillan">Industriales</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+
+          <div id="concepcion" v-if="this.camara == '12'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: CONCEPCIÓN</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraConcepcion" class="custom-control-input" id="obras-infra-con">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-con">Comité de Obras de Infraestructura Pública
+                    </label>
+                  </div>
+
+                   <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneConcepcion" class="custom-control-input" id="contratistas-gen-con">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-con">Comité de Contratistas Generales
+                      </label>
+                  </div>
+
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="concesionesConcepcion" class="custom-control-input" id="concesiones-con">
+                    <label class="custom-control-label text-small pt-1" for="concesiones-con">Concesiones
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaConcepcion" class="custom-control-input" id="vivienda-con">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-con">Comité de vivienda</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="inmobiliarioConcepcion" class="custom-control-input" id="inmobiliario-con">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-con">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresConcepcion" class="custom-control-input" id="proveedores-con">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-con">Proveedores</label>
+                  </div>
+                 
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="industrialesConcepcion" class="custom-control-input" id="industriales-con">
+                    <label class="custom-control-label text-small pt-1" for="industriales-con">Industriales</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div> 
+
+           <div id="losangeles" v-if="this.camara == '13'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: LOS ÁNGELES</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraAngeles" class="custom-control-input" id="obras-infra-an">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-an">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+
+                   <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGeneAngeles" class="custom-control-input" id="contratistas-gen-an">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-an">Comité de Contratistas Generales
+                      </label>
+                  </div>
+
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaEInmobiliarioAngeles" class="custom-control-input" id="vivienda-an">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-an">Comité de vivienda e Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresAngeles" class="custom-control-input" id="proveedores-an">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-an">Proveedores</label>
+                  </div>
+                 
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="industrialesAngeles" class="custom-control-input" id="industriales-an">
+                    <label class="custom-control-label text-small pt-1" for="industriales-an">Industriales</label>
+                  </div>
+
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesAngeles" class="custom-control-input" id="especialidades-an">
+                    <label class="custom-control-label text-small pt-1" for="especialidades-an">Especialidades</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+          <div id="temuco" v-if="this.camara == '14'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: TEMUCO</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraTemuco" class="custom-control-input" id="obras-infra-tem">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-tem">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaTemuco" class="custom-control-input" id="vivienda-tem">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-tem">Comité de vivienda</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="inmobiliarioTemuco" class="custom-control-input" id="inmobiliario-tem">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario-tem">Comité de Inmobiliario</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresTemuco" class="custom-control-input" id="proveedores-tem">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-tem">Proveedores</label>
+                  </div>
+                 
+            
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesTemuco" class="custom-control-input" id="especialidades-tem">
+                    <label class="custom-control-label text-small pt-1" for="especialidades-tem">Especialidades</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div id="valdivia" v-if="this.camara == '15'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: VALDIVIA</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGValdivia" class="custom-control-input" id="contratistas-gen-val">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-val">Contratistas Generales 
+                      </label>
+                  </div>
+
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaeInmobiliarioValdivia" class="custom-control-input" id="vivienda-val">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-val">Comité de vivienda e Inmobiliario</label>
+                  </div>
+                 
+                </form>
+              </div>
+              
+            </div>
+          </div>
+          </div>
+
+
+        <div id="osorno" v-if="this.camara == '16'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: OSORNO</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraOsorno" class="custom-control-input" id="obras-infra-os">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-os">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaOsorno" class="custom-control-input" id="vivienda-os">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-os">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresOsorno" class="custom-control-input" id="proveedores-os">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-os">Proveedores</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+            <div id="puertoMontt" v-if="this.camara == '17'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: PUERTO MONTT</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraPuertoMontt" class="custom-control-input" id="obras-infra-puerto">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-puerto">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaPuertoMontt" class="custom-control-input" id="vivienda-puerto">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-puerto">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+          </div>
+
+
+          <div id="coyhaique" v-if="this.camara == '18'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: COYHAIQUE</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraCoyhaique" class="custom-control-input" id="obras-infra-coy">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-coy">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGCoyhaique" class="custom-control-input" id="contratistas-gen-coy">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen-coy">Comité de Contratistas Generales
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaCoyhaique" class="custom-control-input" id="vivienda-coy">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-coy">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresCoyhaique" class="custom-control-input" id="proveedores-coy">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-coy">Proveedores</label>
+                  </div>
+                 
+            
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesCoyhaique" class="custom-control-input" id="especialidades-coy">
+                    <label class="custom-control-label text-small pt-1" for="especialidades-coy">Especialidades</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+
+          <div id="puntaArenas" v-if="this.camara == '19'">
+            <p class="text-small text-primary font-weight-bold pt-2 pb-2">Seleccione el o los comités en que desea
+            inscribirse: PUNTA ARENAS</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfraPuntaArenas" class="custom-control-input" id="obras-infra-punta">
+                    <label class="custom-control-label text-small pt-1" for="obras-infra-punta">Comité de Obras de Infraestructura Pública
+                      </label>
+                  </div>
+                </form>
+              </div>
+             <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="viviendaPuntaArenas" class="custom-control-input" id="vivienda-punta">
+                    <label class="custom-control-label text-small pt-1" for="vivienda-punta">Comité de vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedoresPuntaArenas" class="custom-control-input" id="proveedores-punta">
+                    <label class="custom-control-label text-small pt-1" for="proveedores-punta">Proveedores</label>
+                  </div>
+                 
+            
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesPuntaArenas" class="custom-control-input" id="especialidades-punta">
+                    <label class="custom-control-label text-small pt-1" for="especialidades-punta">Especialidades</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>     
+        </div>
+          
         </div> <!-- col-md-6 -->
+
+         <!-- LEFT COLUMN -->
+        <!--<div class="col-md-6">
+          
+          <p class="text-small text-primary font-weight-bold pt-2 pb-2">Camara: {{ camara }}</p>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-5 col-md-12 col-xl-5">
+                <p class="text-uppercase">Infraestructura</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="contratistasGenerales" class="custom-control-input" id="contratistas-gen">
+                    <label class="custom-control-label text-small pt-1" for="contratistas-gen">Contratistas
+                      Generales</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="obrasInfra" class="custom-control-input" id="infraest-publica">
+                    <label class="custom-control-label text-small pt-1" for="infraest-publica">Obras Infraestructura
+                      Pública</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="conseciones" class="custom-control-input" id="concesiones">
+                    <label class="custom-control-label text-small pt-1" for="concesiones">Concesiones</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-4 col-md-12 col-xl-4">
+                <p class="text-uppercase">Vivienda</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="inmobiliario" class="custom-control-input" id="inmobiliario">
+                    <label class="custom-control-label text-small pt-1" for="inmobiliario">Inmobiliario</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="vivienda" class="custom-control-input" id="vivienda">
+                    <label class="custom-control-label text-small pt-1" for="vivienda">Vivienda</label>
+                  </div>
+                </form>
+              </div>
+              <div class="col-sm-3 col-md-12 col-xl-3">
+                <p class="text-uppercase">Suministros</p>
+                <form>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="proveedores" class="custom-control-input" id="proveedores">
+                    <label class="custom-control-label text-small pt-1" for="proveedores">Proveedores</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="industriales" class="custom-control-input" id="industriales">
+                    <label class="custom-control-label text-small pt-1" for="industriales">Industriales</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" v-model="especialidadesComite" class="custom-control-input" id="especialidades">
+                    <label class="custom-control-label text-small pt-1" for="especialidades">Especialidades</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>--> <!-- col-md-6 -->
 
         <!-- RIGHT COLUMN -->
         <div class="col-md-6">
@@ -777,6 +1627,14 @@
       </div> <!-- row -->
 
         <div class="creacion-solicitud__buttons py-5 mt-5">
+          <div class="container text-center pt-5">
+               <p>
+                  <span>
+                    <img src="@/assets/images/icono alerta-25.png" alt="" style="margin-bottom: 30px;with:45px; height:45px;" class="img-fluid">
+                    </span> 
+                    Mantener los datos actualizados es de exclusiva responsabilidad del Socio
+                  </p>
+          </div>
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm3" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
@@ -913,7 +1771,7 @@
 </div>
   </div>
 <br>
-  <div class="row"  @click="">
+  <div class="row">
     <div class="col-lg-6">
       <a href="" download class="patrocinante__download">
               <img src="@/assets/images/mas.png" alt="Descargar formulario" width="33px" class="btn--sibling-hover-right">
@@ -1018,6 +1876,14 @@
       </div> <!-- row -->
 
        <div class="creacion-solicitud__buttons py-5 mt-5">
+         <div class="container text-center pt-5">
+               <p>
+                  <span>
+                    <img src="@/assets/images/icono alerta-25.png" alt="" style="margin-bottom: 30px;with:45px; height:45px;" class="img-fluid">
+                    </span> 
+                    Mantener los datos actualizados es de exclusiva responsabilidad del Socio
+                  </p>
+          </div>
         <button @click="guardar" class="btn btn-danger btn--big m-2">Guardar y cerrar</button>
         <button @click="frm4" class="btn btn-primary btn--big m-2"><i
             class="fas fa-long-arrow-alt-left fa-lg"></i>Anterior</button>
@@ -1169,7 +2035,7 @@
         </div> <!-- row -->
         <span v-if="msgTerm" class="font-weight-bold pt-1" style="color:red">*Debe acpetar términos y condiciones</span>
         <div class="d-flex justify-content-center pt-5">
-          <button type="submit" :disabled="isDisabled" class="btn btn--big btn--submit text-white text-uppercase" @click="enviarPostulacion()">Enviar postulación</button>
+          <button :disabled="isDisabled" class="btn btn--big btn--submit text-white text-uppercase" @click="enviarPostulacion()">Enviar postulación</button>
         </div>
       </form>
 
@@ -1231,44 +2097,16 @@ export default{
 data () {
   return {
 
-      /*query: '',
-      countries: [],
-      selectedCountry: null,
-      options: {},
-      formateo:[],*/
-      
-
-    /*listaGente:[
-      {
-      id:'1',
-      nombre:'Leo',
-      rut:'1',
-      razon: 'Leonardo C.A',
-      editing: false
-      },
-      {
-      id:'2',
-      nombre:'Gaby',
-      rut:'2',
-      razon:'Gabriela C.A',
-      editing: false
-    },
-    {
-      id:'3',
-      nombre:'Gene',
-      rut:'3',
-      razon: 'Genesis C.A',
-      editing: false
-    }
-    ],*/
-    
     language: "es",
     languages: lang,
     format:"dd-MM-yyyy",
     disabledDates:{
      from: new Date() //Deshabilita fechas futuras
     },
+    
 
+    //URL de la api
+     url: this.$store.state.URL,
     
      //Inicializacion del Objeto principal para guardar y actualizar todos los formularios
 
@@ -1304,7 +2142,7 @@ data () {
      rutNoValido: true,
      campoNoValido: 'rut-invalido',
     campoValido: 'rut-valido',
-    camposCorrectos: false,
+    camposCorrectos: true,
      vocativos:[],
      vocativoSeleccionado:'',
      nombre:'',
@@ -1343,6 +2181,7 @@ data () {
 
      //Data para el formulario de direcciones formulario2
       calle:'',
+      camposCorrectosDir: true,
       numeroCalle:'',
       oficina:'',
       continuacion:'',
@@ -1413,6 +2252,7 @@ data () {
         }
       ],
       formatoTelefono: false,
+      formatoTelefonoPar: false,
       mostrarAdd: true,
 
 
@@ -1436,6 +2276,7 @@ data () {
       dvPersonaJuridicaNueva:'',
       personasJuridicasNuevas:[],
       juridicoEnArray: false,
+      personasJuridicaId: '',
 
 
  //Data para Selección de comités
@@ -1446,7 +2287,77 @@ data () {
       vivienda:false,
       proveedores:false,
       industriales:false,
-      especialidades:false, 
+      especialidadesComite:false,
+      camara: '',
+      comites:[],
+      comiteInfraArica:false,
+comiteinmobiliarioArica:false,
+proveedoresArica:false,
+contratistaGIquique:false,
+comiteinmobiliarioIquique:false,
+proveedoresIquique:false,
+contratistasGCalama:false,
+proveedoresCalama:false,
+infraEstAntofagasta:false,
+comiteinmobiliarioAntofagasta:false,
+proveedoresAntofagasta:false,
+contratistasGeneralesCopiapo:false,
+comiteinmobiliarioCopiapo:false,
+proveedoresCopiapo:false,
+contratistasGeneralesSerena:false,
+viviendaSerena:false,
+proveedoresSerena:false,
+contratistasGeneralesValparaiso:false,
+viviendaValparaiso:false,
+inmobiliarioValparaiso:false,
+contratistasGeneralesRancagua:false,
+viviendaRancagua:false,
+proveedoresRancagua:false,
+obrasInfraTalca:false,
+viviendaTalca:false,
+proveedoresTalca:false,
+obrasInfraChillan:false,
+contratistasGeneChillan:false,
+viviendaChillan:false,
+proveedoresChillan:false,
+especialidadesChillan:false,
+industrialeshillan:false,
+obrasInfraConcepcion:false,
+contratistasGeneConcepcion:false,
+concesionesConcepcion:false,
+viviendaConcepcion:false,
+inmobiliarioConcepcion:false,
+proveedoresConcepcion:false,
+industrialesConcepcion:false,
+obrasInfraAngeles:false,
+contratistasGeneAngeles:false,
+viviendaEInmobiliarioAngeles:false,
+proveedoresAngeles:false,
+industrialesAngeles:false,
+especialidadesAngeles:false,
+obrasInfraTemuco:false,
+viviendaTemuco:false,
+inmobiliarioTemuco:false,
+proveedoresTemuco:false,
+especialidadesTemuco:false,
+contratistasGValdivia:false,
+viviendaeInmobiliarioValdivia:false,
+obrasInfraOsorno:false,
+viviendaOsorno:false,
+proveedoresOsorno:false,
+obrasInfraPuertoMontt:false,
+viviendaPuertoMontt:false,
+obrasInfraCoyhaique:false,
+contratistasGCoyhaique:false,
+viviendaCoyhaique:false,
+proveedoresCoyhaique:false,
+especialidadesCoyhaique:false,
+obrasInfraPuntaArenas:false,
+viviendaPuntaArenas:false,
+proveedoresPuntaArenas:false,
+especialidadesPuntaArenas:false,
+    
+     
             
 //Data Compromisos
       terms: false,
@@ -1481,8 +2392,10 @@ data () {
        perIdPatrocinador2:'',
        respaldo1:'',
        selectedRespaldo1:[],
+       respaldo1Name:'',
        respaldo2:'',
        selectedRespaldo2:[],
+       respaldo2Name: '',
 
        //Data compromisos
        enviarCopiaMail: false
@@ -1493,7 +2406,7 @@ data () {
   methods:{
 
     ...mapMutations(['frm1','frm2','frm3', 
-                     'frm4','frm5','frm6']),
+                     'frm4','frm5','frm6', 'rutEnNumeroSolicitud']),
 
                     
      /*onCountryInputChange (query) {
@@ -1520,29 +2433,25 @@ data () {
 
     
     siguiente(){
-      /*this.$validator.validate()
+      this.guardar();
+           // this.frm2();
+     /* this.$validator.validate()
 				.then(esValido => {
-          if (esValido) {*/
+          if (esValido) {
+            */
           this.checkForm();
           
           if(this.camposCorrectos == true && this.rutNoValido == true){
             
             this.guardar();
             this.frm2();
-            console.log("Puede Pasar");
+            //console.log("Puede Pasar");
           }
             
           else {
-
-            if(this.rutNoValido == true){
-              alert("Debe introducir un RUT valido");
-            }else{
-              if(this.camposCorrectos == false && this.rutNoValido == false){
-                alert("Debe llenar campos requeridos");
-              }
-              
-            }
-						
+            alert("Debe llenar campos requeridos");
+           
+            
 					}
           /*} else {
 						alert("Debe llenar campos requeridos");
@@ -1551,29 +2460,29 @@ data () {
     },                
 
     siguiente2(){
-      /*this.$validator.validate()
-				.then(esValido => {
-					if (esValido) {*/
+      this.guardar();
+            //this.frm3();
+          this.checkForm();
 
+          if(this.camposCorrectosDir == true){
             this.guardar();
             this.frm3();
-            console.log("Puede Pasar");
-
-         /* } else {
-						alert("Debe llenar campos requeridos");
-					}
-        });  */
+          }
+          else {
+            alert("Debe llenar campos requeridos"); 
+					}   
     },
 
     siguiente3(){
      /* this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
-
+            this.checkForm();
+           // if(this.camposCorrectosDir == true){
             this.guardar();
             this.frm4();
-            console.log("Puede Pasar");
-
+            //console.log("Puede Pasar");
+            
          /* } else {
 						alert("Debe llenar campos requeridos");
 					}
@@ -1587,7 +2496,7 @@ data () {
 
             this.guardar();
             this.frm5();
-            console.log("Puede Pasar");
+            //console.log("Puede Pasar");
 
          /* } else {
 						alert("Debe llenar campos requeridos");
@@ -1599,10 +2508,16 @@ data () {
       /*this.$validator.validate()
 				.then(esValido => {
 					if (esValido) {*/
+            this.checkForm();
 
-            this.guardar();
-            this.frm6();
-            console.log("Puede Pasar");
+            if(this.camposCorrectos == true){
+              this.guardar();
+              this.frm6();
+            }else{
+              alert("Debe llenar campos requeridos");
+            }
+            
+            //console.log("Puede Pasar");
 
         /* } else {
 						alert("Debe llenar campos requeridos");
@@ -1749,26 +2664,97 @@ data () {
           
         },
         comites:{
+          
           infraestructura:{
             contratistasGenerales:this.contratistasGenerales,
             obrasInfra: this.obrasInfra,
-            conseciones: this.conseciones
+            conseciones: this.conseciones,
+            comiteInfraArica: this.comiteInfraArica,
+            contratistaGIquique: this.contratistaGIquique,
+            contratistasGCalama: this.contratistasGCalama,
+            infraEstAntofagasta: this.infraEstAntofagasta,
+            contratistasGeneralesCopiapo: this.contratistasGeneralesCopiapo,
+            contratistasGeneralesSerena: this.contratistasGeneralesSerena,
+            contratistasGeneralesValparaiso:this.contratistasGeneralesValparaiso,
+            contratistasGeneralesRancagua: this.contratistasGeneralesRancagua,
+            obrasInfraTalca: this.obrasInfraTalca,
+            obrasInfraChillan:this.obrasInfraChillan,
+            contratistasGeneChillan: this.contratistasGeneChillan,
+            obrasInfraConcepcion: this.obrasInfraConcepcion,
+            contratistasGeneConcepcion:this.contratistasGeneConcepcion,
+            concesionesConcepcion: this.false,
+            obrasInfraAngeles: this.obrasInfraAngeles,
+            contratistasGeneAngeles: this.contratistasGeneAngeles,
+            obrasInfraTemuco: this.obrasInfraTemuco,
+            contratistasGValdivia:this.contratistasGValdivia,
+            obrasInfraOsorno: this.obrasInfraOsorno,
+            obrasInfraPuertoMontt: this.obrasInfraPuertoMontt,
+            obrasInfraCoyhaique: this.obrasInfraCoyhaique,
+            contratistasGCoyhaique: this.contratistasGCoyhaique,
+            obrasInfraPuntaArenas: this.obrasInfraPuntaArenas,
           },
           vivienda:{
             inmobiliario: this.inmobiliario,
-            vivienda: this.vivienda
+            vivienda: this.vivienda,
+            comiteinmobiliarioArica: this.comiteinmobiliarioArica,
+            comiteinmobiliarioIquique: this.comiteinmobiliarioIquique,
+            comiteinmobiliarioAntofagasta: this.comiteinmobiliarioAntofagasta,
+            comiteinmobiliarioCopiapo: this.comiteinmobiliarioCopiapo,
+            viviendaSerena:this.viviendaSerena,
+            viviendaValparaiso:this.viviendaValparaiso,
+            inmobiliarioValparaiso:this.inmobiliarioValparaiso,
+            viviendaRancagua: this.viviendaRancagua,
+            viviendaTalca: this.viviendaTalca,
+            viviendaChillan: this.viviendaChillan,
+            viviendaConcepcion:this.viviendaConcepcion,
+            inmobiliarioConcepcion:this.inmobiliarioConcepcion,
+            viviendaEInmobiliarioAngeles: this.viviendaEInmobiliarioAngeles,
+            viviendaTemuco: this.viviendaTemuco,
+            inmobiliarioTemuco: this.inmobiliarioTemuco,
+            viviendaeInmobiliarioValdivia: this.viviendaeInmobiliarioValdivia,
+            viviendaOsorno: this.viviendaOsorno,
+            viviendaPuertoMontt: this.viviendaPuertoMontt,
+            viviendaCoyhaique: this.viviendaCoyhaique,
+            viviendaPuntaArenas:this.viviendaPuntaArenas
+            
           },
           suministros:{
              proveedores: this.proveedores,
              industriales: this.industriales,
-             especialidades: this.especialidades
+             especialidadesComite: this.especialidadesComite,
+             proveedoresArica: this.proveedoresArica,
+             proveedoresIquique: this.proveedoresIquique,
+             proveedoresCalama: this.proveedoresCalama,
+             proveedoresAntofagasta: this.proveedoresAntofagasta,
+             proveedoresCopiapo: this.proveedoresCopiapo,
+             proveedoresSerena:this.proveedoresSerena,
+             proveedoresRancagua: this.proveedoresRancagua,
+             proveedoresTalca:this.proveedoresTalca,
+             proveedoresChillan: this.proveedoresChillan,
+             especialidadesChillan: this.especialidadesChillan,
+             industrialeshillan: this.industrialeshillan,
+             proveedoresConcepcion:this.proveedoresConcepcion,
+             industrialesConcepcion:this.industrialesConcepcion,
+             proveedoresAngeles: this.proveedoresAngeles,
+             industrialesAngeles:this.industrialesAngeles,
+             especialidadesAngeles:this.especialidadesAngeles,
+             proveedoresTemuco: this.proveedoresTemuco,
+             especialidadesTemuco: this.especialidadesTemuco,
+             proveedoresOsorno: this.proveedoresOsorno,
+             especialidadesCoyhaique: this.especialidadesCoyhaique,
+             proveedoresCoyhaique: this.proveedoresCoyhaique,
+             especialidadesCoyhaique: this.especialidadesCoyhaique,
+             proveedoresPuntaArenas: this.proveedoresPuntaArenas,
+             especialidadesPuntaArenas:this.especialidadesPuntaArenas
           }
         },
         patrocinantes:{
           patrocinante1: this.perIdPatrocinante,
           patrocinador1: this.perIdPatrocinador,
+          respaldo1Name: this.respaldo1Name,
           patrocinante2: this.perIdPatrocinante2,
-          patrocinador2: this.perIdPatrocinador2
+          patrocinador2: this.perIdPatrocinador2,
+          respaldo2Name: this.respaldo2Name
         },
         compromisos:{
           enviarCopiaMail: this.enviarCopiaMail
@@ -1792,7 +2778,6 @@ data () {
  
 
   for(var i=0; i< this.listaPersonaJuridica.length; i++){
-   
     if(this.listaPersonaJuridica[i].rut == this.rutPersonaJuridica){
 
       //this.razonSocial = this.listaPersonaJuridica[i].razon;
@@ -1800,9 +2785,9 @@ data () {
       this.encuentra = '';
      
       let posi = '';
-      console.log( this.composicion);
+      //console.log( this.composicion);
       for(let k = 0; k < this.composicion.length; k++) {
-        console.log(this.composicion[k].rutPersonaJuridica);
+        //console.log(this.composicion[k].rutPersonaJuridica);
         if (this.composicion[k].rutPersonaJuridica == this.rutPersonaJuridica) {
           this.encuentra = this.rutPersonaJuridica;
           
@@ -1814,7 +2799,6 @@ data () {
     
     
       if(this.editPor == true){
-
           this.composicion.splice(posi, 1);
 /*console.log(this.juridicoEnArray);
           if(this.juridicoEnArray == true){
@@ -1825,11 +2809,13 @@ data () {
         porcentaje: this.porcentaje});
         this.juridicoEnArray = false;
         }else{*/
+        
           this.composicion.push({
         rutPersonaJuridica: this.listaPersonaJuridica[i].rut,
         dvComp: this.listaPersonaJuridica[i].dv,
         nombre: this.listaPersonaJuridica[i].nombre,
-        porcentaje: this.porcentaje});
+        porcentaje: this.porcentaje,
+        perId: this.listaPersonaJuridica[i].perId});
       //  }
           
         this.guardar();
@@ -1843,15 +2829,17 @@ data () {
       }else{
 
       if(this.encuentra == ''){
+        
         this.composicion.push({
         rutPersonaJuridica: this.listaPersonaJuridica[i].rut,
         nombre: this.listaPersonaJuridica[i].nombre,
         porcentaje: this.porcentaje,
-        dvComp: this.listaPersonaJuridica[i].dv
+        dvComp: this.listaPersonaJuridica[i].dv,
+        personasJuridicaId: this.listaPersonaJuridica[i].perId
         //editing: this.listaPersonaJuridica[i].editing
 
       });
-      
+
        this.guardar();
        this.editPor = false;
        
@@ -2038,7 +3026,7 @@ enviarPostulacion: function(){
     let obj = this.personaNatural;
     let data = JSON.stringify(obj);
     console.log(data);
-    Vue.axios.post('http://postulacion.isc.cl/personaNatural',  data).then((response) => {
+    Vue.axios.post(this.url+'personaNatural',  data).then((response) => {
       alert("Postulacion Enviada");
       //console.log(response.config.data);
       console.log(response.data);
@@ -2098,7 +3086,7 @@ enviarPostulacion: function(){
 
     getListarPatrocinante: function(){
       console.log('Buscando...');
-      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinante').then((response) => {
+      Vue.axios.get(this.url+'listarPatrocinante').then((response) => {
       this.patrocinantes = response.data;
       });
       this.mostrarListaPatrocinanteScroll='listaHov';
@@ -2111,7 +3099,7 @@ enviarPostulacion: function(){
 
     getListarPatrocinante2: function(){
       console.log('Buscando...');
-      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinante').then((response) => {
+      Vue.axios.get(this.url+'listarPatrocinante').then((response) => {
       this.patrocinantes2 = response.data;
       });
 
@@ -2129,7 +3117,7 @@ enviarPostulacion: function(){
 
       if(idPatrocinante !='' && this.nombrePatro !=''){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinador/'+idPatrocinante).then((response) => {
+      Vue.axios.get(this.url+'listarPatrocinador/'+idPatrocinante).then((response) => {
       this.patrocinadores = response.data;
       }).catch(function (error) {
         // handle error
@@ -2156,7 +3144,7 @@ enviarPostulacion: function(){
 
       if(idPatrocinante !='' && this.nombrePatrocinante2 !=''){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarPatrocinador/'+idPatrocinante).then((response) => {
+      Vue.axios.get(this.url+'listarPatrocinador/'+idPatrocinante).then((response) => {
       this.patrocinadores2 = response.data;
       this.mostrarListaPatrocinadorScroll2='listaHov';
       this.mostrarListaPatrocinanteScroll2='listaHovHidden';
@@ -2185,7 +3173,7 @@ enviarPostulacion: function(){
 
     getListadoVocativo: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarVocativo').then((response) => {
+      Vue.axios.get(this.url+'listarVocativo').then((response) => {
       this.vocativos = response.data;
       //console.log(this.vocativos);
       })
@@ -2194,7 +3182,7 @@ enviarPostulacion: function(){
 
     getlistarEspecialidad: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarEspecialidad').then((response) => {
+      Vue.axios.get(this.url+'listarEspecialidad').then((response) => {
       this.especialidades = response.data;
         console.log(this.especialidades);
       })
@@ -2203,7 +3191,7 @@ enviarPostulacion: function(){
 
      getlistarProfesiones: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarProfesiones').then((response) => {
+      Vue.axios.get(this.url+'listarProfesiones').then((response) => {
       this.profesiones = response.data;
         console.log(this.profesiones);
       })
@@ -2212,7 +3200,7 @@ enviarPostulacion: function(){
 
     getlistarNivel: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarNivel').then((response) => {
+      Vue.axios.get(this.url+'listarNivel').then((response) => {
       this.nivelEstudios = response.data;
         //console.log(this.nivelEstudios);
       })
@@ -2221,7 +3209,7 @@ enviarPostulacion: function(){
 
     getlistarCargos: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarCargos').then((response) => {
+      Vue.axios.get(this.url+'listarCargos').then((response) => {
       this.cargoEmpresas = response.data;
         //console.log(this.cargoEmpresas);
       })
@@ -2230,7 +3218,7 @@ enviarPostulacion: function(){
 
     getListarIntereses: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarInteres').then((response) => {
+      Vue.axios.get(this.url+'listarInteres').then((response) => {
       this.intereses = response.data;
         console.log(this.intereses);
       })
@@ -2239,15 +3227,15 @@ enviarPostulacion: function(){
 
     getListadoEdoCivil: function(){
 
-      Vue.axios.get('http://postulacion.isc.cl/listarEdo').then((response) => {
+      Vue.axios.get(this.url+'listarEdo').then((response) => {
       this.edoCiviles = response.data;
-     // console.log(this.edoCiviles);
+     
       })
 
     },
 
     getListadoRegion: function(){
-      Vue.axios.get('http://postulacion.isc.cl/listarRegion').then((response) => {
+      Vue.axios.get(this.url+'listarRegion').then((response) => {
       this.regiones = response.data;
       //console.log(this.regiones);
     })
@@ -2255,7 +3243,7 @@ enviarPostulacion: function(){
     },
 
     getListadoRegionPar: function(){
-      Vue.axios.get('http://postulacion.isc.cl/listarRegion').then((response) => {
+      Vue.axios.get(this.url+'listarRegion').then((response) => {
       this.regionesPar = response.data;
       //console.log(this.regionesPar);
     })
@@ -2264,7 +3252,7 @@ enviarPostulacion: function(){
 
      getListadoProvincia: function(){
       let idReg = this.regionSeleccionada;
-      Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
+      Vue.axios.get(this.url+'listarProvincias/'+idReg).then((response) => {
       this.provincias = response.data;
       
     })
@@ -2273,7 +3261,7 @@ enviarPostulacion: function(){
 
     getListadoProvinciaPar: function(){
       let idReg = this.regionSeleccionadaPar;
-      Vue.axios.get('http://postulacion.isc.cl/listarProvincias/'+idReg).then((response) => {
+      Vue.axios.get(this.url+'listarProvincias/'+idReg).then((response) => {
       this.provinciasPar = response.data;
       //console.log(this.provinciasPar);
       
@@ -2284,7 +3272,7 @@ enviarPostulacion: function(){
      getListadoComuna: function(){
        let idProvincia = this.provinciaSeleccionada;
 
-      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idProvincia).then((response) => {
+      Vue.axios.get(this.url+'listarComuna/'+idProvincia).then((response) => {
       this.comunas = response.data;
       this.getNombreProvincia();
     })
@@ -2294,7 +3282,7 @@ enviarPostulacion: function(){
     getListadoComunaPar: function(){
        let idComuna = this.provinciaSeleccionadaPar;
 
-      Vue.axios.get('http://postulacion.isc.cl/listarComuna/'+idComuna).then((response) => {
+      Vue.axios.get(this.url+'listarComuna/'+idComuna).then((response) => {
       this.comunasPar = response.data;
       //this.getNombreProvinciaPar();
       //console.log(this.comunas);
@@ -2315,7 +3303,7 @@ enviarPostulacion: function(){
     getNombreProvincia: function(){
 
       let idProv = this.provinciaSeleccionada;
-      Vue.axios.get('http://postulacion.isc.cl/listarProvincianombre/'+idProv).then((response) => {
+      Vue.axios.get(this.url+'listarProvincianombre/'+idProv).then((response) => {
       this.nombreProvinciaSelect = response.data[0].provincia;
       console.log(this.nombreProvinciaSelect);
       })
@@ -2325,10 +3313,24 @@ enviarPostulacion: function(){
     getNombreComuna: function(){
 
       let idComuna = this.comunaSeleccionada;
-      Vue.axios.get('http://postulacion.isc.cl/listarComunanombre/'+idComuna).then((response) => {
+      Vue.axios.get(this.url+'listarComunanombre/'+idComuna).then((response) => {
       this.nombreComunaSelect = response.data[0].comuna;
       console.log(this.nombreComunaSelect);
       })
+
+    },
+
+    getComites: function(){
+
+      let idCamara = this.$store.state.camaraGlobal;
+
+      if(idCamara != ''){
+        Vue.axios.get(this.url+'listarComites/'+idCamara).then((response) => {
+        this.comites = response.data;
+        //console.log(this.comites);
+      })
+      }
+      
 
     },
 
@@ -2382,7 +3384,7 @@ enviarPostulacion: function(){
      }*/
       
       console.log('Buscando...');
-      Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      Vue.axios.get(this.url+'listarJuridicos').then((response) => {
       this.listaPersonaJuridica= response.data;
       this.listaPersonaJuridicaEmpresa = response.data;
       console.log(this.listaPersonaJuridica);
@@ -2398,7 +3400,7 @@ enviarPostulacion: function(){
 
      getPersonaJuridicaEmpresa: function(){
       console.log('Buscando...');
-      Vue.axios.get('http://postulacion.isc.cl/listarJuridicos').then((response) => {
+      Vue.axios.get(this.url+'listarJuridicos').then((response) => {
       this.listaPersonaJuridicaEmpresa = response.data;
       console.log(this.listaPersonaJuridica);
       });
@@ -2413,6 +3415,8 @@ enviarPostulacion: function(){
       //this.rutComp = item.rut;
       this.rutPersonaJuridica = item.rut;
       this.razonSocial = item.nombre;
+      this.personasJuridicaId = item.perId;
+      console.log(this.personasJuridicaId);
       this.mostrarListaPersonaJuridicaScroll = 'listaHovHidden';
       this.mostrarListadoPersonaJuridica =false;
      
@@ -2479,20 +3483,22 @@ this.composicion.push({
     this.formatoTelefono = true;
   }
 
-  /*let telefonoCadenaArray = this.telefonosArray[i].split('');
-  //console.log(this.telefonosArray[i]);
-  //console.log(telefonoCadenaArray);
+    
+},
 
-  for (var i=0; i < telefonoCadenaArray.length; i++) {
-    if(i > 7){
-      let arregloString = telefonoCadenaArray.toString();
-      //this.codigoArea = telefonoCadenaArray[i] + telefonoCadenaArray[i+1];
-      console.log(arregloString);
-    }else{
-      //console.log("Numero")
-    }
-      //console.log(telefonoCadenaArray[i]);
-   }*/
+ validarTelefonoPar(i) {
+ 
+  let telefono = this.telefonosParArray[i];
+  let expreg = /^(\+?56)?(\s?)(0?9)(\s?)[987654]\d{7}$/;
+  
+  if(expreg.test(telefono)){
+    this.formatoTelefonoPar = false;
+  }
+	
+  else {
+    this.formatoTelefonoPar = true;
+  }
+
     
 },
 
@@ -2502,7 +3508,9 @@ primeraMayuscula(string){
 
 onFileSelectedCV(event) {
       this.filecv = this.$refs.filecv.files[0];
-      this.selectedFileCV = event.target.files
+      this.selectedFileCV = event.target.files;
+      this.cv = this.$refs.filecv.files[0].name;
+      console.log(this.cv);
       console.log(this.filecv);
     },
 
@@ -2514,7 +3522,7 @@ removeFileCV: function (e) {
       let fd = new FormData();
       fd.append('filecv', this.filecv);
     
-      Vue.axios.post( 'http://postulacion.isc.cl/uploadfilecv',
+      Vue.axios.post(this.url+'uploadfilecv',
                 fd,
                 {
                 headers: {
@@ -2530,9 +3538,10 @@ removeFileCV: function (e) {
     },
     onFileSelectedRespaldo1(event) {
       this.respaldo1 = this.$refs.respaldo1.files[0];
+      this.respaldo1Name = this.$refs.respaldo1.files[0].name;
       this.selectedRespaldo1 = event.target.files;
       
-      console.log(this.respaldo1);
+      console.log(this.respaldo1Name);
     },
 
 removeRespaldo1: function (e) {
@@ -2543,7 +3552,7 @@ removeRespaldo1: function (e) {
       let fd = new FormData();
       fd.append('respaldo1', this.respaldo1);
     
-      Vue.axios.post( 'http://postulacion.isc.cl/uploadRespaldo1',
+      Vue.axios.post(this.url+'uploadRespaldo1',
                 fd,
                 {
                 headers: {
@@ -2559,9 +3568,10 @@ removeRespaldo1: function (e) {
     },
     onFileSelectedRespaldo2(event) {
       this.respaldo2 = this.$refs.respaldo2.files[0];
+      this.respaldo2Name = this.$refs.respaldo2.files[0].name;
       this.selectedRespaldo2 = event.target.files;
       
-      console.log(this.respaldo2);
+      console.log(this.respaldo2Name);
     },
 
 removeRespaldo2: function (e) {
@@ -2572,7 +3582,7 @@ removeRespaldo2: function (e) {
       let fd = new FormData();
       fd.append('respaldo2', this.respaldo2);
     
-      Vue.axios.post( 'http://postulacion.isc.cl/uploadRespaldo2',
+      Vue.axios.post(this.url+'uploadRespaldo2',
                 fd,
                 {
                 headers: {
@@ -2612,17 +3622,42 @@ dv : function(T){
         S=(S+T%10*(9-M++%6))%11;
     return S?S-1:'k';
 },
+
+
 updateRutNum: function(){
-  console.log(this.$store.state.rutGlobal);
   let estadoRut = this.validaRut(this.rut);
+  let estadoRutAcom = this.validaRut(this.rutAcom);
   this.rutNoValido = estadoRut;
+  this.rutNoValido = estadoRutAcom;
 },
 
+
+
 checkForm: function () {
-      if (this.rut) {
+  
+      if (this.rut && this.nombre != '' && this.apellidoPat !='' && this.apellidoMat !='' && this.sexo !='' 
+      && this.edoCivilSeleccionado !='' && this.profesionSeleccionado != '' && this.cv != null && this.rutAcom !='' 
+      && this.nombreAcom !='' && this.apellidoPatAcom !='' && this.apellidoMatAcom != '') {
         this.camposCorrectos = true;
         return true;
       }
+
+
+      if(this.calle !='' && this.numeroCalle !='' && this.regionSeleccionada !='' && this.provinciaSeleccionada !='' 
+         && this.comunaSeleccionada !='' && this.telefonosArray[0] != '' && this.emailsArray[0] != '' && this.callePar != ''
+         && this.numeroCallePar !='' && this.regionSeleccionadaPar !='' && this.provinciaSeleccionadaPar !='' 
+         && this.comunaSeleccionadaPar != '' && this.telefonosParArray[0] !='' && this.emailsParArray[0] != ''){
+        this.camposCorrectosDir = true;
+        return true;
+      }
+
+
+      console.log(this.nombrePatro);
+      if(this.nombrePatro != '' && this.nombrePatrocinador != '' && this.nombrePatrocinante2 != '' && this.nombrePatrocinador2 != ''){
+        this.camposCorrectos = true;
+        return true;
+      }
+
 
       this.errorRut = [];
 
@@ -2631,9 +3666,184 @@ checkForm: function () {
         
       }
       
-    }
+      if (this.nombre == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El Nombre es obligatorio.');
+        
+      }
+
+      if (this.apellidoPat == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El Apellido Paterno es obligatorio.');
+        
+      }
+
+      if (this.apellidoMat == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El Apellido Materno es obligatorio.');
+        
+      }
+
+
+      if (this.cv == null) {
+        this.camposCorrectos = false;
+        this.errorRut.push('El CV es obligatorio.');
+        
+      }
+
+      if (this.edoCivil == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El Estado Civil es obligatorio.');
+        
+      }
+
+      if (this.profesion == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('La Profesoion es obligatoria.');
+        
+      }
+
+      if (this.sexo == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo sexo es obligatorio.');
+        
+      }
+
+      if (this.rutAcom == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo Rut acompañante es obligatorio.');
+        
+      }
+
+      if (this.nombreAcom == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo Nombre acompañante es obligatorio.');
+        
+      }
+
+      if (this.apellidoPatAcom == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo Apellido Paterno  acompañante es obligatorio.');
+        
+      }
+
+      if (this.apellidoMatAcom == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo Apellido Materno acompañante es obligatorio.');
+        
+      }
+
+      if (this.emailAcom == '') {
+        this.camposCorrectos = false;
+        this.errorRut.push('El campo email acompañante es obligatorio.');
+        
+      }
+
+      if (this.calle == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo calle es obligatorio.');
+        
+      }
+
+      if (this.numeroCalle == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo número es obligatorio.');
+        
+      }
+
+      if (this.regionSeleccionada == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo Región es obligatorio.');
+        
+      }
+
+      if (this.provinciaSeleccionada == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo provincia es obligatorio.');
+        
+      }
+
+      if (this.comunaSeleccionada == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo comuna es obligatorio.');
+        
+      }
+
+      if (this.email == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo email es obligatorio.');
+        
+      }
+
+      if (this.telefono == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo telefono  es obligatorio.');
+        
+      }
+
+      if (this.callePar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo calle particular  es obligatorio.');
+        
+      }
+
+      if (this.numeroCallePar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo numero particular  es obligatorio.');
+        
+      }
+
+      if (this.regionSeleccionadaPar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo región particular  es obligatorio.');
+        
+      }
+
+      if (this.comunaSeleccionadaPar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo comuna particular  es obligatorio.');
+        
+      }
+
+      if (this.provinciaSeleccionadaPar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo provincia particular  es obligatorio.');
+        
+      }
+
+      if (this.emailPar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo email particular  es obligatorio.');
+        
+      }
+
+      if (this.telefonoPar == '') {
+        this.camposCorrectosDir = false;
+        this.errorRut.push('El campo telefono particular  es obligatorio.');
+        
+      }
+
+    },
+
+    valorRutDesdeVuex(){
+          this.rut = this.$store.state.rutGlobal;
+          this.emailsArray[0] = this.$store.state.emailGlobal;
+          this.telefonosArray[0]= this.$store.state.telefonoGlobal;
+          this.camara  = this.$store.state.camaraGlobal;
+
+          if(this.$store.state.tipoSociedad == undefined){
+            this.nombre = '';
+          }else{
+            this.nombre = this.$store.state.tipoSociedad;
+          }
+        },
+
+        mostrarComitesGremialesxCamara(){
+
+        }
 
   },
+
 
   created: function(){ 
         this.getListadoVocativo();
@@ -2646,12 +3856,15 @@ checkForm: function () {
         this.getlistarNivel();
         this.getlistarProfesiones();
         this.getlistarEspecialidad();
-        //this.getListarPatrocinante();        
+        //this.getListarPatrocinante();
+        this.getComites();
+        
+        this.valorRutDesdeVuex();
   },
   
   computed:{
-    ...mapState(['rutGlobal','formulario1', 'formulario2', 'formulario3',
-                 'formulario4','formulario5','formulario6']),
+    ...mapState(['rutGlobal','emailGlobal','formulario1', 'formulario2', 'formulario3',
+                 'formulario4','formulario5','formulario6', 'URL']),
 
     isDisabled: function(){
     
@@ -2817,21 +4030,20 @@ overflow:none;
 .rut-invalido{
   border-color: #f14d31;
     padding-right: calc(1.5em + 0.75rem);
-    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23f14d3…%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E);
     background-repeat: no-repeat;
     background-position: center right calc(0.375em + 0.1875rem);
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 
-.rut-valido{
+/*.rut-valido{
     color: #495057;
     background-color: #fff;
     border-color: #76b1e8;
     outline: 0;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(32, 114, 190, 0.25)
-}
+}*/
 
 
 /*.form-control:disabled{

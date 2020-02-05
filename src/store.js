@@ -6,7 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store ({
     state: {
-    rutGlobal: '11111111-1',
+    URL: process.env.VUE_APP_URL,    
+    rutGlobal: '',
+    emailGlobal:'',
+    telefonoGlobal:'',
+    camaraGlobal:'',
+    tipoSociedad:'',
     done1: 'header__progress-number-active',
     done2: 'header__progress-number',
     done3: 'header__progress-number',
@@ -30,6 +35,14 @@ export default new Vuex.Store ({
         
 
     }, mutations:{
+
+        rutEnNumeroSolicitud(state, payload){
+            state.rutGlobal = payload.rut;
+            state.emailGlobal = payload.correo;
+            state.telefonoGlobal = payload.telefono;
+            state.camaraGlobal = payload.camara;
+            state.tipoSociedad = payload.tipoSociedad;
+        },
 
         frm1(state){
 

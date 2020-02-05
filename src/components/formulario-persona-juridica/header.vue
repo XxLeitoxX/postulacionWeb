@@ -14,7 +14,7 @@
 	    <div class="header__container-bottom">
 	      <div class="header__bottom-left">
 	        <h3 class="header__bottom-text text-uppercase text-primary">Persona jurídica</h3>
-	        <h3 class="header__bottom-text text-primary">N° Solicitud:</h3>
+	        <h3 class="header__bottom-text text-primary">N° Solicitud: {{ rutGlobal }}</h3>
 	      </div>
 	      <div class="header__bottom-right">
 	        <span class="header__progress-line"></span>
@@ -65,7 +65,7 @@
       }
     },
     computed:{
-	    ...mapState(['done1', 'done2', 'done3', 'done4', 'done5', 'done6'])
+	    ...mapState(['done1', 'done2', 'done3', 'done4', 'done5', 'done6', 'rutGlobal'])
 	 }
   }
 </script>

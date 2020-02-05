@@ -5,11 +5,18 @@
         <img src="@/assets/images/logo-CCHC.png" alt="Logo CCHC" class="header__logo img-fluid">
       </div>
       <h3 class="text-uppercase text-primary header__title-top">Solicitud de postulación socios</h3>
-      <div class="header__text-container">
+        <div class="header__text-container d-flex">
+  <h3 class="header__text text-primary mt-1">Contacto Área de Socios</h3>
+  <div class="ml-3">
+    <p class="header__text">areasocios@cchc.cl</p>
+    <p class="header__text">+56225887500</p>
+  </div>
+</div>
+      <!--<div class="header__text-container">
         <p class="header__text">Por favor llene todos los campos solicitados en el formulario de postulación</p>
         <p class="header__text">Puede llenar los datos de cualquiera de los pasos, los datos se guardarán
           automáticamente.</p>
-      </div>
+      </div>-->
     </div>
     <div class="header__container-bottom">
       <div class="header__bottom-left">

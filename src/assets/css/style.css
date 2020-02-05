@@ -11219,3 +11219,13 @@ COMPROMISOS BLOCK
     grid-template-columns: 76px 1fr 33px 56px 1fr 33px;
   }
 }
+
+.header__text-container {
+  margin-left: 0;
+}
+
+@media (min-width: 992px) {
+  .header__text-container {
+    margin-left: auto;
+  }
+}
